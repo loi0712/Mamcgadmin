@@ -78,18 +78,18 @@ export function FilesView() {
       {/* Header Actions */}
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
-          <h2 className="text-white">Tất cả (7)</h2>
+          <h2 className="text-admin-primary">Tất cả (7)</h2>
         </div>
         <div className="flex items-center gap-3">
-          <Button className="bg-transparent border border-gray-700 hover:bg-gray-800 text-white flex items-center gap-2">
+          <Button className="bg-transparent border border-admin hover:bg-admin-hover text-admin-primary flex items-center gap-2">
             <Filter className="w-4 h-4" />
             Lọc
           </Button>
-          <Button className="bg-transparent border border-gray-700 hover:bg-gray-800 text-white flex items-center gap-2">
-            <span className="text-gray-400">≡</span>
+          <Button className="bg-transparent border border-admin hover:bg-admin-hover text-admin-primary flex items-center gap-2">
+            <span className="text-admin-secondary">≡</span>
             Hiển thị
           </Button>
-          <Button className="bg-transparent border border-gray-700 hover:bg-gray-800 text-white flex items-center gap-2">
+          <Button className="bg-transparent border border-admin hover:bg-admin-hover text-admin-primary flex items-center gap-2">
             <Plus className="w-4 h-4" />
             Tạo thư mục
           </Button>
@@ -97,43 +97,43 @@ export function FilesView() {
       </div>
 
       {/* Table */}
-      <div className="border border-gray-800 rounded-lg overflow-hidden">
+      <div className="border border-admin rounded-lg overflow-hidden">
         <Table>
           <TableHeader>
-            <TableRow className="bg-[#0f1419] border-gray-800 hover:bg-[#0f1419]">
-              <TableHead className="text-gray-400">ID</TableHead>
-              <TableHead className="text-gray-400">Thumbnail</TableHead>
-              <TableHead className="text-gray-400">Thiết kế</TableHead>
-              <TableHead className="text-gray-400">Trạng thái</TableHead>
-              <TableHead className="text-gray-400">Tên file</TableHead>
-              <TableHead className="text-gray-400">Thời gian tạo</TableHead>
-              <TableHead className="text-gray-400">Người tạo</TableHead>
-              <TableHead className="text-gray-400">Thời gian bổi</TableHead>
-              <TableHead className="text-gray-400">Tài liên bổi</TableHead>
-              <TableHead className="text-gray-400">Nhóm chuyên mục</TableHead>
-              <TableHead className="text-gray-400">Tiền chuyệt</TableHead>
+            <TableRow className="bg-admin-secondary border-admin hover:bg-admin-secondary">
+              <TableHead className="text-admin-secondary">ID</TableHead>
+              <TableHead className="text-admin-secondary">Thumbnail</TableHead>
+              <TableHead className="text-admin-secondary">Thiết kế</TableHead>
+              <TableHead className="text-admin-secondary">Trạng thái</TableHead>
+              <TableHead className="text-admin-secondary">Tên file</TableHead>
+              <TableHead className="text-admin-secondary">Thời gian tạo</TableHead>
+              <TableHead className="text-admin-secondary">Người tạo</TableHead>
+              <TableHead className="text-admin-secondary">Thời gian bổi</TableHead>
+              <TableHead className="text-admin-secondary">Tài liên bổi</TableHead>
+              <TableHead className="text-admin-secondary">Nhóm chuyên mục</TableHead>
+              <TableHead className="text-admin-secondary">Tiền chuyệt</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
             {mockFiles.map((file) => (
-              <TableRow key={file.id} className="border-gray-800 hover:bg-gray-900/50">
-                <TableCell className="text-gray-300">{file.id}</TableCell>
+              <TableRow key={file.id} className="border-admin hover:bg-admin-hover">
+                <TableCell className="text-admin-primary">{file.id}</TableCell>
                 <TableCell>
-                  <div className="w-12 h-12 bg-gray-800 rounded flex items-center justify-center text-xs text-gray-500">
+                  <div className="w-12 h-12 bg-admin-input rounded flex items-center justify-center text-xs text-admin-muted">
                     No Image
                   </div>
                 </TableCell>
-                <TableCell className="text-gray-300">{file.title}</TableCell>
+                <TableCell className="text-admin-primary">{file.title}</TableCell>
                 <TableCell>
-                  <span className="text-cyan-400 text-sm">{file.type}</span>
+                  <span className="text-admin-accent text-sm">{file.type}</span>
                 </TableCell>
-                <TableCell className="text-gray-400">{file.fileName}</TableCell>
-                <TableCell className="text-gray-400 text-sm">{file.createdDate}</TableCell>
-                <TableCell className="text-gray-400">{file.createdBy}</TableCell>
-                <TableCell className="text-gray-400">{file.modifiedDate}</TableCell>
-                <TableCell className="text-gray-400">{file.modifiedBy}</TableCell>
-                <TableCell className="text-gray-400">{file.status}</TableCell>
-                <TableCell className="text-gray-400">{file.owner}</TableCell>
+                <TableCell className="text-admin-secondary">{file.fileName}</TableCell>
+                <TableCell className="text-admin-secondary text-sm">{file.createdDate}</TableCell>
+                <TableCell className="text-admin-secondary">{file.createdBy}</TableCell>
+                <TableCell className="text-admin-secondary">{file.modifiedDate}</TableCell>
+                <TableCell className="text-admin-secondary">{file.modifiedBy}</TableCell>
+                <TableCell className="text-admin-secondary">{file.status}</TableCell>
+                <TableCell className="text-admin-secondary">{file.owner}</TableCell>
               </TableRow>
             ))}
           </TableBody>
@@ -142,23 +142,23 @@ export function FilesView() {
 
       {/* Pagination */}
       <div className="flex items-center justify-between">
-        <div className="text-sm text-gray-400">Trang 1 / 1</div>
+        <div className="text-sm text-admin-secondary">Trang 1 / 1</div>
         <div className="flex items-center gap-2">
-          <span className="text-sm text-gray-400 mr-2">Số hàng trên trang</span>
-          <select className="bg-[#0f1419] border border-gray-700 text-gray-300 px-3 py-1 rounded text-sm">
+          <span className="text-sm text-admin-secondary mr-2">Số hàng trên trang</span>
+          <select className="bg-admin-secondary border border-admin text-admin-primary px-3 py-1 rounded text-sm">
             <option>10</option>
             <option>25</option>
             <option>50</option>
           </select>
           <div className="flex items-center gap-2 ml-4">
-            <span className="text-sm text-gray-400">Trang 1 / 1</span>
-            <Button variant="ghost" size="sm" className="text-gray-400 hover:text-white">
+            <span className="text-sm text-admin-secondary">Trang 1 / 1</span>
+            <Button variant="ghost" size="sm" className="text-admin-secondary hover:text-admin-primary">
               <ChevronLeft className="w-4 h-4" />
             </Button>
             <Button variant="ghost" size="sm" className="bg-gray-700 text-white">
               1
             </Button>
-            <Button variant="ghost" size="sm" className="text-gray-400 hover:text-white">
+            <Button variant="ghost" size="sm" className="text-admin-secondary hover:text-admin-primary">
               <ChevronRight className="w-4 h-4" />
             </Button>
           </div>

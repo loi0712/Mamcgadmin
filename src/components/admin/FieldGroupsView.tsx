@@ -181,16 +181,16 @@ export function FieldGroupsView() {
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4">
       {/* Header */}
       <div className="flex items-center justify-between">
         <div className="flex-1 relative max-w-md">
-          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-500" />
+          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-admin-muted" />
           <Input 
             placeholder="Tìm kiếm nhóm trường..." 
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="pl-10 bg-[#0f1419] border-gray-700 text-gray-300"
+            className="pl-10 bg-admin-input border-admin text-admin-primary"
           />
         </div>
         
@@ -207,16 +207,16 @@ export function FieldGroupsView() {
               Thêm nhóm trường
             </Button>
           </DialogTrigger>
-          <DialogContent className="bg-[#0f1419] border-gray-800 text-gray-100 max-w-md">
+          <DialogContent className="bg-admin-secondary border-admin text-admin-primary max-w-md">
             <DialogHeader>
-              <DialogTitle className="text-cyan-400">
+              <DialogTitle className="text-admin-accent">
                 {editingGroup ? 'Chỉnh sửa nhóm trường' : 'Thêm nhóm trường mới'}
               </DialogTitle>
             </DialogHeader>
             
             <div className="space-y-4 mt-4">
               <div className="space-y-2">
-                <Label className="text-gray-300">ID *</Label>
+                <Label className="text-admin-primary">ID *</Label>
                 <Input 
                   placeholder="vd: basic_info"
                   value={formId}
@@ -225,7 +225,7 @@ export function FieldGroupsView() {
                     validateId(e.target.value);
                   }}
                   onBlur={(e) => validateId(e.target.value)}
-                  className={`bg-[#0a0e1a] border-gray-700 text-gray-300 ${idError ? 'border-red-500' : ''}`}
+                  className={`bg-admin-input border-admin text-admin-primary ${idError ? 'border-red-500' : ''}`}
                   disabled={!!editingGroup}
                 />
                 {idError && (
@@ -236,11 +236,11 @@ export function FieldGroupsView() {
                     </AlertDescription>
                   </Alert>
                 )}
-                <p className="text-xs text-gray-500">ID duy nhất, chỉ dùng chữ thường, số và gạch dưới</p>
+                <p className="text-xs text-admin-muted">ID duy nhất, chỉ dùng chữ thường, số và gạch dưới</p>
               </div>
 
               <div className="space-y-2">
-                <Label className="text-gray-300">Tên nhóm trường *</Label>
+                <Label className="text-admin-primary">Tên nhóm trường *</Label>
                 <Input 
                   placeholder="Nhập tên nhóm trường"
                   value={formName}
@@ -249,7 +249,7 @@ export function FieldGroupsView() {
                     validateName(e.target.value);
                   }}
                   onBlur={(e) => validateName(e.target.value)}
-                  className={`bg-[#0a0e1a] border-gray-700 text-gray-300 ${nameError ? 'border-red-500' : ''}`}
+                  className={`bg-admin-input border-admin text-admin-primary ${nameError ? 'border-red-500' : ''}`}
                 />
                 {nameError && (
                   <Alert className="bg-red-900/20 border-red-500 py-2">
@@ -262,27 +262,27 @@ export function FieldGroupsView() {
               </div>
 
               <div className="space-y-2">
-                <Label className="text-gray-300">Mô tả</Label>
+                <Label className="text-admin-primary">Mô tả</Label>
                 <Textarea 
                   placeholder="Mô tả về nhóm trường này"
                   value={formDescription}
                   onChange={(e) => setFormDescription(e.target.value)}
-                  className="bg-[#0a0e1a] border-gray-700 text-gray-300 min-h-20"
+                  className="bg-admin-input border-admin text-admin-primary min-h-20"
                 />
               </div>
 
               <div className="space-y-2">
-                <Label className="text-gray-300">Thứ tự hiển thị</Label>
+                <Label className="text-admin-primary">Thứ tự hiển thị</Label>
                 <Input 
                   type="number"
                   placeholder="1"
                   value={formOrder}
                   onChange={(e) => setFormOrder(e.target.value)}
-                  className="bg-[#0a0e1a] border-gray-700 text-gray-300"
+                  className="bg-admin-input border-admin text-admin-primary"
                 />
               </div>
 
-              <div className="flex gap-3 justify-end mt-6">
+              <div className="flex gap-3 justify-end mt-4">
                 <Button 
                   variant="outline" 
                   onClick={() => {
@@ -290,7 +290,7 @@ export function FieldGroupsView() {
                     setEditingGroup(null);
                     resetForm();
                   }}
-                  className="border-gray-700 text-gray-300 hover:bg-gray-800"
+                  className="border-admin text-admin-primary hover:bg-admin-hover"
                 >
                   Hủy
                 </Button>
@@ -308,30 +308,30 @@ export function FieldGroupsView() {
       </div>
 
       {/* Field Groups Table */}
-      <div className="border border-gray-800 rounded-lg overflow-hidden">
+      <div className="border border-admin rounded-lg overflow-hidden">
         <Table>
           <TableHeader>
-            <TableRow className="bg-[#0f1419] border-gray-800 hover:bg-[#0f1419]">
-              <TableHead className="text-gray-400 w-12"></TableHead>
-              <TableHead className="text-gray-400 w-12">STT</TableHead>
-              <TableHead className="text-gray-400 w-40">ID</TableHead>
-              <TableHead className="text-gray-400">Tên nhóm</TableHead>
-              <TableHead className="text-gray-400">Mô tả</TableHead>
-              <TableHead className="text-gray-400 w-32 text-center">Số trường</TableHead>
-              <TableHead className="text-gray-400 w-32 text-center">Trạng thái</TableHead>
-              <TableHead className="text-gray-400 w-32 text-center">Thao tác</TableHead>
+            <TableRow className="bg-admin-secondary border-admin hover:bg-admin-secondary">
+              <TableHead className="text-admin-secondary w-12"></TableHead>
+              <TableHead className="text-admin-secondary w-12">STT</TableHead>
+              <TableHead className="text-admin-secondary w-40">ID</TableHead>
+              <TableHead className="text-admin-secondary">Tên nhóm</TableHead>
+              <TableHead className="text-admin-secondary">Mô tả</TableHead>
+              <TableHead className="text-admin-secondary w-32 text-center">Số trường</TableHead>
+              <TableHead className="text-admin-secondary w-32 text-center">Trạng thái</TableHead>
+              <TableHead className="text-admin-secondary w-32 text-center">Thao tác</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
             {filteredGroups.map((group) => (
-              <TableRow key={group.id} className="border-gray-800 hover:bg-gray-900/50">
+              <TableRow key={group.id} className="border-admin hover:bg-admin-hover">
                 <TableCell>
                   <GripVertical className="w-4 h-4 text-gray-600 cursor-move" />
                 </TableCell>
-                <TableCell className="text-gray-400">{group.order}</TableCell>
-                <TableCell className="text-cyan-400 text-xs font-mono">{group.id}</TableCell>
-                <TableCell className="text-gray-300">{group.name}</TableCell>
-                <TableCell className="text-gray-400 text-sm">{group.description}</TableCell>
+                <TableCell className="text-admin-secondary">{group.order}</TableCell>
+                <TableCell className="text-admin-accent text-xs font-mono">{group.id}</TableCell>
+                <TableCell className="text-admin-primary">{group.name}</TableCell>
+                <TableCell className="text-admin-secondary text-sm">{group.description}</TableCell>
                 <TableCell className="text-center">
                   <Badge variant="outline" className="border-cyan-500 text-cyan-400">
                     {group.fieldCount}
@@ -375,9 +375,9 @@ export function FieldGroupsView() {
       </div>
 
       {/* Info Card */}
-      <div className="bg-[#0f1419] border border-gray-800 rounded-lg p-4">
-        <div className="text-sm text-gray-400">
-          <strong className="text-cyan-400">Lưu ý:</strong> Nhóm trường được sử dụng để tổ chức các trường dữ liệu thành các nhóm logic. 
+      <div className="bg-admin-secondary border border-admin rounded-lg p-4">
+        <div className="text-sm text-admin-secondary">
+          <strong className="text-admin-accent">Lưu ý:</strong> Nhóm trường được sử dụng để tổ chức các trường dữ liệu thành các nhóm logic. 
           Thứ tự hiển thị có thể điều chỉnh bằng cách kéo thả các hàng trong bảng.
         </div>
       </div>

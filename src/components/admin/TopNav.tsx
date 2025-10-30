@@ -33,7 +33,7 @@ export function TopNav({ items, activeItem, onItemChange, isAdminMode, onModeCha
   const currentTheme = themeOptions.find(t => t.value === theme) || themeOptions[0];
 
   return (
-    <div className="bg-[#1a1f2e] border-b border-gray-800 px-6">
+    <div className="bg-admin-topnav border-b border-admin px-6">
       <div className="flex items-center justify-between">
         {/* Left: Navigation Tabs */}
         <div className="flex gap-6">
@@ -46,8 +46,8 @@ export function TopNav({ items, activeItem, onItemChange, isAdminMode, onModeCha
                 className={cn(
                   "flex items-center gap-2 px-4 py-3 text-sm transition-colors border-b-2",
                   activeItem === item
-                    ? "border-cyan-400 text-white"
-                    : "border-transparent text-gray-400 hover:text-gray-200"
+                    ? "border-admin-accent text-admin-primary"
+                    : "border-transparent text-admin-secondary hover:text-admin-primary"
                 )}
               >
                 {Icon && <Icon className="w-4 h-4" />}
@@ -60,33 +60,33 @@ export function TopNav({ items, activeItem, onItemChange, isAdminMode, onModeCha
         {/* Right: User Controls */}
         <div className="flex items-center gap-4 py-2">
           {/* Mode Toggle */}
-          <div className="flex items-center gap-2 px-3 py-1.5 bg-gray-800/50 rounded">
-            <LayoutGrid className="w-4 h-4 text-gray-400" />
-            <span className="text-sm text-gray-400">
+          <div className="flex items-center gap-2 px-3 py-1.5 bg-admin-tertiary rounded">
+            <LayoutGrid className="w-4 h-4 text-admin-secondary" />
+            <span className="text-sm text-admin-secondary">
               {isAdminMode ? 'Quản trị' : 'Người dùng'}
             </span>
             <Switch 
               checked={isAdminMode}
               onCheckedChange={onModeChange}
-              className="data-[state=checked]:bg-cyan-500"
+              className="data-[state=checked]:bg-admin-accent"
             />
           </div>
 
           {/* Theme Toggle */}
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <button className="p-2 hover:bg-gray-800 rounded transition-colors flex items-center gap-2">
+              <button className="p-2 hover:bg-admin-hover rounded transition-colors flex items-center gap-2">
                 {currentTheme.icon}
               </button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent className="bg-[#0f1419] border-gray-700" align="end">
+            <DropdownMenuContent className="bg-admin-secondary border-admin" align="end">
               {themeOptions.map((option) => (
                 <DropdownMenuItem
                   key={option.value}
                   onClick={() => setTheme(option.value)}
                   className={cn(
-                    "text-gray-300 cursor-pointer flex items-center gap-2",
-                    theme === option.value && "bg-gray-800 text-cyan-400"
+                    "text-admin-primary cursor-pointer flex items-center gap-2 hover:bg-admin-hover",
+                    theme === option.value && "bg-admin-tertiary text-admin-accent"
                   )}
                 >
                   {option.icon}
@@ -97,11 +97,11 @@ export function TopNav({ items, activeItem, onItemChange, isAdminMode, onModeCha
           </DropdownMenu>
 
           {/* User Info */}
-          <div className="flex items-center gap-2 pl-3 border-l border-gray-700">
-            <button className="p-2 hover:bg-gray-800 rounded transition-colors">
-              <User className="w-5 h-5 text-gray-400" />
+          <div className="flex items-center gap-2 pl-3 border-l border-admin">
+            <button className="p-2 hover:bg-admin-hover rounded transition-colors">
+              <User className="w-5 h-5 text-admin-secondary" />
             </button>
-            <div className="text-sm text-gray-300">Admin</div>
+            <div className="text-sm text-admin-primary">Admin</div>
           </div>
         </div>
       </div>

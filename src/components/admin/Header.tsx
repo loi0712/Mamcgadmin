@@ -11,12 +11,12 @@ interface HeaderProps {
 
 export function Header({ title, subtitle, showBackButton, showSaveButton, onSave }: HeaderProps) {
   return (
-    <div className="bg-[#0f1419] border-b border-gray-800 px-6 py-4">
+    <div className="bg-admin-secondary border-b border-admin px-6 py-4">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-4">
           {showBackButton && (
             <button className="p-2 hover:bg-gray-800 rounded transition-colors">
-              <ChevronLeft className="w-5 h-5 text-gray-400" />
+              <ChevronLeft className="w-5 h-5 text-admin-secondary" />
             </button>
           )}
           <div>
@@ -24,7 +24,7 @@ export function Header({ title, subtitle, showBackButton, showSaveButton, onSave
               {title}
             </h1>
             {subtitle && (
-              <p className="text-sm text-gray-500 mt-1">{subtitle}</p>
+              <p className="text-sm text-admin-secondary mt-1">{subtitle}</p>
             )}
           </div>
         </div>

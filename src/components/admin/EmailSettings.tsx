@@ -28,24 +28,24 @@ export function EmailSettings() {
   return (
     <div className="space-y-6">
       <Tabs defaultValue="smtp" className="w-full">
-        <TabsList className="bg-[#0f1419] border border-gray-800">
+        <TabsList className="bg-admin-secondary border border-admin">
           <TabsTrigger 
             value="smtp" 
-            className="data-[state=active]:bg-gray-800 data-[state=active]:text-cyan-400 text-gray-300"
+            className="data-[state=active]:bg-admin-tertiary data-[state=active]:text-admin-accent text-admin-secondary"
           >
             <Server className="w-4 h-4 mr-2" />
             Cấu hình SMTP
           </TabsTrigger>
           <TabsTrigger 
             value="templates" 
-            className="data-[state=active]:bg-gray-800 data-[state=active]:text-cyan-400 text-gray-300"
+            className="data-[state=active]:bg-admin-tertiary data-[state=active]:text-admin-accent text-admin-secondary"
           >
             <FileText className="w-4 h-4 mr-2" />
             Mẫu Email
           </TabsTrigger>
           <TabsTrigger 
             value="notifications" 
-            className="data-[state=active]:bg-gray-800 data-[state=active]:text-cyan-400 text-gray-300"
+            className="data-[state=active]:bg-admin-tertiary data-[state=active]:text-admin-accent text-admin-secondary"
           >
             <Mail className="w-4 h-4 mr-2" />
             Thông báo
@@ -56,98 +56,98 @@ export function EmailSettings() {
         <TabsContent value="smtp" className="space-y-6 mt-6">
           <div className="grid grid-cols-2 gap-6">
             {/* Left: SMTP Server Settings */}
-            <Card className="bg-[#0f1419] border-gray-800 p-6">
-              <h3 className="text-cyan-400 mb-4 flex items-center gap-2">
+            <Card className="bg-admin-secondary border-admin p-6">
+              <h3 className="text-admin-accent mb-4 flex items-center gap-2">
                 <Server className="w-5 h-5" />
                 Máy chủ SMTP
               </h3>
 
               <div className="space-y-4">
                 <div className="space-y-2">
-                  <Label className="text-gray-300">SMTP Host *</Label>
+                  <Label className="text-admin-primary">SMTP Host *</Label>
                   <Input 
                     placeholder="smtp.gmail.com"
                     defaultValue="smtp.mamcg.vn"
-                    className="bg-[#0a0e1a] border-gray-700 text-gray-300"
+                    className="bg-admin-input border-admin text-admin-primary"
                   />
-                  <p className="text-xs text-gray-500">Địa chỉ máy chủ SMTP</p>
+                  <p className="text-xs text-admin-muted">Địa chỉ máy chủ SMTP</p>
                 </div>
 
                 <div className="grid grid-cols-2 gap-4">
                   <div className="space-y-2">
-                    <Label className="text-gray-300">Cổng (Port) *</Label>
+                    <Label className="text-admin-primary">Cổng (Port) *</Label>
                     <Input 
                       type="number"
                       placeholder="587"
                       defaultValue="587"
-                      className="bg-[#0a0e1a] border-gray-700 text-gray-300"
+                      className="bg-admin-input border-admin text-admin-primary"
                     />
                   </div>
                   <div className="space-y-2">
-                    <Label className="text-gray-300">Mã hóa</Label>
+                    <Label className="text-admin-primary">Mã hóa</Label>
                     <Select defaultValue="tls">
-                      <SelectTrigger className="bg-[#0a0e1a] border-gray-700 text-gray-300">
+                      <SelectTrigger className="bg-admin-input border-admin text-admin-primary">
                         <SelectValue />
                       </SelectTrigger>
-                      <SelectContent className="bg-[#0f1419] border-gray-700">
-                        <SelectItem value="none" className="text-gray-300">Không mã hóa</SelectItem>
-                        <SelectItem value="ssl" className="text-gray-300">SSL (Port 465)</SelectItem>
-                        <SelectItem value="tls" className="text-gray-300">TLS/STARTTLS (Port 587)</SelectItem>
+                      <SelectContent className="bg-admin-secondary border-admin">
+                        <SelectItem value="none" className="text-admin-primary">Không mã hóa</SelectItem>
+                        <SelectItem value="ssl" className="text-admin-primary">SSL (Port 465)</SelectItem>
+                        <SelectItem value="tls" className="text-admin-primary">TLS/STARTTLS (Port 587)</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>
                 </div>
 
-                <div className="flex items-center justify-between pt-2 pb-2 border-t border-gray-800">
+                <div className="flex items-center justify-between pt-2 pb-2 border-t border-admin">
                   <div className="flex items-center gap-2">
-                    <Lock className="w-4 h-4 text-cyan-400" />
-                    <Label className="text-gray-300">Sử dụng SSL/TLS</Label>
+                    <Lock className="w-4 h-4 text-admin-accent" />
+                    <Label className="text-admin-primary">Sử dụng SSL/TLS</Label>
                   </div>
                   <Switch 
                     checked={enableSSL}
                     onCheckedChange={setEnableSSL}
-                    className="data-[state=checked]:bg-cyan-500" 
+                    className="data-[state=checked]:bg-admin-accent" 
                   />
                 </div>
 
                 <div className="flex items-center justify-between pb-2">
-                  <Label className="text-gray-300">Yêu cầu xác thực</Label>
+                  <Label className="text-admin-primary">Yêu cầu xác thực</Label>
                   <Switch 
                     checked={enableAuth}
                     onCheckedChange={setEnableAuth}
-                    className="data-[state=checked]:bg-cyan-500" 
+                    className="data-[state=checked]:bg-admin-accent" 
                   />
                 </div>
 
                 {enableAuth && (
                   <>
                     <div className="space-y-2">
-                      <Label className="text-gray-300">Tên đăng nhập *</Label>
+                      <Label className="text-admin-primary">Tên đăng nhập *</Label>
                       <Input 
                         placeholder="user@example.com"
                         defaultValue="notification@mamcg.vn"
-                        className="bg-[#0a0e1a] border-gray-700 text-gray-300"
+                        className="bg-admin-input border-admin text-admin-primary"
                       />
                     </div>
 
                     <div className="space-y-2">
-                      <Label className="text-gray-300">Mật khẩu *</Label>
+                      <Label className="text-admin-primary">Mật khẩu *</Label>
                       <Input 
                         type="password"
                         placeholder="••••••••••••"
-                        className="bg-[#0a0e1a] border-gray-700 text-gray-300"
+                        className="bg-admin-input border-admin text-admin-primary"
                       />
                     </div>
                   </>
                 )}
 
                 <div className="space-y-2">
-                  <Label className="text-gray-300">Timeout (giây)</Label>
+                  <Label className="text-admin-primary">Timeout (giây)</Label>
                   <Input 
                     type="number"
                     placeholder="30"
                     defaultValue="30"
-                    className="bg-[#0a0e1a] border-gray-700 text-gray-300"
+                    className="bg-admin-input border-admin text-admin-primary"
                   />
                 </div>
               </div>
@@ -155,74 +155,74 @@ export function EmailSettings() {
 
             {/* Right: Email Settings & Test */}
             <div className="space-y-6">
-              <Card className="bg-[#0f1419] border-gray-800 p-6">
-                <h3 className="text-cyan-400 mb-4 flex items-center gap-2">
+              <Card className="bg-admin-secondary border-admin p-6">
+                <h3 className="text-admin-accent mb-4 flex items-center gap-2">
                   <Mail className="w-5 h-5" />
                   Thông tin người gửi
                 </h3>
 
                 <div className="space-y-4">
                   <div className="space-y-2">
-                    <Label className="text-gray-300">Tên người gửi *</Label>
+                    <Label className="text-admin-primary">Tên người gửi *</Label>
                     <Input 
                       placeholder="MAMCG System"
                       defaultValue="MAMCG Notification"
-                      className="bg-[#0a0e1a] border-gray-700 text-gray-300"
+                      className="bg-admin-input border-admin text-admin-primary"
                     />
                   </div>
 
                   <div className="space-y-2">
-                    <Label className="text-gray-300">Email người gửi *</Label>
+                    <Label className="text-admin-primary">Email người gửi *</Label>
                     <Input 
                       type="email"
                       placeholder="noreply@mamcg.vn"
                       defaultValue="notification@mamcg.vn"
-                      className="bg-[#0a0e1a] border-gray-700 text-gray-300"
+                      className="bg-admin-input border-admin text-admin-primary"
                     />
                   </div>
 
                   <div className="space-y-2">
-                    <Label className="text-gray-300">Email trả lời (Reply-To)</Label>
+                    <Label className="text-admin-primary">Email trả lời (Reply-To)</Label>
                     <Input 
                       type="email"
                       placeholder="support@mamcg.vn"
                       defaultValue="support@mamcg.vn"
-                      className="bg-[#0a0e1a] border-gray-700 text-gray-300"
+                      className="bg-admin-input border-admin text-admin-primary"
                     />
                   </div>
 
                   <div className="space-y-2">
-                    <Label className="text-gray-300">Email CC (tùy chọn)</Label>
+                    <Label className="text-admin-primary">Email CC (tùy chọn)</Label>
                     <Input 
                       type="email"
                       placeholder="admin@mamcg.vn"
-                      className="bg-[#0a0e1a] border-gray-700 text-gray-300"
+                      className="bg-admin-input border-admin text-admin-primary"
                     />
-                    <p className="text-xs text-gray-500">Nhận bản sao tất cả email</p>
+                    <p className="text-xs text-admin-muted">Nhận bản sao tất cả email</p>
                   </div>
                 </div>
               </Card>
 
-              <Card className="bg-[#0f1419] border-gray-800 p-6">
-                <h3 className="text-cyan-400 mb-4 flex items-center gap-2">
+              <Card className="bg-admin-secondary border-admin p-6">
+                <h3 className="text-admin-accent mb-4 flex items-center gap-2">
                   <Send className="w-5 h-5" />
                   Kiểm tra kết nối
                 </h3>
 
                 <div className="space-y-4">
                   <div className="space-y-2">
-                    <Label className="text-gray-300">Email nhận thử nghiệm</Label>
+                    <Label className="text-admin-primary">Email nhận thử nghiệm</Label>
                     <Input 
                       type="email"
                       placeholder="test@example.com"
-                      className="bg-[#0a0e1a] border-gray-700 text-gray-300"
+                      className="bg-admin-input border-admin text-admin-primary"
                     />
                   </div>
 
                   <Button 
                     onClick={handleTestEmail}
                     disabled={testEmailStatus === 'sending'}
-                    className="w-full bg-cyan-600 hover:bg-cyan-700 text-white"
+                    className="w-full bg-admin-accent hover:bg-admin-accent-hover text-white"
                   >
                     {testEmailStatus === 'sending' ? (
                       <>
@@ -248,13 +248,13 @@ export function EmailSettings() {
                   </Button>
 
                   {testEmailStatus === 'success' && (
-                    <div className="bg-green-900/20 border border-green-500 rounded p-3 text-sm text-green-400">
+                    <div className="bg-green-900/20 border border-green-500 rounded p-3 text-sm text-admin-success">
                       Email đã được gửi thành công. Vui lòng kiểm tra hộp thư đến.
                     </div>
                   )}
 
                   {testEmailStatus === 'error' && (
-                    <div className="bg-red-900/20 border border-red-500 rounded p-3 text-sm text-red-400">
+                    <div className="bg-red-900/20 border border-red-500 rounded p-3 text-sm text-admin-error">
                       Không thể gửi email. Vui lòng kiểm tra lại cấu hình SMTP.
                     </div>
                   )}
@@ -264,14 +264,14 @@ export function EmailSettings() {
           </div>
 
           {/* Save Button */}
-          <div className="flex justify-end gap-3 pt-4 border-t border-gray-800">
+          <div className="flex justify-end gap-3 pt-4 border-t border-admin">
             <Button 
               variant="outline" 
-              className="border-gray-700 text-gray-300 hover:bg-gray-800"
+              className="border-admin text-admin-secondary hover:bg-admin-hover"
             >
               Khôi phục mặc định
             </Button>
-            <Button className="bg-cyan-600 hover:bg-cyan-700 text-white">
+            <Button className="bg-admin-accent hover:bg-admin-accent-hover text-white">
               Lưu cấu hình
             </Button>
           </div>
@@ -290,20 +290,20 @@ export function EmailSettings() {
             ].map((template) => (
               <Card 
                 key={template.id} 
-                className="bg-[#0f1419] border-gray-800 p-4 hover:border-cyan-500 transition-colors cursor-pointer"
+                className="bg-admin-secondary border-admin p-4 hover:border-admin-accent transition-colors cursor-pointer"
               >
                 <div className="flex items-start justify-between mb-2">
-                  <FileText className="w-5 h-5 text-cyan-400" />
-                  <Badge variant="outline" className="border-green-500 text-green-400 text-xs">
+                  <FileText className="w-5 h-5 text-admin-accent" />
+                  <Badge variant="outline" className="border-admin-success text-admin-success text-xs">
                     Hoạt động
                   </Badge>
                 </div>
-                <h4 className="text-gray-300 mb-1">{template.name}</h4>
-                <p className="text-xs text-gray-500 mb-3">{template.desc}</p>
+                <h4 className="text-admin-primary mb-1">{template.name}</h4>
+                <p className="text-xs text-admin-muted mb-3">{template.desc}</p>
                 <Button 
                   variant="outline" 
                   size="sm"
-                  className="w-full border-gray-700 text-gray-300 hover:bg-gray-800"
+                  className="w-full border-admin text-admin-secondary hover:bg-admin-hover"
                 >
                   Chỉnh sửa
                 </Button>
@@ -312,22 +312,22 @@ export function EmailSettings() {
           </div>
 
           {/* Template Editor Preview */}
-          <Card className="bg-[#0f1419] border-gray-800 p-6">
-            <h3 className="text-cyan-400 mb-4">Chỉnh sửa mẫu email</h3>
+          <Card className="bg-admin-secondary border-admin p-6">
+            <h3 className="text-admin-accent mb-4">Chỉnh sửa mẫu email</h3>
             
             <div className="grid grid-cols-2 gap-6">
               <div className="space-y-4">
                 <div className="space-y-2">
-                  <Label className="text-gray-300">Tiêu đề email *</Label>
+                  <Label className="text-admin-primary">Tiêu đề email *</Label>
                   <Input 
                     placeholder="Tiêu đề email"
                     defaultValue="[MAMCG] Backup database thành công"
-                    className="bg-[#0a0e1a] border-gray-700 text-gray-300"
+                    className="bg-admin-input border-admin text-admin-primary"
                   />
                 </div>
 
                 <div className="space-y-2">
-                  <Label className="text-gray-300">Nội dung email *</Label>
+                  <Label className="text-admin-primary">Nội dung email *</Label>
                   <Textarea 
                     placeholder="Nội dung email (hỗ trợ HTML)"
                     defaultValue={`Xin chào {{user_name}},
@@ -342,20 +342,19 @@ Thông tin:
 
 Trân trọng,
 MAMCG System`}
-                    className="bg-[#0a0e1a] border-gray-700 text-gray-300 min-h-[300px] font-mono text-sm"
+                    className="bg-admin-input border-admin text-admin-primary min-h-[300px] font-mono text-sm"
                   />
-                  <p className="text-xs text-gray-500">
-                    Biến khả dụng: {'{{'} user_name {'}},'} {'{{'} database_name {'}},'} {'{{'} backup_time {'}},'} {'{{'} backup_size {'}}'}
-                  </p>
+                  <p className="text-xs text-admin-muted">
+                    Biến khả dụng: {'{{'} user_name {'}},'} {'{{'} database_name {'}},'} {'{{'} backup_time {'}},'} {'{{'} backup_size {'}}'}</p>
                 </div>
               </div>
 
               <div className="space-y-4">
-                <Label className="text-gray-300">Xem trước</Label>
+                <Label className="text-admin-primary">Xem trước</Label>
                 <div className="bg-white text-gray-900 rounded p-6 border">
                   <div className="border-b pb-4 mb-4">
-                    <div className="text-sm text-gray-500 mb-1">Từ: MAMCG Notification &lt;notification@mamcg.vn&gt;</div>
-                    <div className="text-sm text-gray-500 mb-2">Đến: admin@mamcg.vn</div>
+                    <div className="text-sm text-gray-500 mb-1">Từ: MAMCG Notification &lt;notification&#64;mamcg.vn&gt;</div>
+                    <div className="text-sm text-gray-500 mb-2">Đến: admin&#64;mamcg.vn</div>
                     <div className="text-lg">[MAMCG] Backup database thành công</div>
                   </div>
                   <div className="text-sm whitespace-pre-wrap">
@@ -373,14 +372,14 @@ MAMCG System`}
               </div>
             </div>
 
-            <div className="flex justify-end gap-3 pt-4 border-t border-gray-800 mt-4">
+            <div className="flex justify-end gap-3 pt-4 border-t border-admin mt-4">
               <Button 
                 variant="outline" 
-                className="border-gray-700 text-gray-300 hover:bg-gray-800"
+                className="border-admin text-admin-secondary hover:bg-admin-hover"
               >
                 Hủy
               </Button>
-              <Button className="bg-cyan-600 hover:bg-cyan-700 text-white">
+              <Button className="bg-admin-accent hover:bg-admin-accent-hover text-white">
                 Lưu mẫu
               </Button>
             </div>
@@ -391,8 +390,8 @@ MAMCG System`}
         <TabsContent value="notifications" className="space-y-6 mt-6">
           <div className="grid grid-cols-2 gap-6">
             {/* Notification Types */}
-            <Card className="bg-[#0f1419] border-gray-800 p-6">
-              <h3 className="text-cyan-400 mb-4 flex items-center gap-2">
+            <Card className="bg-admin-secondary border-admin p-6">
+              <h3 className="text-admin-accent mb-4 flex items-center gap-2">
                 <Mail className="w-5 h-5" />
                 Loại thông báo
               </h3>
@@ -430,18 +429,18 @@ MAMCG System`}
                     ]},
                   ].map((category) => (
                     <div key={category.category}>
-                      <div className="text-sm text-cyan-400 mb-2 mt-3">{category.category}</div>
+                      <div className="text-sm text-admin-accent mb-2 mt-3">{category.category}</div>
                       {category.items.map((item) => (
                         <div 
                           key={item.id}
-                          className="flex items-center justify-between py-2 px-3 bg-[#0a0e1a] border border-gray-800 rounded mb-2 hover:bg-gray-900/50"
+                          className="flex items-center justify-between py-2 px-3 bg-admin-input border border-admin rounded mb-2 hover:bg-admin-hover"
                         >
-                          <Label className="text-gray-300 text-sm cursor-pointer">
+                          <Label className="text-admin-primary text-sm cursor-pointer">
                             {item.name}
                           </Label>
                           <Switch 
                             defaultChecked={item.enabled}
-                            className="data-[state=checked]:bg-cyan-500" 
+                            className="data-[state=checked]:bg-admin-accent" 
                           />
                         </div>
                       ))}
@@ -453,105 +452,105 @@ MAMCG System`}
 
             {/* Notification Recipients */}
             <div className="space-y-6">
-              <Card className="bg-[#0f1419] border-gray-800 p-6">
-                <h3 className="text-cyan-400 mb-4">Người nhận mặc định</h3>
+              <Card className="bg-admin-secondary border-admin p-6">
+                <h3 className="text-admin-accent mb-4">Người nhận mặc định</h3>
 
                 <div className="space-y-4">
                   <div className="space-y-2">
-                    <Label className="text-gray-300">Email quản trị viên</Label>
+                    <Label className="text-admin-primary">Email quản trị viên</Label>
                     <Input 
                       type="email"
                       placeholder="admin@mamcg.vn"
                       defaultValue="admin@mamcg.vn"
-                      className="bg-[#0a0e1a] border-gray-700 text-gray-300"
+                      className="bg-admin-input border-admin text-admin-primary"
                     />
                   </div>
 
                   <div className="space-y-2">
-                    <Label className="text-gray-300">Email kỹ thuật</Label>
+                    <Label className="text-admin-primary">Email kỹ thuật</Label>
                     <Input 
                       type="email"
                       placeholder="tech@mamcg.vn"
                       defaultValue="tech@mamcg.vn"
-                      className="bg-[#0a0e1a] border-gray-700 text-gray-300"
+                      className="bg-admin-input border-admin text-admin-primary"
                     />
                   </div>
 
                   <div className="space-y-2">
-                    <Label className="text-gray-300">Email bảo mật</Label>
+                    <Label className="text-admin-primary">Email bảo mật</Label>
                     <Input 
                       type="email"
                       placeholder="security@mamcg.vn"
-                      className="bg-[#0a0e1a] border-gray-700 text-gray-300"
+                      className="bg-admin-input border-admin text-admin-primary"
                     />
                   </div>
 
                   <div className="space-y-2">
-                    <Label className="text-gray-300">Danh sách email CC (phân cách bởi dấu phẩy)</Label>
+                    <Label className="text-admin-primary">Danh sách email CC (phân cách bởi dấu phẩy)</Label>
                     <Textarea 
                       placeholder="user1@mamcg.vn, user2@mamcg.vn"
-                      className="bg-[#0a0e1a] border-gray-700 text-gray-300"
+                      className="bg-admin-input border-admin text-admin-primary"
                       rows={3}
                     />
                   </div>
                 </div>
               </Card>
 
-              <Card className="bg-[#0f1419] border-gray-800 p-6">
-                <h3 className="text-cyan-400 mb-4">Tùy chọn nâng cao</h3>
+              <Card className="bg-admin-secondary border-admin p-6">
+                <h3 className="text-admin-accent mb-4">Tùy chọn nâng cao</h3>
 
                 <div className="space-y-4">
                   <div className="flex items-center justify-between">
-                    <Label className="text-gray-300">Gộp thông báo cùng loại</Label>
-                    <Switch className="data-[state=checked]:bg-cyan-500" />
+                    <Label className="text-admin-primary">Gộp thông báo cùng loại</Label>
+                    <Switch className="data-[state=checked]:bg-admin-accent" />
                   </div>
 
                   <div className="space-y-2">
-                    <Label className="text-gray-300">Thời gian chờ giữa các email (phút)</Label>
+                    <Label className="text-admin-primary">Thời gian chờ giữa các email (phút)</Label>
                     <Input 
                       type="number"
                       placeholder="5"
                       defaultValue="5"
-                      className="bg-[#0a0e1a] border-gray-700 text-gray-300"
+                      className="bg-admin-input border-admin text-admin-primary"
                     />
-                    <p className="text-xs text-gray-500">Tránh spam khi có nhiều thông báo liên tiếp</p>
+                    <p className="text-xs text-admin-muted">Tránh spam khi có nhiều thông báo liên tiếp</p>
                   </div>
 
                   <div className="space-y-2">
-                    <Label className="text-gray-300">Mức độ ưu tiên tối thiểu</Label>
+                    <Label className="text-admin-primary">Mức độ ưu tiên tối thiểu</Label>
                     <Select defaultValue="warning">
-                      <SelectTrigger className="bg-[#0a0e1a] border-gray-700 text-gray-300">
+                      <SelectTrigger className="bg-admin-input border-admin text-admin-primary">
                         <SelectValue />
                       </SelectTrigger>
-                      <SelectContent className="bg-[#0f1419] border-gray-700">
-                        <SelectItem value="info" className="text-gray-300">Thông tin</SelectItem>
-                        <SelectItem value="warning" className="text-gray-300">Cảnh báo</SelectItem>
-                        <SelectItem value="error" className="text-gray-300">Lỗi</SelectItem>
-                        <SelectItem value="critical" className="text-gray-300">Nghiêm trọng</SelectItem>
+                      <SelectContent className="bg-admin-secondary border-admin">
+                        <SelectItem value="info" className="text-admin-primary">Thông tin</SelectItem>
+                        <SelectItem value="warning" className="text-admin-primary">Cảnh báo</SelectItem>
+                        <SelectItem value="error" className="text-admin-primary">Lỗi</SelectItem>
+                        <SelectItem value="critical" className="text-admin-primary">Nghiêm trọng</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>
 
                   <div className="flex items-center justify-between">
-                    <Label className="text-gray-300">Gửi email vào giờ hành chính</Label>
-                    <Switch className="data-[state=checked]:bg-cyan-500" />
+                    <Label className="text-admin-primary">Gửi email vào giờ hành chính</Label>
+                    <Switch className="data-[state=checked]:bg-admin-accent" />
                   </div>
 
                   <div className="grid grid-cols-2 gap-4">
                     <div className="space-y-2">
-                      <Label className="text-gray-300 text-sm">Từ</Label>
+                      <Label className="text-admin-primary text-sm">Từ</Label>
                       <Input 
                         type="time"
                         defaultValue="08:00"
-                        className="bg-[#0a0e1a] border-gray-700 text-gray-300"
+                        className="bg-admin-input border-admin text-admin-primary"
                       />
                     </div>
                     <div className="space-y-2">
-                      <Label className="text-gray-300 text-sm">Đến</Label>
+                      <Label className="text-admin-primary text-sm">Đến</Label>
                       <Input 
                         type="time"
                         defaultValue="18:00"
-                        className="bg-[#0a0e1a] border-gray-700 text-gray-300"
+                        className="bg-admin-input border-admin text-admin-primary"
                       />
                     </div>
                   </div>
@@ -561,14 +560,14 @@ MAMCG System`}
           </div>
 
           {/* Save Button */}
-          <div className="flex justify-end gap-3 pt-4 border-t border-gray-800">
+          <div className="flex justify-end gap-3 pt-4 border-t border-admin">
             <Button 
               variant="outline" 
-              className="border-gray-700 text-gray-300 hover:bg-gray-800"
+              className="border-admin text-admin-secondary hover:bg-admin-hover"
             >
               Khôi phục mặc định
             </Button>
-            <Button className="bg-cyan-600 hover:bg-cyan-700 text-white">
+            <Button className="bg-admin-accent hover:bg-admin-accent-hover text-white">
               Lưu cấu hình
             </Button>
           </div>

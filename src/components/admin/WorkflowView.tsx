@@ -94,16 +94,16 @@ export function WorkflowView({ onEditWorkflow }: WorkflowViewProps) {
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4">
       {/* Header */}
       <div className="flex items-center justify-between">
         <div className="flex-1 relative max-w-md">
-          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-500" />
+          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-admin-muted" />
           <Input 
             placeholder="Tìm kiếm workflow..." 
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="pl-10 bg-[#0f1419] border-gray-700 text-gray-300"
+            className="pl-10 bg-admin-input border-admin text-admin-primary"
           />
         </div>
         
@@ -118,61 +118,61 @@ export function WorkflowView({ onEditWorkflow }: WorkflowViewProps) {
 
       {/* Statistics */}
       <div className="grid grid-cols-4 gap-4">
-        <div className="bg-[#0f1419] border border-gray-800 rounded-lg p-4">
-          <div className="text-sm text-gray-400">Tổng workflow</div>
-          <div className="text-2xl text-white mt-2">{workflows.length}</div>
+        <div className="bg-admin-secondary border border-admin rounded-lg p-4">
+          <div className="text-sm text-admin-secondary">Tổng workflow</div>
+          <div className="text-2xl text-admin-primary mt-2">{workflows.length}</div>
         </div>
-        <div className="bg-[#0f1419] border border-gray-800 rounded-lg p-4">
-          <div className="text-sm text-gray-400">Đang hoạt động</div>
+        <div className="bg-admin-secondary border border-admin rounded-lg p-4">
+          <div className="text-sm text-admin-secondary">Đang hoạt động</div>
           <div className="text-2xl text-green-400 mt-2">
             {workflows.filter(w => w.isActive).length}
           </div>
         </div>
-        <div className="bg-[#0f1419] border border-gray-800 rounded-lg p-4">
-          <div className="text-sm text-gray-400">Tạm dừng</div>
-          <div className="text-2xl text-gray-400 mt-2">
+        <div className="bg-admin-secondary border border-admin rounded-lg p-4">
+          <div className="text-sm text-admin-secondary">Tạm dừng</div>
+          <div className="text-2xl text-admin-secondary mt-2">
             {workflows.filter(w => !w.isActive).length}
           </div>
         </div>
-        <div className="bg-[#0f1419] border border-gray-800 rounded-lg p-4">
-          <div className="text-sm text-gray-400">Tổng người dùng</div>
-          <div className="text-2xl text-cyan-400 mt-2">
+        <div className="bg-admin-secondary border border-admin rounded-lg p-4">
+          <div className="text-sm text-admin-secondary">Tổng người dùng</div>
+          <div className="text-2xl text-admin-accent mt-2">
             {new Set(workflows.flatMap(w => w.assignedUsers)).size}
           </div>
         </div>
       </div>
 
       {/* Workflows Table */}
-      <div className="border border-gray-800 rounded-lg overflow-hidden bg-[#0f1419]">
+      <div className="border border-admin rounded-lg overflow-hidden bg-admin-secondary">
         <ScrollArea className="w-full h-[600px]">
           <div className="min-w-[1200px]">
             <Table>
               <TableHeader>
-                <TableRow className="bg-[#0f1419] border-gray-800 hover:bg-[#0f1419]">
-                  <TableHead className="text-gray-400 w-12">STT</TableHead>
-                  <TableHead className="text-gray-400 min-w-[200px]">Tên workflow</TableHead>
-                  <TableHead className="text-gray-400 min-w-[300px]">Mô tả</TableHead>
-                  <TableHead className="text-gray-400 min-w-[160px]">Người dùng áp dụng</TableHead>
-                  <TableHead className="text-gray-400 w-24 text-center">Số bước</TableHead>
-                  <TableHead className="text-gray-400 w-32 text-center">Trạng thái</TableHead>
-                  <TableHead className="text-gray-400 w-32">Cập nhật</TableHead>
-                  <TableHead className="text-gray-400 w-40 text-center">Thao tác</TableHead>
+                <TableRow className="bg-admin-secondary border-admin hover:bg-admin-secondary">
+                  <TableHead className="text-admin-secondary w-12">STT</TableHead>
+                  <TableHead className="text-admin-secondary min-w-[200px]">Tên workflow</TableHead>
+                  <TableHead className="text-admin-secondary min-w-[300px]">Mô tả</TableHead>
+                  <TableHead className="text-admin-secondary min-w-[160px]">Người dùng áp dụng</TableHead>
+                  <TableHead className="text-admin-secondary w-24 text-center">Số bước</TableHead>
+                  <TableHead className="text-admin-secondary w-32 text-center">Trạng thái</TableHead>
+                  <TableHead className="text-admin-secondary w-32">Cập nhật</TableHead>
+                  <TableHead className="text-admin-secondary w-40 text-center">Thao tác</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
                 {filteredWorkflows.map((workflow, index) => (
-                  <TableRow key={workflow.id} className="border-gray-800 hover:bg-gray-900/50">
-                    <TableCell className="text-gray-400">{index + 1}</TableCell>
+                  <TableRow key={workflow.id} className="border-admin hover:bg-admin-hover">
+                    <TableCell className="text-admin-secondary">{index + 1}</TableCell>
                     <TableCell>
-                      <div className="text-gray-300">{workflow.name}</div>
-                      <div className="text-xs text-gray-500 mt-1">Tạo: {workflow.createdDate}</div>
+                      <div className="text-admin-primary">{workflow.name}</div>
+                      <div className="text-xs text-admin-muted mt-1">Tạo: {workflow.createdDate}</div>
                     </TableCell>
-                    <TableCell className="text-gray-400 text-sm">{workflow.description}</TableCell>
+                    <TableCell className="text-admin-secondary text-sm">{workflow.description}</TableCell>
                     <TableCell>
-                      <div className="text-xs text-gray-400">
+                      <div className="text-xs text-admin-secondary">
                         {workflow.assignedUsers.length} người
                       </div>
-                      <div className="text-xs text-gray-500 mt-1">
+                      <div className="text-xs text-admin-muted mt-1">
                         {workflow.assignedUsers.slice(0, 2).join(', ')}
                         {workflow.assignedUsers.length > 2 && '...'}
                       </div>
@@ -193,7 +193,7 @@ export function WorkflowView({ onEditWorkflow }: WorkflowViewProps) {
                         {workflow.isActive ? 'Hoạt động' : 'Tạm dừng'}
                       </Badge>
                     </TableCell>
-                    <TableCell className="text-gray-400 text-xs">
+                    <TableCell className="text-admin-secondary text-xs">
                       {workflow.lastModified}
                     </TableCell>
                     <TableCell className="text-center">
@@ -246,9 +246,9 @@ export function WorkflowView({ onEditWorkflow }: WorkflowViewProps) {
       </div>
 
       {/* Info Card */}
-      <div className="bg-[#0f1419] border border-gray-800 rounded-lg p-4">
-        <div className="text-sm text-gray-400">
-          <strong className="text-cyan-400">Lưu ý:</strong> Workflow giúp tự động hóa các quy trình xử lý media. 
+      <div className="bg-admin-secondary border border-admin rounded-lg p-4">
+        <div className="text-sm text-admin-secondary">
+          <strong className="text-admin-accent">Lưu ý:</strong> Workflow giúp tự động hóa các quy trình xử lý media. 
           Bạn có thể thiết kế các bước xử lý, điều kiện và hành động tùy chỉnh cho từng workflow.
         </div>
       </div>

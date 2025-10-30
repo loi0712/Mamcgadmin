@@ -63,12 +63,12 @@ export function CGServerSettings() {
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4">
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="text-cyan-400">Danh sách CG Server</h2>
-          <p className="text-sm text-gray-500 mt-1">
+          <h2 className="text-admin-accent">Danh sách CG Server</h2>
+          <p className="text-sm text-admin-muted mt-1">
             Quản lý kết nối với các CG Server
           </p>
         </div>
@@ -79,44 +79,44 @@ export function CGServerSettings() {
               Thêm Server
             </Button>
           </DialogTrigger>
-          <DialogContent className="bg-[#0f1419] border-gray-800 text-gray-100">
+          <DialogContent className="bg-admin-secondary border-admin text-admin-primary">
             <DialogHeader>
-              <DialogTitle className="text-cyan-400">Thêm CG Server mới</DialogTitle>
+              <DialogTitle className="text-admin-accent">Thêm CG Server mới</DialogTitle>
             </DialogHeader>
             <div className="space-y-4 mt-4">
               <div className="space-y-2">
-                <Label className="text-gray-300">Tên Server *</Label>
+                <Label className="text-admin-primary">Tên Server *</Label>
                 <Input 
                   placeholder="CG Server 1"
-                  className="bg-[#0a0e1a] border-gray-700 text-gray-300"
+                  className="bg-admin-input border-admin text-admin-primary"
                 />
               </div>
               <div className="space-y-2">
-                <Label className="text-gray-300">Địa chỉ IP *</Label>
+                <Label className="text-admin-primary">Địa chỉ IP *</Label>
                 <Input 
                   placeholder="192.168.1.100"
-                  className="bg-[#0a0e1a] border-gray-700 text-gray-300"
+                  className="bg-admin-input border-admin text-admin-primary"
                 />
               </div>
               <div className="space-y-2">
-                <Label className="text-gray-300">Port *</Label>
+                <Label className="text-admin-primary">Port *</Label>
                 <Input 
                   placeholder="8080"
-                  className="bg-[#0a0e1a] border-gray-700 text-gray-300"
+                  className="bg-admin-input border-admin text-admin-primary"
                 />
               </div>
               <div className="space-y-2">
-                <Label className="text-gray-300">Mô tả</Label>
+                <Label className="text-admin-primary">Mô tả</Label>
                 <Input 
                   placeholder="Mô tả về server"
-                  className="bg-[#0a0e1a] border-gray-700 text-gray-300"
+                  className="bg-admin-input border-admin text-admin-primary"
                 />
               </div>
-              <div className="flex gap-3 justify-end mt-6">
+              <div className="flex gap-3 justify-end mt-4">
                 <Button 
                   variant="outline" 
                   onClick={() => setIsDialogOpen(false)}
-                  className="border-gray-700 text-gray-300 hover:bg-gray-800"
+                  className="border-admin text-admin-primary hover:bg-admin-hover"
                 >
                   Hủy
                 </Button>
@@ -137,24 +137,24 @@ export function CGServerSettings() {
 
       {/* Statistics */}
       <div className="grid grid-cols-4 gap-4">
-        <div className="bg-[#0f1419] border border-gray-800 rounded-lg p-4">
-          <div className="text-sm text-gray-400">Tổng số Server</div>
-          <div className="text-2xl text-white mt-2">{servers.length}</div>
+        <div className="bg-admin-secondary border border-admin rounded-lg p-4">
+          <div className="text-sm text-admin-secondary">Tổng số Server</div>
+          <div className="text-2xl text-admin-primary mt-2">{servers.length}</div>
         </div>
-        <div className="bg-[#0f1419] border border-gray-800 rounded-lg p-4">
-          <div className="text-sm text-gray-400">Đang hoạt động</div>
+        <div className="bg-admin-secondary border border-admin rounded-lg p-4">
+          <div className="text-sm text-admin-secondary">Đang hoạt động</div>
           <div className="text-2xl text-green-400 mt-2">
             {servers.filter(s => s.status === 'connected').length}
           </div>
         </div>
-        <div className="bg-[#0f1419] border border-gray-800 rounded-lg p-4">
-          <div className="text-sm text-gray-400">Ngắt kết nối</div>
-          <div className="text-2xl text-gray-400 mt-2">
+        <div className="bg-admin-secondary border border-admin rounded-lg p-4">
+          <div className="text-sm text-admin-secondary">Ngắt kết nối</div>
+          <div className="text-2xl text-admin-secondary mt-2">
             {servers.filter(s => s.status === 'disconnected').length}
           </div>
         </div>
-        <div className="bg-[#0f1419] border border-gray-800 rounded-lg p-4">
-          <div className="text-sm text-gray-400">Lỗi</div>
+        <div className="bg-admin-secondary border border-admin rounded-lg p-4">
+          <div className="text-sm text-admin-secondary">Lỗi</div>
           <div className="text-2xl text-red-400 mt-2">
             {servers.filter(s => s.status === 'error').length}
           </div>
@@ -162,41 +162,41 @@ export function CGServerSettings() {
       </div>
 
       {/* Table */}
-      <div className="border border-gray-800 rounded-lg overflow-hidden">
+      <div className="border border-admin rounded-lg overflow-hidden">
         <Table>
           <TableHeader>
-            <TableRow className="bg-[#0f1419] border-gray-800 hover:bg-[#0f1419]">
-              <TableHead className="text-gray-400 w-16">STT</TableHead>
-              <TableHead className="text-gray-400">Tên Server</TableHead>
-              <TableHead className="text-gray-400">Địa chỉ IP</TableHead>
-              <TableHead className="text-gray-400">Port</TableHead>
-              <TableHead className="text-gray-400">Trạng thái</TableHead>
-              <TableHead className="text-gray-400">Kết nối gần nhất</TableHead>
-              <TableHead className="text-gray-400 text-right">Thao tác</TableHead>
+            <TableRow className="bg-admin-secondary border-admin hover:bg-admin-secondary">
+              <TableHead className="text-admin-secondary w-16">STT</TableHead>
+              <TableHead className="text-admin-secondary">Tên Server</TableHead>
+              <TableHead className="text-admin-secondary">Địa chỉ IP</TableHead>
+              <TableHead className="text-admin-secondary">Port</TableHead>
+              <TableHead className="text-admin-secondary">Trạng thái</TableHead>
+              <TableHead className="text-admin-secondary">Kết nối gần nhất</TableHead>
+              <TableHead className="text-admin-secondary text-right">Thao tác</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
             {servers.map((server, index) => (
-              <TableRow key={server.id} className="border-gray-800 hover:bg-gray-900/50">
-                <TableCell className="text-gray-400">{index + 1}</TableCell>
-                <TableCell className="text-gray-300">{server.name}</TableCell>
-                <TableCell className="text-gray-300 font-mono">{server.ipAddress}</TableCell>
-                <TableCell className="text-gray-300 font-mono">{server.port}</TableCell>
+              <TableRow key={server.id} className="border-admin hover:bg-admin-hover">
+                <TableCell className="text-admin-secondary">{index + 1}</TableCell>
+                <TableCell className="text-admin-primary">{server.name}</TableCell>
+                <TableCell className="text-admin-primary font-mono">{server.ipAddress}</TableCell>
+                <TableCell className="text-admin-primary font-mono">{server.port}</TableCell>
                 <TableCell>{getStatusBadge(server.status)}</TableCell>
-                <TableCell className="text-gray-400 text-sm">{server.lastConnection}</TableCell>
+                <TableCell className="text-admin-secondary text-sm">{server.lastConnection}</TableCell>
                 <TableCell>
                   <div className="flex gap-2 justify-end">
                     <Button 
                       variant="ghost" 
                       size="sm" 
-                      className="text-cyan-400 hover:text-cyan-300 hover:bg-gray-800"
+                      className="text-cyan-400 hover:text-cyan-300 hover:bg-admin-hover"
                     >
                       <Pencil className="w-4 h-4" />
                     </Button>
                     <Button 
                       variant="ghost" 
                       size="sm" 
-                      className="text-red-400 hover:text-red-300 hover:bg-gray-800"
+                      className="text-red-400 hover:text-red-300 hover:bg-admin-hover"
                     >
                       <Trash2 className="w-4 h-4" />
                     </Button>

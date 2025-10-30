@@ -118,35 +118,35 @@ export function StorageView() {
       return (
         <>
           <div className="space-y-2">
-            <Label className="text-gray-300">Bucket/Container Name *</Label>
+            <Label className="text-admin-primary">Bucket/Container Name *</Label>
             <Input 
               placeholder="my-bucket-name"
-              className="bg-[#0a0e1a] border-gray-700 text-gray-300"
+              className="bg-admin-input border-admin text-admin-primary"
             />
           </div>
 
           <div className="space-y-2">
-            <Label className="text-gray-300">Access Key ID *</Label>
+            <Label className="text-admin-primary">Access Key ID *</Label>
             <Input 
               placeholder="AKIAIOSFODNN7EXAMPLE"
-              className="bg-[#0a0e1a] border-gray-700 text-gray-300"
+              className="bg-admin-input border-admin text-admin-primary"
             />
           </div>
 
           <div className="space-y-2">
-            <Label className="text-gray-300">Secret Access Key *</Label>
+            <Label className="text-admin-primary">Secret Access Key *</Label>
             <Input 
               type="password"
               placeholder="wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY"
-              className="bg-[#0a0e1a] border-gray-700 text-gray-300"
+              className="bg-admin-input border-admin text-admin-primary"
             />
           </div>
 
           <div className="space-y-2">
-            <Label className="text-gray-300">Region</Label>
+            <Label className="text-admin-primary">Region</Label>
             <Input 
               placeholder="us-east-1"
-              className="bg-[#0a0e1a] border-gray-700 text-gray-300"
+              className="bg-admin-input border-admin text-admin-primary"
             />
           </div>
         </>
@@ -157,51 +157,51 @@ export function StorageView() {
       <>
         <div className="grid grid-cols-2 gap-4">
           <div className="space-y-2">
-            <Label className="text-gray-300">Host/IP *</Label>
+            <Label className="text-admin-primary">Host/IP *</Label>
             <Input 
               placeholder="192.168.1.100"
-              className="bg-[#0a0e1a] border-gray-700 text-gray-300"
+              className="bg-admin-input border-admin text-admin-primary"
             />
           </div>
           <div className="space-y-2">
-            <Label className="text-gray-300">Cổng (Port)</Label>
+            <Label className="text-admin-primary">Cổng (Port)</Label>
             <Input 
               placeholder={isFTP ? "21" : "445"}
-              className="bg-[#0a0e1a] border-gray-700 text-gray-300"
+              className="bg-admin-input border-admin text-admin-primary"
             />
           </div>
         </div>
 
         <div className="space-y-2">
-          <Label className="text-gray-300">Đường dẫn *</Label>
+          <Label className="text-admin-primary">Đường dẫn *</Label>
           <Input 
             placeholder="/volume1/media"
-            className="bg-[#0a0e1a] border-gray-700 text-gray-300"
+            className="bg-admin-input border-admin text-admin-primary"
           />
         </div>
 
         <div className="space-y-2">
-          <Label className="text-gray-300">Username</Label>
+          <Label className="text-admin-primary">Username</Label>
           <Input 
             placeholder="username"
-            className="bg-[#0a0e1a] border-gray-700 text-gray-300"
+            className="bg-admin-input border-admin text-admin-primary"
           />
         </div>
 
         <div className="space-y-2">
-          <Label className="text-gray-300">Password</Label>
+          <Label className="text-admin-primary">Password</Label>
           <Input 
             type="password"
             placeholder="••••••••"
-            className="bg-[#0a0e1a] border-gray-700 text-gray-300"
+            className="bg-admin-input border-admin text-admin-primary"
           />
         </div>
 
         {isFTP && (
-          <div className="flex items-center justify-between p-4 bg-[#0a0e1a] rounded border border-gray-800">
+          <div className="flex items-center justify-between p-4 bg-admin-input rounded border border-admin">
             <div>
-              <Label className="text-gray-300">Sử dụng SFTP (SSH)</Label>
-              <p className="text-xs text-gray-500 mt-1">Kết nối bảo mật qua SSH</p>
+              <Label className="text-admin-primary">Sử dụng SFTP (SSH)</Label>
+              <p className="text-xs text-admin-muted mt-1">Kết nối bảo mật qua SSH</p>
             </div>
             <Switch 
               checked={useSSL}
@@ -215,7 +215,7 @@ export function StorageView() {
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4">
       {/* Header */}
       <div className="flex items-center justify-end">
         <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
@@ -225,39 +225,39 @@ export function StorageView() {
               Thêm hệ thống lưu trữ
             </Button>
           </DialogTrigger>
-          <DialogContent className="bg-[#0f1419] border-gray-800 text-gray-100 max-w-2xl">
+          <DialogContent className="bg-admin-secondary border-admin text-admin-primary max-w-2xl">
             <DialogHeader>
-              <DialogTitle className="text-cyan-400">Thêm hệ thống lưu trữ mới</DialogTitle>
+              <DialogTitle className="text-admin-accent">Thêm hệ thống lưu trữ mới</DialogTitle>
             </DialogHeader>
             
             <Tabs defaultValue="basic" className="w-full">
-              <TabsList className="bg-[#0a0e1a] border border-gray-800">
-                <TabsTrigger value="basic" className="data-[state=active]:bg-gray-800 data-[state=active]:text-cyan-400 text-gray-300">
+              <TabsList className="bg-admin-input border border-admin">
+                <TabsTrigger value="basic" className="data-[state=active]:bg-admin-hover data-[state=active]:text-admin-accent text-admin-primary">
                   Thông tin kết nối
                 </TabsTrigger>
-                <TabsTrigger value="advanced" className="data-[state=active]:bg-gray-800 data-[state=active]:text-cyan-400 text-gray-300">
+                <TabsTrigger value="advanced" className="data-[state=active]:bg-admin-hover data-[state=active]:text-admin-accent text-admin-primary">
                   Cấu hình nâng cao
                 </TabsTrigger>
               </TabsList>
 
               <TabsContent value="basic" className="space-y-4 mt-4">
                 <div className="space-y-2">
-                  <Label className="text-gray-300">Tên hệ thống lưu trữ *</Label>
+                  <Label className="text-admin-primary">Tên hệ thống lưu trữ *</Label>
                   <Input 
                     placeholder="Main Storage"
-                    className="bg-[#0a0e1a] border-gray-700 text-gray-300"
+                    className="bg-admin-input border-admin text-admin-primary"
                   />
                 </div>
 
                 <div className="space-y-2">
-                  <Label className="text-gray-300">Loại lưu trữ *</Label>
+                  <Label className="text-admin-primary">Loại lưu trữ *</Label>
                   <Select value={selectedType} onValueChange={setSelectedType}>
-                    <SelectTrigger className="bg-[#0a0e1a] border-gray-700 text-gray-300">
+                    <SelectTrigger className="bg-admin-input border-admin text-admin-primary">
                       <SelectValue />
                     </SelectTrigger>
-                    <SelectContent className="bg-[#0f1419] border-gray-700">
+                    <SelectContent className="bg-admin-secondary border-admin">
                       {storageTypes.map(type => (
-                        <SelectItem key={type.value} value={type.value} className="text-gray-300">
+                        <SelectItem key={type.value} value={type.value} className="text-admin-primary">
                           {type.label}
                         </SelectItem>
                       ))}
@@ -271,53 +271,53 @@ export function StorageView() {
               <TabsContent value="advanced" className="space-y-4 mt-4">
                 <div className="grid grid-cols-2 gap-4">
                   <div className="space-y-2">
-                    <Label className="text-gray-300">Dung lượng tối đa (GB)</Label>
+                    <Label className="text-admin-primary">Dung lượng tối đa (GB)</Label>
                     <Input 
                       placeholder="10000"
                       type="number"
-                      className="bg-[#0a0e1a] border-gray-700 text-gray-300"
+                      className="bg-admin-input border-admin text-admin-primary"
                     />
                   </div>
                   <div className="space-y-2">
-                    <Label className="text-gray-300">Timeout (giây)</Label>
+                    <Label className="text-admin-primary">Timeout (giây)</Label>
                     <Input 
                       placeholder="30"
                       type="number"
-                      className="bg-[#0a0e1a] border-gray-700 text-gray-300"
+                      className="bg-admin-input border-admin text-admin-primary"
                     />
                   </div>
                 </div>
 
                 <div className="space-y-2">
-                  <Label className="text-gray-300">Mount Point (Local)</Label>
+                  <Label className="text-admin-primary">Mount Point (Local)</Label>
                   <Input 
                     placeholder="/mnt/storage"
-                    className="bg-[#0a0e1a] border-gray-700 text-gray-300"
+                    className="bg-admin-input border-admin text-admin-primary"
                   />
                 </div>
 
-                <div className="flex items-center justify-between p-4 bg-[#0a0e1a] rounded border border-gray-800">
+                <div className="flex items-center justify-between p-4 bg-admin-input rounded border border-admin">
                   <div>
-                    <Label className="text-gray-300">Tự động kết nối khi khởi động</Label>
-                    <p className="text-xs text-gray-500 mt-1">Tự động mount khi hệ thống khởi động</p>
+                    <Label className="text-admin-primary">Tự động kết nối khi khởi động</Label>
+                    <p className="text-xs text-admin-muted mt-1">Tự động mount khi hệ thống khởi động</p>
                   </div>
                   <Switch className="data-[state=checked]:bg-cyan-500" />
                 </div>
 
-                <div className="flex items-center justify-between p-4 bg-[#0a0e1a] rounded border border-gray-800">
+                <div className="flex items-center justify-between p-4 bg-admin-input rounded border border-admin">
                   <div>
-                    <Label className="text-gray-300">Sử dụng làm lưu trữ mặc định</Label>
-                    <p className="text-xs text-gray-500 mt-1">Lưu trữ chính cho file mới</p>
+                    <Label className="text-admin-primary">Sử dụng làm lưu trữ mặc định</Label>
+                    <p className="text-xs text-admin-muted mt-1">Lưu trữ chính cho file mới</p>
                   </div>
                   <Switch className="data-[state=checked]:bg-cyan-500" />
                 </div>
               </TabsContent>
             </Tabs>
 
-            <div className="flex gap-3 justify-end mt-6">
+            <div className="flex gap-3 justify-end mt-4">
               <Button 
                 variant="outline" 
-                className="border-gray-700 text-gray-300 hover:bg-gray-800 flex items-center gap-2"
+                className="border-admin text-admin-primary hover:bg-admin-hover flex items-center gap-2"
               >
                 <TestTube className="w-4 h-4" />
                 Kiểm tra kết nối
@@ -325,7 +325,7 @@ export function StorageView() {
               <Button 
                 variant="outline" 
                 onClick={() => setIsDialogOpen(false)}
-                className="border-gray-700 text-gray-300 hover:bg-gray-800"
+                className="border-admin text-admin-primary hover:bg-admin-hover"
               >
                 Hủy
               </Button>
@@ -345,47 +345,47 @@ export function StorageView() {
 
       {/* Statistics */}
       <div className="grid grid-cols-4 gap-4">
-        <div className="bg-[#0f1419] border border-gray-800 rounded-lg p-4">
-          <div className="text-sm text-gray-400">Tổng số lưu trữ</div>
-          <div className="text-2xl text-white mt-2">{storages.length}</div>
+        <div className="bg-admin-secondary border border-admin rounded-lg p-4">
+          <div className="text-sm text-admin-secondary">Tổng số lưu trữ</div>
+          <div className="text-2xl text-admin-primary mt-2">{storages.length}</div>
         </div>
-        <div className="bg-[#0f1419] border border-gray-800 rounded-lg p-4">
-          <div className="text-sm text-gray-400">Đang hoạt động</div>
+        <div className="bg-admin-secondary border border-admin rounded-lg p-4">
+          <div className="text-sm text-admin-secondary">Đang hoạt động</div>
           <div className="text-2xl text-green-400 mt-2">
             {storages.filter(s => s.status === 'connected').length}
           </div>
         </div>
-        <div className="bg-[#0f1419] border border-gray-800 rounded-lg p-4">
-          <div className="text-sm text-gray-400">Tổng dung lượng</div>
-          <div className="text-2xl text-cyan-400 mt-2">35 TB</div>
+        <div className="bg-admin-secondary border border-admin rounded-lg p-4">
+          <div className="text-sm text-admin-secondary">Tổng dung lượng</div>
+          <div className="text-2xl text-admin-accent mt-2">35 TB</div>
         </div>
-        <div className="bg-[#0f1419] border border-gray-800 rounded-lg p-4">
-          <div className="text-sm text-gray-400">Đã sử dụng</div>
+        <div className="bg-admin-secondary border border-admin rounded-lg p-4">
+          <div className="text-sm text-admin-secondary">Đã sử dụng</div>
           <div className="text-2xl text-yellow-400 mt-2">21.8 TB</div>
         </div>
       </div>
 
       {/* Table */}
-      <div className="border border-gray-800 rounded-lg overflow-hidden">
+      <div className="border border-admin rounded-lg overflow-hidden">
         <Table>
           <TableHeader>
-            <TableRow className="bg-[#0f1419] border-gray-800 hover:bg-[#0f1419]">
-              <TableHead className="text-gray-400 w-16">STT</TableHead>
-              <TableHead className="text-gray-400">Tên hệ thống</TableHead>
-              <TableHead className="text-gray-400">Loại</TableHead>
-              <TableHead className="text-gray-400">Host/Endpoint</TableHead>
-              <TableHead className="text-gray-400">Đường dẫn</TableHead>
-              <TableHead className="text-gray-400">Dung lượng</TableHead>
-              <TableHead className="text-gray-400">Đã dùng</TableHead>
-              <TableHead className="text-gray-400">Trạng thái</TableHead>
-              <TableHead className="text-gray-400 text-right">Thao tác</TableHead>
+            <TableRow className="bg-admin-secondary border-admin hover:bg-admin-secondary">
+              <TableHead className="text-admin-secondary w-16">STT</TableHead>
+              <TableHead className="text-admin-secondary">Tên hệ thống</TableHead>
+              <TableHead className="text-admin-secondary">Loại</TableHead>
+              <TableHead className="text-admin-secondary">Host/Endpoint</TableHead>
+              <TableHead className="text-admin-secondary">Đường dẫn</TableHead>
+              <TableHead className="text-admin-secondary">Dung lượng</TableHead>
+              <TableHead className="text-admin-secondary">Đã dùng</TableHead>
+              <TableHead className="text-admin-secondary">Trạng thái</TableHead>
+              <TableHead className="text-admin-secondary text-right">Thao tác</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
             {storages.map((storage, index) => (
-              <TableRow key={storage.id} className="border-gray-800 hover:bg-gray-900/50">
-                <TableCell className="text-gray-400">{index + 1}</TableCell>
-                <TableCell className="text-gray-300 flex items-center gap-2">
+              <TableRow key={storage.id} className="border-admin hover:bg-admin-hover">
+                <TableCell className="text-admin-secondary">{index + 1}</TableCell>
+                <TableCell className="text-admin-primary flex items-center gap-2">
                   {getTypeIcon(storage.type)}
                   {storage.name}
                 </TableCell>
@@ -394,9 +394,9 @@ export function StorageView() {
                     {storage.type}
                   </Badge>
                 </TableCell>
-                <TableCell className="text-gray-300 font-mono text-sm">{storage.host}</TableCell>
-                <TableCell className="text-gray-400 text-sm">{storage.path}</TableCell>
-                <TableCell className="text-gray-300">{storage.capacity}</TableCell>
+                <TableCell className="text-admin-primary font-mono text-sm">{storage.host}</TableCell>
+                <TableCell className="text-admin-secondary text-sm">{storage.path}</TableCell>
+                <TableCell className="text-admin-primary">{storage.capacity}</TableCell>
                 <TableCell className="text-yellow-400">{storage.used}</TableCell>
                 <TableCell>{getStatusBadge(storage.status)}</TableCell>
                 <TableCell>
@@ -404,14 +404,14 @@ export function StorageView() {
                     <Button 
                       variant="ghost" 
                       size="sm" 
-                      className="text-cyan-400 hover:text-cyan-300 hover:bg-gray-800"
+                      className="text-cyan-400 hover:text-cyan-300 hover:bg-admin-hover"
                     >
                       <Pencil className="w-4 h-4" />
                     </Button>
                     <Button 
                       variant="ghost" 
                       size="sm" 
-                      className="text-red-400 hover:text-red-300 hover:bg-gray-800"
+                      className="text-red-400 hover:text-red-300 hover:bg-admin-hover"
                     >
                       <Trash2 className="w-4 h-4" />
                     </Button>

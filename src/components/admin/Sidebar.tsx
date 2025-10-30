@@ -55,9 +55,9 @@ export function Sidebar({ activeItem, onItemChange, activeTopNav }: SidebarProps
   const menuItems = menuItemsByTab[activeTopNav] || menuItemsByTab['MONITORING'];
 
   return (
-    <div className="w-[200px] h-screen bg-[#0a0e1a] border-r border-gray-800 flex flex-col">
+    <div className="w-[200px] h-screen bg-admin-sidebar border-r border-admin-subtle flex flex-col">
       {/* Logo */}
-      <div className="p-6 border-b border-gray-800 flex-shrink-0">
+      <div className="p-6 border-b border-admin-subtle flex-shrink-0">
         <div className="flex items-center gap-1">
           <span className="text-red-500">M</span>
           <span className="text-green-500">A</span>
@@ -65,7 +65,7 @@ export function Sidebar({ activeItem, onItemChange, activeTopNav }: SidebarProps
           <span className="text-yellow-500">C</span>
           <span className="text-yellow-600">G</span>
         </div>
-        <div className="text-xs text-gray-500 mt-1">Admin Panel</div>
+        <div className="text-xs text-admin-muted mt-1">Admin Panel</div>
       </div>
 
       {/* Menu Items */}
@@ -79,8 +79,8 @@ export function Sidebar({ activeItem, onItemChange, activeTopNav }: SidebarProps
               className={cn(
                 "w-full flex items-center gap-3 px-6 py-3 text-sm transition-colors",
                 activeItem === item.id
-                  ? "bg-gray-800/50 text-cyan-400 border-r-2 border-cyan-400"
-                  : "text-gray-400 hover:text-gray-200 hover:bg-gray-800/30"
+                  ? "bg-admin-tertiary text-admin-accent border-r-2 border-admin-accent"
+                  : "text-admin-secondary hover:text-admin-primary hover:bg-admin-hover"
               )}
             >
               <Icon className="w-4 h-4" />

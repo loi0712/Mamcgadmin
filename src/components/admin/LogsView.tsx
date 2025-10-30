@@ -131,45 +131,45 @@ export function LogsView() {
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4">
       {/* Filters */}
-      <Card className="bg-[#0f1419] border-gray-800 p-4">
+      <Card className="bg-admin-secondary border-admin p-4">
         <div className="flex items-center gap-4">
           <div className="flex-1 relative">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-500" />
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-admin-muted" />
             <Input 
               placeholder="Tìm kiếm trong nhật ký..." 
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="pl-10 bg-[#0a0e1a] border-gray-700 text-gray-300"
+              className="pl-10 bg-admin-input border-admin text-admin-primary"
             />
           </div>
           
           <Select value={levelFilter} onValueChange={setLevelFilter}>
-            <SelectTrigger className="w-40 bg-[#0a0e1a] border-gray-700 text-gray-300">
+            <SelectTrigger className="w-40 bg-admin-input border-admin text-admin-primary">
               <SelectValue placeholder="Mức độ" />
             </SelectTrigger>
-            <SelectContent className="bg-[#0f1419] border-gray-700">
-              <SelectItem value="all" className="text-gray-300">Tất cả</SelectItem>
-              <SelectItem value="info" className="text-gray-300">Info</SelectItem>
-              <SelectItem value="success" className="text-gray-300">Success</SelectItem>
-              <SelectItem value="warning" className="text-gray-300">Warning</SelectItem>
-              <SelectItem value="error" className="text-gray-300">Error</SelectItem>
+            <SelectContent className="bg-admin-secondary border-admin">
+              <SelectItem value="all" className="text-admin-primary">Tất cả</SelectItem>
+              <SelectItem value="info" className="text-admin-primary">Info</SelectItem>
+              <SelectItem value="success" className="text-admin-primary">Success</SelectItem>
+              <SelectItem value="warning" className="text-admin-primary">Warning</SelectItem>
+              <SelectItem value="error" className="text-admin-primary">Error</SelectItem>
             </SelectContent>
           </Select>
 
           <Select value={categoryFilter} onValueChange={setCategoryFilter}>
-            <SelectTrigger className="w-40 bg-[#0a0e1a] border-gray-700 text-gray-300">
+            <SelectTrigger className="w-40 bg-admin-input border-admin text-admin-primary">
               <SelectValue placeholder="Danh mục" />
             </SelectTrigger>
-            <SelectContent className="bg-[#0f1419] border-gray-700">
-              <SelectItem value="all" className="text-gray-300">Tất cả</SelectItem>
-              <SelectItem value="System" className="text-gray-300">System</SelectItem>
-              <SelectItem value="User" className="text-gray-300">User</SelectItem>
-              <SelectItem value="Media" className="text-gray-300">Media</SelectItem>
-              <SelectItem value="Database" className="text-gray-300">Database</SelectItem>
-              <SelectItem value="Storage" className="text-gray-300">Storage</SelectItem>
-              <SelectItem value="Security" className="text-gray-300">Security</SelectItem>
+            <SelectContent className="bg-admin-secondary border-admin">
+              <SelectItem value="all" className="text-admin-primary">Tất cả</SelectItem>
+              <SelectItem value="System" className="text-admin-primary">System</SelectItem>
+              <SelectItem value="User" className="text-admin-primary">User</SelectItem>
+              <SelectItem value="Media" className="text-admin-primary">Media</SelectItem>
+              <SelectItem value="Database" className="text-admin-primary">Database</SelectItem>
+              <SelectItem value="Storage" className="text-admin-primary">Storage</SelectItem>
+              <SelectItem value="Security" className="text-admin-primary">Security</SelectItem>
             </SelectContent>
           </Select>
 
@@ -181,23 +181,23 @@ export function LogsView() {
       </Card>
 
       {/* Logs Table */}
-      <Card className="bg-[#0f1419] border-gray-800">
+      <Card className="bg-admin-secondary border-admin">
         <ScrollArea className="h-[600px]">
           <Table>
-            <TableHeader className="sticky top-0 bg-[#0f1419] z-10">
-              <TableRow className="border-gray-800 hover:bg-[#0f1419]">
-                <TableHead className="text-gray-400 w-40">Thời gian</TableHead>
-                <TableHead className="text-gray-400 w-24">Mức độ</TableHead>
-                <TableHead className="text-gray-400 w-32">Danh mục</TableHead>
-                <TableHead className="text-gray-400">Nội dung</TableHead>
-                <TableHead className="text-gray-400 w-40">Người dùng</TableHead>
-                <TableHead className="text-gray-400 w-32">IP</TableHead>
+            <TableHeader className="sticky top-0 bg-admin-secondary z-10">
+              <TableRow className="border-admin hover:bg-admin-secondary">
+                <TableHead className="text-admin-secondary w-40">Thời gian</TableHead>
+                <TableHead className="text-admin-secondary w-24">Mức độ</TableHead>
+                <TableHead className="text-admin-secondary w-32">Danh mục</TableHead>
+                <TableHead className="text-admin-secondary">Nội dung</TableHead>
+                <TableHead className="text-admin-secondary w-40">Người dùng</TableHead>
+                <TableHead className="text-admin-secondary w-32">IP</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
               {filteredLogs.map((log) => (
-                <TableRow key={log.id} className="border-gray-800 hover:bg-gray-900/50">
-                  <TableCell className="text-gray-400 text-xs font-mono">
+                <TableRow key={log.id} className="border-admin hover:bg-admin-hover">
+                  <TableCell className="text-admin-secondary text-xs font-mono">
                     {log.timestamp}
                   </TableCell>
                   <TableCell>{getLevelBadge(log.level)}</TableCell>
@@ -206,9 +206,9 @@ export function LogsView() {
                       {log.category}
                     </Badge>
                   </TableCell>
-                  <TableCell className="text-gray-300">{log.message}</TableCell>
-                  <TableCell className="text-gray-400">{log.user || '-'}</TableCell>
-                  <TableCell className="text-gray-400 text-xs font-mono">
+                  <TableCell className="text-admin-primary">{log.message}</TableCell>
+                  <TableCell className="text-admin-secondary">{log.user || '-'}</TableCell>
+                  <TableCell className="text-admin-secondary text-xs font-mono">
                     {log.ip || '-'}
                   </TableCell>
                 </TableRow>

@@ -20,7 +20,7 @@ export function NodeConfigPanel({ node, onUpdate, onDelete }: NodeConfigPanelPro
   if (!node) {
     return (
       <div className="h-full flex items-center justify-center p-8">
-        <div className="text-center text-gray-500">
+        <div className="text-center text-admin-muted">
           <div className="text-4xl mb-3">⚙️</div>
           <div className="text-sm">Chọn một node để cấu hình</div>
           <div className="text-xs text-gray-600 mt-2">
@@ -38,16 +38,16 @@ export function NodeConfigPanel({ node, onUpdate, onDelete }: NodeConfigPanelPro
         return (
           <div className="space-y-3">
             <div>
-              <Label className="text-gray-300 text-xs">Kiểu kích hoạt</Label>
+              <Label className="text-admin-primary text-xs">Kiểu kích hoạt</Label>
               <Select defaultValue="manual">
-                <SelectTrigger className="bg-[#0a0e1a] border-gray-700 text-gray-300 mt-1">
+                <SelectTrigger className="bg-admin-input border-admin text-admin-primary mt-1">
                   <SelectValue />
                 </SelectTrigger>
-                <SelectContent className="bg-[#0f1419] border-gray-700">
-                  <SelectItem value="manual" className="text-gray-300">Thủ công</SelectItem>
-                  <SelectItem value="auto" className="text-gray-300">Tự động</SelectItem>
-                  <SelectItem value="scheduled" className="text-gray-300">Theo lịch</SelectItem>
-                  <SelectItem value="webhook" className="text-gray-300">Webhook</SelectItem>
+                <SelectContent className="bg-admin-secondary border-admin">
+                  <SelectItem value="manual" className="text-admin-primary">Thủ công</SelectItem>
+                  <SelectItem value="auto" className="text-admin-primary">Tự động</SelectItem>
+                  <SelectItem value="scheduled" className="text-admin-primary">Theo lịch</SelectItem>
+                  <SelectItem value="webhook" className="text-admin-primary">Webhook</SelectItem>
                 </SelectContent>
               </Select>
             </div>
@@ -58,31 +58,31 @@ export function NodeConfigPanel({ node, onUpdate, onDelete }: NodeConfigPanelPro
         return (
           <div className="space-y-3">
             <div>
-              <Label className="text-gray-300 text-xs">Loại xử lý</Label>
+              <Label className="text-admin-primary text-xs">Loại xử lý</Label>
               <Select defaultValue="transcode">
-                <SelectTrigger className="bg-[#0a0e1a] border-gray-700 text-gray-300 mt-1">
+                <SelectTrigger className="bg-admin-input border-admin text-admin-primary mt-1">
                   <SelectValue />
                 </SelectTrigger>
-                <SelectContent className="bg-[#0f1419] border-gray-700">
-                  <SelectItem value="transcode" className="text-gray-300">Transcode Video</SelectItem>
-                  <SelectItem value="thumbnail" className="text-gray-300">Tạo Thumbnail</SelectItem>
-                  <SelectItem value="metadata" className="text-gray-300">Trích xuất Metadata</SelectItem>
-                  <SelectItem value="watermark" className="text-gray-300">Thêm Watermark</SelectItem>
-                  <SelectItem value="custom" className="text-gray-300">Tùy chỉnh</SelectItem>
+                <SelectContent className="bg-admin-secondary border-admin">
+                  <SelectItem value="transcode" className="text-admin-primary">Transcode Video</SelectItem>
+                  <SelectItem value="thumbnail" className="text-admin-primary">Tạo Thumbnail</SelectItem>
+                  <SelectItem value="metadata" className="text-admin-primary">Trích xuất Metadata</SelectItem>
+                  <SelectItem value="watermark" className="text-admin-primary">Thêm Watermark</SelectItem>
+                  <SelectItem value="custom" className="text-admin-primary">Tùy chỉnh</SelectItem>
                 </SelectContent>
               </Select>
             </div>
             <div>
-              <Label className="text-gray-300 text-xs">Preset</Label>
+              <Label className="text-admin-primary text-xs">Preset</Label>
               <Input 
                 placeholder="Nhập preset..."
-                className="bg-[#0a0e1a] border-gray-700 text-gray-300 mt-1"
+                className="bg-admin-input border-admin text-admin-primary mt-1"
               />
             </div>
-            <div className="flex items-center justify-between p-2 bg-[#0a0e1a] rounded">
+            <div className="flex items-center justify-between p-2 bg-admin-input rounded">
               <div>
-                <Label className="text-gray-300 text-xs">Xử lý song song</Label>
-                <p className="text-[10px] text-gray-500">Cho phép chạy đồng thời</p>
+                <Label className="text-admin-primary text-xs">Xử lý song song</Label>
+                <p className="text-[10px] text-admin-muted">Cho phép chạy đồng thời</p>
               </div>
               <Switch />
             </div>
@@ -93,41 +93,41 @@ export function NodeConfigPanel({ node, onUpdate, onDelete }: NodeConfigPanelPro
         return (
           <div className="space-y-3">
             <div>
-              <Label className="text-gray-300 text-xs">Điều kiện</Label>
+              <Label className="text-admin-primary text-xs">Điều kiện</Label>
               <Select defaultValue="filesize">
-                <SelectTrigger className="bg-[#0a0e1a] border-gray-700 text-gray-300 mt-1">
+                <SelectTrigger className="bg-admin-input border-admin text-admin-primary mt-1">
                   <SelectValue />
                 </SelectTrigger>
-                <SelectContent className="bg-[#0f1419] border-gray-700">
-                  <SelectItem value="filesize" className="text-gray-300">Kích thước file</SelectItem>
-                  <SelectItem value="duration" className="text-gray-300">Thời lượng</SelectItem>
-                  <SelectItem value="resolution" className="text-gray-300">Độ phân giải</SelectItem>
-                  <SelectItem value="format" className="text-gray-300">Định dạng</SelectItem>
-                  <SelectItem value="metadata" className="text-gray-300">Metadata</SelectItem>
-                  <SelectItem value="custom" className="text-gray-300">Tùy chỉnh</SelectItem>
+                <SelectContent className="bg-admin-secondary border-admin">
+                  <SelectItem value="filesize" className="text-admin-primary">Kích thước file</SelectItem>
+                  <SelectItem value="duration" className="text-admin-primary">Thời lượng</SelectItem>
+                  <SelectItem value="resolution" className="text-admin-primary">Độ phân giải</SelectItem>
+                  <SelectItem value="format" className="text-admin-primary">Định dạng</SelectItem>
+                  <SelectItem value="metadata" className="text-admin-primary">Metadata</SelectItem>
+                  <SelectItem value="custom" className="text-admin-primary">Tùy chỉnh</SelectItem>
                 </SelectContent>
               </Select>
             </div>
             <div>
-              <Label className="text-gray-300 text-xs">Toán tử</Label>
+              <Label className="text-admin-primary text-xs">Toán tử</Label>
               <Select defaultValue="greater">
-                <SelectTrigger className="bg-[#0a0e1a] border-gray-700 text-gray-300 mt-1">
+                <SelectTrigger className="bg-admin-input border-admin text-admin-primary mt-1">
                   <SelectValue />
                 </SelectTrigger>
-                <SelectContent className="bg-[#0f1419] border-gray-700">
-                  <SelectItem value="equal" className="text-gray-300">Bằng (=)</SelectItem>
-                  <SelectItem value="notequal" className="text-gray-300">Khác (≠)</SelectItem>
-                  <SelectItem value="greater" className="text-gray-300">Lớn hơn {'(>)'}</SelectItem>
-                  <SelectItem value="less" className="text-gray-300">Nhỏ hơn {'(<)'}</SelectItem>
-                  <SelectItem value="contains" className="text-gray-300">Chứa</SelectItem>
+                <SelectContent className="bg-admin-secondary border-admin">
+                  <SelectItem value="equal" className="text-admin-primary">Bằng (=)</SelectItem>
+                  <SelectItem value="notequal" className="text-admin-primary">Khác (≠)</SelectItem>
+                  <SelectItem value="greater" className="text-admin-primary">Lớn hơn {'(>)'}</SelectItem>
+                  <SelectItem value="less" className="text-admin-primary">Nhỏ hơn {'(<)'}</SelectItem>
+                  <SelectItem value="contains" className="text-admin-primary">Chứa</SelectItem>
                 </SelectContent>
               </Select>
             </div>
             <div>
-              <Label className="text-gray-300 text-xs">Giá trị</Label>
+              <Label className="text-admin-primary text-xs">Giá trị</Label>
               <Input 
                 placeholder="Nhập giá trị..."
-                className="bg-[#0a0e1a] border-gray-700 text-gray-300 mt-1"
+                className="bg-admin-input border-admin text-admin-primary mt-1"
               />
             </div>
             <div className="bg-yellow-900/20 border border-yellow-500/50 rounded p-2 flex gap-2">
@@ -144,31 +144,31 @@ export function NodeConfigPanel({ node, onUpdate, onDelete }: NodeConfigPanelPro
         return (
           <div className="space-y-3">
             <div>
-              <Label className="text-gray-300 text-xs">Nguồn dữ liệu</Label>
+              <Label className="text-admin-primary text-xs">Nguồn dữ liệu</Label>
               <Select defaultValue="file">
-                <SelectTrigger className="bg-[#0a0e1a] border-gray-700 text-gray-300 mt-1">
+                <SelectTrigger className="bg-admin-input border-admin text-admin-primary mt-1">
                   <SelectValue />
                 </SelectTrigger>
-                <SelectContent className="bg-[#0f1419] border-gray-700">
-                  <SelectItem value="file" className="text-gray-300">File upload</SelectItem>
-                  <SelectItem value="folder" className="text-gray-300">Folder</SelectItem>
-                  <SelectItem value="url" className="text-gray-300">URL</SelectItem>
-                  <SelectItem value="api" className="text-gray-300">API</SelectItem>
-                  <SelectItem value="database" className="text-gray-300">Database</SelectItem>
+                <SelectContent className="bg-admin-secondary border-admin">
+                  <SelectItem value="file" className="text-admin-primary">File upload</SelectItem>
+                  <SelectItem value="folder" className="text-admin-primary">Folder</SelectItem>
+                  <SelectItem value="url" className="text-admin-primary">URL</SelectItem>
+                  <SelectItem value="api" className="text-admin-primary">API</SelectItem>
+                  <SelectItem value="database" className="text-admin-primary">Database</SelectItem>
                 </SelectContent>
               </Select>
             </div>
             <div>
-              <Label className="text-gray-300 text-xs">Đường dẫn</Label>
+              <Label className="text-admin-primary text-xs">Đường dẫn</Label>
               <Input 
                 placeholder="/path/to/files..."
-                className="bg-[#0a0e1a] border-gray-700 text-gray-300 mt-1"
+                className="bg-admin-input border-admin text-admin-primary mt-1"
               />
             </div>
-            <div className="flex items-center justify-between p-2 bg-[#0a0e1a] rounded">
+            <div className="flex items-center justify-between p-2 bg-admin-input rounded">
               <div>
-                <Label className="text-gray-300 text-xs">Theo dõi thư mục</Label>
-                <p className="text-[10px] text-gray-500">Watch for changes</p>
+                <Label className="text-admin-primary text-xs">Theo dõi thư mục</Label>
+                <p className="text-[10px] text-admin-muted">Watch for changes</p>
               </div>
               <Switch />
             </div>
@@ -179,32 +179,32 @@ export function NodeConfigPanel({ node, onUpdate, onDelete }: NodeConfigPanelPro
         return (
           <div className="space-y-3">
             <div>
-              <Label className="text-gray-300 text-xs">Loại database</Label>
+              <Label className="text-admin-primary text-xs">Loại database</Label>
               <Select defaultValue="mysql">
-                <SelectTrigger className="bg-[#0a0e1a] border-gray-700 text-gray-300 mt-1">
+                <SelectTrigger className="bg-admin-input border-admin text-admin-primary mt-1">
                   <SelectValue />
                 </SelectTrigger>
-                <SelectContent className="bg-[#0f1419] border-gray-700">
-                  <SelectItem value="mysql" className="text-gray-300">MySQL</SelectItem>
-                  <SelectItem value="postgresql" className="text-gray-300">PostgreSQL</SelectItem>
-                  <SelectItem value="mongodb" className="text-gray-300">MongoDB</SelectItem>
-                  <SelectItem value="oracle" className="text-gray-300">Oracle</SelectItem>
+                <SelectContent className="bg-admin-secondary border-admin">
+                  <SelectItem value="mysql" className="text-admin-primary">MySQL</SelectItem>
+                  <SelectItem value="postgresql" className="text-admin-primary">PostgreSQL</SelectItem>
+                  <SelectItem value="mongodb" className="text-admin-primary">MongoDB</SelectItem>
+                  <SelectItem value="oracle" className="text-admin-primary">Oracle</SelectItem>
                 </SelectContent>
               </Select>
             </div>
             <div>
-              <Label className="text-gray-300 text-xs">Connection string</Label>
+              <Label className="text-admin-primary text-xs">Connection string</Label>
               <Input 
                 type="password"
                 placeholder="mongodb://..."
-                className="bg-[#0a0e1a] border-gray-700 text-gray-300 mt-1"
+                className="bg-admin-input border-admin text-admin-primary mt-1"
               />
             </div>
             <div>
-              <Label className="text-gray-300 text-xs">Query/Collection</Label>
+              <Label className="text-admin-primary text-xs">Query/Collection</Label>
               <Textarea 
                 placeholder="SELECT * FROM..."
-                className="bg-[#0a0e1a] border-gray-700 text-gray-300 mt-1 min-h-20"
+                className="bg-admin-input border-admin text-admin-primary mt-1 min-h-20"
               />
             </div>
           </div>
@@ -214,39 +214,39 @@ export function NodeConfigPanel({ node, onUpdate, onDelete }: NodeConfigPanelPro
         return (
           <div className="space-y-3">
             <div>
-              <Label className="text-gray-300 text-xs">Kênh thông báo</Label>
+              <Label className="text-admin-primary text-xs">Kênh thông báo</Label>
               <Select defaultValue="email">
-                <SelectTrigger className="bg-[#0a0e1a] border-gray-700 text-gray-300 mt-1">
+                <SelectTrigger className="bg-admin-input border-admin text-admin-primary mt-1">
                   <SelectValue />
                 </SelectTrigger>
-                <SelectContent className="bg-[#0f1419] border-gray-700">
-                  <SelectItem value="email" className="text-gray-300">Email</SelectItem>
-                  <SelectItem value="slack" className="text-gray-300">Slack</SelectItem>
-                  <SelectItem value="teams" className="text-gray-300">MS Teams</SelectItem>
-                  <SelectItem value="webhook" className="text-gray-300">Webhook</SelectItem>
-                  <SelectItem value="sms" className="text-gray-300">SMS</SelectItem>
+                <SelectContent className="bg-admin-secondary border-admin">
+                  <SelectItem value="email" className="text-admin-primary">Email</SelectItem>
+                  <SelectItem value="slack" className="text-admin-primary">Slack</SelectItem>
+                  <SelectItem value="teams" className="text-admin-primary">MS Teams</SelectItem>
+                  <SelectItem value="webhook" className="text-admin-primary">Webhook</SelectItem>
+                  <SelectItem value="sms" className="text-admin-primary">SMS</SelectItem>
                 </SelectContent>
               </Select>
             </div>
             <div>
-              <Label className="text-gray-300 text-xs">Người nhận</Label>
+              <Label className="text-admin-primary text-xs">Người nhận</Label>
               <Input 
                 placeholder="email@example.com"
-                className="bg-[#0a0e1a] border-gray-700 text-gray-300 mt-1"
+                className="bg-admin-input border-admin text-admin-primary mt-1"
               />
             </div>
             <div>
-              <Label className="text-gray-300 text-xs">Tiêu đề</Label>
+              <Label className="text-admin-primary text-xs">Tiêu đề</Label>
               <Input 
                 placeholder="Workflow completed"
-                className="bg-[#0a0e1a] border-gray-700 text-gray-300 mt-1"
+                className="bg-admin-input border-admin text-admin-primary mt-1"
               />
             </div>
             <div>
-              <Label className="text-gray-300 text-xs">Nội dung</Label>
+              <Label className="text-admin-primary text-xs">Nội dung</Label>
               <Textarea 
                 placeholder="Workflow đã hoàn thành..."
-                className="bg-[#0a0e1a] border-gray-700 text-gray-300 mt-1 min-h-16"
+                className="bg-admin-input border-admin text-admin-primary mt-1 min-h-16"
               />
             </div>
           </div>
@@ -254,7 +254,7 @@ export function NodeConfigPanel({ node, onUpdate, onDelete }: NodeConfigPanelPro
 
       default:
         return (
-          <div className="text-xs text-gray-500 p-3 bg-[#0a0e1a] rounded">
+          <div className="text-xs text-admin-muted p-3 bg-admin-input rounded">
             Không có cấu hình đặc biệt cho node này
           </div>
         );
@@ -267,39 +267,39 @@ export function NodeConfigPanel({ node, onUpdate, onDelete }: NodeConfigPanelPro
         {/* Node Info */}
         <div>
           <div className="flex items-center justify-between mb-3">
-            <h3 className="text-sm text-cyan-400">Thông tin Node</h3>
-            <Badge variant="outline" className="border-gray-600 text-gray-400 text-xs">
+            <h3 className="text-sm text-admin-accent">Thông tin Node</h3>
+            <Badge variant="outline" className="border-gray-600 text-admin-secondary text-xs">
               {node.type}
             </Badge>
           </div>
 
           <div className="space-y-3">
             <div>
-              <Label className="text-gray-300 text-xs">ID</Label>
+              <Label className="text-admin-primary text-xs">ID</Label>
               <Input 
                 value={node.id}
                 disabled
-                className="bg-[#0a0e1a] border-gray-700 text-gray-500 mt-1 text-xs font-mono"
+                className="bg-admin-input border-admin text-admin-muted mt-1 text-xs font-mono"
               />
             </div>
 
             <div>
-              <Label className="text-gray-300 text-xs">Tên hiển thị *</Label>
+              <Label className="text-admin-primary text-xs">Tên hiển thị *</Label>
               <Input 
                 value={node.label}
                 onChange={(e) => onUpdate(node.id, { label: e.target.value })}
                 placeholder="Nhập tên node..."
-                className="bg-[#0a0e1a] border-gray-700 text-gray-300 mt-1"
+                className="bg-admin-input border-admin text-admin-primary mt-1"
               />
             </div>
 
             <div>
-              <Label className="text-gray-300 text-xs">Mô tả</Label>
+              <Label className="text-admin-primary text-xs">Mô tả</Label>
               <Textarea 
                 value={node.description || ''}
                 onChange={(e) => onUpdate(node.id, { description: e.target.value })}
                 placeholder="Mô tả chức năng..."
-                className="bg-[#0a0e1a] border-gray-700 text-gray-300 mt-1 min-h-16"
+                className="bg-admin-input border-admin text-admin-primary mt-1 min-h-16"
               />
             </div>
           </div>
@@ -309,42 +309,42 @@ export function NodeConfigPanel({ node, onUpdate, onDelete }: NodeConfigPanelPro
 
         {/* Position & Size */}
         <div>
-          <h3 className="text-sm text-cyan-400 mb-3">Vị trí & Kích thước</h3>
+          <h3 className="text-sm text-admin-accent mb-3">Vị trí & Kích thước</h3>
           <div className="grid grid-cols-2 gap-2">
             <div>
-              <Label className="text-gray-300 text-xs">X</Label>
+              <Label className="text-admin-primary text-xs">X</Label>
               <Input 
                 type="number"
                 value={Math.round(node.x)}
                 onChange={(e) => onUpdate(node.id, { x: parseFloat(e.target.value) || 0 })}
-                className="bg-[#0a0e1a] border-gray-700 text-gray-300 mt-1"
+                className="bg-admin-input border-admin text-admin-primary mt-1"
               />
             </div>
             <div>
-              <Label className="text-gray-300 text-xs">Y</Label>
+              <Label className="text-admin-primary text-xs">Y</Label>
               <Input 
                 type="number"
                 value={Math.round(node.y)}
                 onChange={(e) => onUpdate(node.id, { y: parseFloat(e.target.value) || 0 })}
-                className="bg-[#0a0e1a] border-gray-700 text-gray-300 mt-1"
+                className="bg-admin-input border-admin text-admin-primary mt-1"
               />
             </div>
             <div>
-              <Label className="text-gray-300 text-xs">Width</Label>
+              <Label className="text-admin-primary text-xs">Width</Label>
               <Input 
                 type="number"
                 value={node.width}
                 onChange={(e) => onUpdate(node.id, { width: parseFloat(e.target.value) || 100 })}
-                className="bg-[#0a0e1a] border-gray-700 text-gray-300 mt-1"
+                className="bg-admin-input border-admin text-admin-primary mt-1"
               />
             </div>
             <div>
-              <Label className="text-gray-300 text-xs">Height</Label>
+              <Label className="text-admin-primary text-xs">Height</Label>
               <Input 
                 type="number"
                 value={node.height}
                 onChange={(e) => onUpdate(node.id, { height: parseFloat(e.target.value) || 60 })}
-                className="bg-[#0a0e1a] border-gray-700 text-gray-300 mt-1"
+                className="bg-admin-input border-admin text-admin-primary mt-1"
               />
             </div>
           </div>
@@ -354,7 +354,7 @@ export function NodeConfigPanel({ node, onUpdate, onDelete }: NodeConfigPanelPro
 
         {/* Node Type Configuration */}
         <div>
-          <h3 className="text-sm text-cyan-400 mb-3">Cấu hình Node</h3>
+          <h3 className="text-sm text-admin-accent mb-3">Cấu hình Node</h3>
           {renderNodeTypeConfig()}
         </div>
 
@@ -362,38 +362,38 @@ export function NodeConfigPanel({ node, onUpdate, onDelete }: NodeConfigPanelPro
 
         {/* Advanced Settings */}
         <div>
-          <h3 className="text-sm text-cyan-400 mb-3">Cài đặt nâng cao</h3>
+          <h3 className="text-sm text-admin-accent mb-3">Cài đặt nâng cao</h3>
           <div className="space-y-2">
-            <div className="flex items-center justify-between p-2 bg-[#0a0e1a] rounded">
+            <div className="flex items-center justify-between p-2 bg-admin-input rounded">
               <div>
-                <Label className="text-gray-300 text-xs">Bật node</Label>
-                <p className="text-[10px] text-gray-500">Kích hoạt node này</p>
+                <Label className="text-admin-primary text-xs">Bật node</Label>
+                <p className="text-[10px] text-admin-muted">Kích hoạt node này</p>
               </div>
               <Switch defaultChecked />
             </div>
-            <div className="flex items-center justify-between p-2 bg-[#0a0e1a] rounded">
+            <div className="flex items-center justify-between p-2 bg-admin-input rounded">
               <div>
-                <Label className="text-gray-300 text-xs">Retry on failure</Label>
-                <p className="text-[10px] text-gray-500">Thử lại khi lỗi</p>
+                <Label className="text-admin-primary text-xs">Retry on failure</Label>
+                <p className="text-[10px] text-admin-muted">Thử lại khi lỗi</p>
               </div>
               <Switch />
             </div>
-            <div className="flex items-center justify-between p-2 bg-[#0a0e1a] rounded">
+            <div className="flex items-center justify-between p-2 bg-admin-input rounded">
               <div>
-                <Label className="text-gray-300 text-xs">Log output</Label>
-                <p className="text-[10px] text-gray-500">Ghi log kết quả</p>
+                <Label className="text-admin-primary text-xs">Log output</Label>
+                <p className="text-[10px] text-admin-muted">Ghi log kết quả</p>
               </div>
               <Switch defaultChecked />
             </div>
           </div>
 
           <div className="mt-3">
-            <Label className="text-gray-300 text-xs">Timeout (giây)</Label>
+            <Label className="text-admin-primary text-xs">Timeout (giây)</Label>
             <Input 
               type="number"
               placeholder="300"
               defaultValue="300"
-              className="bg-[#0a0e1a] border-gray-700 text-gray-300 mt-1"
+              className="bg-admin-input border-admin text-admin-primary mt-1"
             />
           </div>
         </div>

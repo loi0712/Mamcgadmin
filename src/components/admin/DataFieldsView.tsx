@@ -253,27 +253,27 @@ export function DataFieldsView() {
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4">
       {/* Header & Filters */}
       <div className="flex items-center gap-4">
         <div className="flex-1 relative">
-          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-500" />
+          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-admin-muted" />
           <Input 
             placeholder="Tìm kiếm trường dữ liệu..." 
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="pl-10 bg-[#0f1419] border-gray-700 text-gray-300"
+            className="pl-10 bg-admin-input border-admin text-admin-primary"
           />
         </div>
 
         <Select value={groupFilter} onValueChange={setGroupFilter}>
-          <SelectTrigger className="w-64 bg-[#0f1419] border-gray-700 text-gray-300">
+          <SelectTrigger className="w-64 bg-admin-input border-admin text-admin-primary">
             <SelectValue placeholder="Lọc theo nhóm" />
           </SelectTrigger>
-          <SelectContent className="bg-[#0f1419] border-gray-700">
-            <SelectItem value="all" className="text-gray-300">Tất cả nhóm</SelectItem>
+          <SelectContent className="bg-admin-secondary border-admin">
+            <SelectItem value="all" className="text-admin-primary">Tất cả nhóm</SelectItem>
             {fieldGroups.map(group => (
-              <SelectItem key={group} value={group} className="text-gray-300">{group}</SelectItem>
+              <SelectItem key={group} value={group} className="text-admin-primary">{group}</SelectItem>
             ))}
           </SelectContent>
         </Select>
@@ -291,9 +291,9 @@ export function DataFieldsView() {
               Thêm trường
             </Button>
           </DialogTrigger>
-          <DialogContent className="bg-[#0f1419] border-gray-800 text-gray-100 max-w-2xl">
+          <DialogContent className="bg-admin-secondary border-admin text-admin-primary max-w-2xl">
             <DialogHeader>
-              <DialogTitle className="text-cyan-400">
+              <DialogTitle className="text-admin-accent">
                 {editingField ? 'Chỉnh sửa trường dữ liệu' : 'Thêm trường dữ liệu mới'}
               </DialogTitle>
             </DialogHeader>
@@ -301,7 +301,7 @@ export function DataFieldsView() {
             <div className="space-y-4 mt-4">
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-2">
-                  <Label className="text-gray-300">ID *</Label>
+                  <Label className="text-admin-primary">ID *</Label>
                   <Input 
                     placeholder="vd: title"
                     value={formId}
@@ -310,7 +310,7 @@ export function DataFieldsView() {
                       validateId(e.target.value);
                     }}
                     onBlur={(e) => validateId(e.target.value)}
-                    className={`bg-[#0a0e1a] border-gray-700 text-gray-300 ${idError ? 'border-red-500' : ''}`}
+                    className={`bg-admin-input border-admin text-admin-primary ${idError ? 'border-red-500' : ''}`}
                     disabled={!!editingField}
                   />
                   {idError && (
@@ -321,11 +321,11 @@ export function DataFieldsView() {
                       </AlertDescription>
                     </Alert>
                   )}
-                  <p className="text-xs text-gray-500">ID duy nhất, chỉ dùng chữ thường, số và gạch dưới</p>
+                  <p className="text-xs text-admin-muted">ID duy nhất, chỉ dùng chữ thường, số và gạch dưới</p>
                 </div>
 
                 <div className="space-y-2">
-                  <Label className="text-gray-300">Tên trường *</Label>
+                  <Label className="text-admin-primary">Tên trường *</Label>
                   <Input 
                     placeholder="Nhập tên trường"
                     value={formName}
@@ -334,7 +334,7 @@ export function DataFieldsView() {
                       validateName(e.target.value);
                     }}
                     onBlur={(e) => validateName(e.target.value)}
-                    className={`bg-[#0a0e1a] border-gray-700 text-gray-300 ${nameError ? 'border-red-500' : ''}`}
+                    className={`bg-admin-input border-admin text-admin-primary ${nameError ? 'border-red-500' : ''}`}
                   />
                   {nameError && (
                     <Alert className="bg-red-900/20 border-red-500 py-2">
@@ -349,67 +349,67 @@ export function DataFieldsView() {
 
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-2">
-                  <Label className="text-gray-300">Nhóm trường *</Label>
+                  <Label className="text-admin-primary">Nhóm trường *</Label>
                   <Select>
-                    <SelectTrigger className="bg-[#0a0e1a] border-gray-700 text-gray-300">
+                    <SelectTrigger className="bg-admin-input border-admin text-admin-primary">
                       <SelectValue placeholder="Chọn nhóm" />
                     </SelectTrigger>
-                    <SelectContent className="bg-[#0f1419] border-gray-700">
+                    <SelectContent className="bg-admin-secondary border-admin">
                       {fieldGroups.map(group => (
-                        <SelectItem key={group} value={group} className="text-gray-300">{group}</SelectItem>
+                        <SelectItem key={group} value={group} className="text-admin-primary">{group}</SelectItem>
                       ))}
                     </SelectContent>
                   </Select>
                 </div>
 
                 <div className="space-y-2">
-                  <Label className="text-gray-300">Kiểu dữ liệu *</Label>
+                  <Label className="text-admin-primary">Kiểu dữ liệu *</Label>
                   <Select>
-                    <SelectTrigger className="bg-[#0a0e1a] border-gray-700 text-gray-300">
+                    <SelectTrigger className="bg-admin-input border-admin text-admin-primary">
                       <SelectValue placeholder="Chọn kiểu" />
                     </SelectTrigger>
-                    <SelectContent className="bg-[#0f1419] border-gray-700">
-                      <SelectItem value="text" className="text-gray-300">Text</SelectItem>
-                      <SelectItem value="textarea" className="text-gray-300">Text Area</SelectItem>
-                      <SelectItem value="number" className="text-gray-300">Number</SelectItem>
-                      <SelectItem value="date" className="text-gray-300">Date</SelectItem>
-                      <SelectItem value="time" className="text-gray-300">Time</SelectItem>
-                      <SelectItem value="select" className="text-gray-300">Select</SelectItem>
-                      <SelectItem value="multiselect" className="text-gray-300">Multi Select</SelectItem>
-                      <SelectItem value="tags" className="text-gray-300">Tags</SelectItem>
+                    <SelectContent className="bg-admin-secondary border-admin">
+                      <SelectItem value="text" className="text-admin-primary">Text</SelectItem>
+                      <SelectItem value="textarea" className="text-admin-primary">Text Area</SelectItem>
+                      <SelectItem value="number" className="text-admin-primary">Number</SelectItem>
+                      <SelectItem value="date" className="text-admin-primary">Date</SelectItem>
+                      <SelectItem value="time" className="text-admin-primary">Time</SelectItem>
+                      <SelectItem value="select" className="text-admin-primary">Select</SelectItem>
+                      <SelectItem value="multiselect" className="text-admin-primary">Multi Select</SelectItem>
+                      <SelectItem value="tags" className="text-admin-primary">Tags</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
               </div>
 
               <div className="space-y-2">
-                <Label className="text-gray-300">Thứ tự hiển thị</Label>
+                <Label className="text-admin-primary">Thứ tự hiển thị</Label>
                 <Input 
                   type="number"
                   placeholder="1"
-                  className="bg-[#0a0e1a] border-gray-700 text-gray-300"
+                  className="bg-admin-input border-admin text-admin-primary"
                 />
               </div>
 
-              <div className="space-y-3 p-4 bg-[#0a0e1a] rounded border border-gray-800">
-                <Label className="text-gray-300">Tùy chọn</Label>
+              <div className="space-y-3 p-4 bg-admin-input rounded border border-admin">
+                <Label className="text-admin-primary">Tùy chọn</Label>
                 <div className="space-y-2">
                   <label className="flex items-center gap-2 cursor-pointer">
                     <Checkbox className="border-gray-600 data-[state=checked]:bg-cyan-500" />
-                    <span className="text-sm text-gray-400">Bắt buộc</span>
+                    <span className="text-sm text-admin-secondary">Bắt buộc</span>
                   </label>
                   <label className="flex items-center gap-2 cursor-pointer">
                     <Checkbox className="border-gray-600 data-[state=checked]:bg-cyan-500" />
-                    <span className="text-sm text-gray-400">Có thể tìm kiếm</span>
+                    <span className="text-sm text-admin-secondary">Có thể tìm kiếm</span>
                   </label>
                   <label className="flex items-center gap-2 cursor-pointer">
                     <Checkbox className="border-gray-600 data-[state=checked]:bg-cyan-500" />
-                    <span className="text-sm text-gray-400">Có thể chỉnh sửa</span>
+                    <span className="text-sm text-admin-secondary">Có thể chỉnh sửa</span>
                   </label>
                 </div>
               </div>
 
-              <div className="flex gap-3 justify-end mt-6">
+              <div className="flex gap-3 justify-end mt-4">
                 <Button 
                   variant="outline" 
                   onClick={() => {
@@ -417,7 +417,7 @@ export function DataFieldsView() {
                     setEditingField(null);
                     resetForm();
                   }}
-                  className="border-gray-700 text-gray-300 hover:bg-gray-800"
+                  className="border-admin text-admin-primary hover:bg-admin-hover"
                 >
                   Hủy
                 </Button>
@@ -435,28 +435,28 @@ export function DataFieldsView() {
       </div>
 
       {/* Data Fields Table */}
-      <div className="border border-gray-800 rounded-lg overflow-hidden">
+      <div className="border border-admin rounded-lg overflow-hidden">
         <Table>
           <TableHeader>
-            <TableRow className="bg-[#0f1419] border-gray-800 hover:bg-[#0f1419]">
-              <TableHead className="text-gray-400 w-12">STT</TableHead>
-              <TableHead className="text-gray-400 w-40">ID</TableHead>
-              <TableHead className="text-gray-400">Tên trường</TableHead>
-              <TableHead className="text-gray-400">Nhóm trường</TableHead>
-              <TableHead className="text-gray-400 w-32">Kiểu dữ liệu</TableHead>
-              <TableHead className="text-gray-400 w-24 text-center">Bắt buộc</TableHead>
-              <TableHead className="text-gray-400 w-24 text-center">Tìm kiếm</TableHead>
-              <TableHead className="text-gray-400 w-24 text-center">Sửa được</TableHead>
-              <TableHead className="text-gray-400 w-32 text-center">Thao tác</TableHead>
+            <TableRow className="bg-admin-secondary border-admin hover:bg-admin-secondary">
+              <TableHead className="text-admin-secondary w-12">STT</TableHead>
+              <TableHead className="text-admin-secondary w-40">ID</TableHead>
+              <TableHead className="text-admin-secondary">Tên trường</TableHead>
+              <TableHead className="text-admin-secondary">Nhóm trường</TableHead>
+              <TableHead className="text-admin-secondary w-32">Kiểu dữ liệu</TableHead>
+              <TableHead className="text-admin-secondary w-24 text-center">Bắt buộc</TableHead>
+              <TableHead className="text-admin-secondary w-24 text-center">Tìm kiếm</TableHead>
+              <TableHead className="text-admin-secondary w-24 text-center">Sửa được</TableHead>
+              <TableHead className="text-admin-secondary w-32 text-center">Thao tác</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
             {filteredFields.map((field, index) => (
-              <TableRow key={field.id} className="border-gray-800 hover:bg-gray-900/50">
-                <TableCell className="text-gray-400">{index + 1}</TableCell>
-                <TableCell className="text-cyan-400 text-xs font-mono">{field.id}</TableCell>
-                <TableCell className="text-gray-300">{field.name}</TableCell>
-                <TableCell className="text-gray-400 text-sm">{field.fieldGroup}</TableCell>
+              <TableRow key={field.id} className="border-admin hover:bg-admin-hover">
+                <TableCell className="text-admin-secondary">{index + 1}</TableCell>
+                <TableCell className="text-admin-accent text-xs font-mono">{field.id}</TableCell>
+                <TableCell className="text-admin-primary">{field.name}</TableCell>
+                <TableCell className="text-admin-secondary text-sm">{field.fieldGroup}</TableCell>
                 <TableCell>{getDataTypeBadge(field.dataType)}</TableCell>
                 <TableCell className="text-center">
                   {field.isRequired ? (

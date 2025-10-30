@@ -33,56 +33,56 @@ export function ServerStatusView() {
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4">
       {/* System Overview */}
       <div className="grid grid-cols-4 gap-4">
-        <Card className="bg-[#0f1419] border-gray-800 p-4">
+        <Card className="bg-admin-secondary border-admin p-4">
           <div className="flex items-center justify-between mb-3">
-            <div className="text-sm text-gray-400">Tổng CPU</div>
-            <Cpu className="w-4 h-4 text-cyan-400" />
+            <div className="text-sm text-admin-secondary">Tổng CPU</div>
+            <Cpu className="w-4 h-4 text-admin-accent" />
           </div>
-          <div className="text-2xl text-gray-300 mb-2">42%</div>
+          <div className="text-2xl text-admin-primary mb-2">42%</div>
           <Progress value={42} className="h-2" />
-          <div className="text-xs text-gray-500 mt-2">8 cores @ 3.2GHz</div>
+          <div className="text-xs text-admin-muted mt-2">8 cores @ 3.2GHz</div>
         </Card>
 
-        <Card className="bg-[#0f1419] border-gray-800 p-4">
+        <Card className="bg-admin-secondary border-admin p-4">
           <div className="flex items-center justify-between mb-3">
-            <div className="text-sm text-gray-400">RAM</div>
-            <HardDrive className="w-4 h-4 text-cyan-400" />
+            <div className="text-sm text-admin-secondary">RAM</div>
+            <HardDrive className="w-4 h-4 text-admin-accent" />
           </div>
-          <div className="text-2xl text-gray-300 mb-2">3.2GB</div>
+          <div className="text-2xl text-admin-primary mb-2">3.2GB</div>
           <Progress value={40} className="h-2" />
-          <div className="text-xs text-gray-500 mt-2">40% of 8GB used</div>
+          <div className="text-xs text-admin-muted mt-2">40% of 8GB used</div>
         </Card>
 
-        <Card className="bg-[#0f1419] border-gray-800 p-4">
+        <Card className="bg-admin-secondary border-admin p-4">
           <div className="flex items-center justify-between mb-3">
-            <div className="text-sm text-gray-400">Network In</div>
-            <Network className="w-4 h-4 text-cyan-400" />
+            <div className="text-sm text-admin-secondary">Network In</div>
+            <Network className="w-4 h-4 text-admin-accent" />
           </div>
-          <div className="text-2xl text-gray-300 mb-2">125 Mbps</div>
-          <div className="text-xs text-gray-500 mt-2">Avg: 98 Mbps</div>
+          <div className="text-2xl text-admin-primary mb-2">125 Mbps</div>
+          <div className="text-xs text-admin-muted mt-2">Avg: 98 Mbps</div>
         </Card>
 
-        <Card className="bg-[#0f1419] border-gray-800 p-4">
+        <Card className="bg-admin-secondary border-admin p-4">
           <div className="flex items-center justify-between mb-3">
-            <div className="text-sm text-gray-400">Network Out</div>
-            <Network className="w-4 h-4 text-cyan-400" />
+            <div className="text-sm text-admin-secondary">Network Out</div>
+            <Network className="w-4 h-4 text-admin-accent" />
           </div>
-          <div className="text-2xl text-gray-300 mb-2">85 Mbps</div>
-          <div className="text-xs text-gray-500 mt-2">Avg: 72 Mbps</div>
+          <div className="text-2xl text-admin-primary mb-2">85 Mbps</div>
+          <div className="text-xs text-admin-muted mt-2">Avg: 72 Mbps</div>
         </Card>
       </div>
 
       {/* Services Status */}
-      <Card className="bg-[#0f1419] border-gray-800 p-6">
-        <div className="flex items-center justify-between mb-6">
+      <Card className="bg-admin-secondary border-admin p-6">
+        <div className="flex items-center justify-between mb-4">
           <div className="flex items-center gap-3">
-            <Server className="w-5 h-5 text-cyan-400" />
-            <h3 className="text-cyan-400">Trạng thái dịch vụ</h3>
+            <Server className="w-5 h-5 text-admin-accent" />
+            <h3 className="text-admin-accent">Trạng thái dịch vụ</h3>
           </div>
-          <Button variant="outline" className="border-gray-700 text-gray-300 hover:bg-gray-800">
+          <Button variant="outline" className="border-admin text-admin-primary hover:bg-admin-hover">
             <RefreshCw className="w-4 h-4 mr-2" />
             Làm mới
           </Button>
@@ -92,14 +92,14 @@ export function ServerStatusView() {
           {services.map((service, index) => (
             <div
               key={index}
-              className="p-4 bg-[#0a0e1a] rounded-lg border border-gray-800"
+              className="p-4 bg-admin-input rounded-lg border border-admin"
             >
               <div className="flex items-center justify-between mb-3">
                 <div className="flex items-center gap-3">
                   <Activity className="w-5 h-5 text-green-400" />
                   <div>
-                    <div className="text-gray-300">{service.name}</div>
-                    <div className="text-xs text-gray-500 mt-1 flex items-center gap-2">
+                    <div className="text-admin-primary">{service.name}</div>
+                    <div className="text-xs text-admin-muted mt-1 flex items-center gap-2">
                       <Clock className="w-3 h-3" />
                       Uptime: {service.uptime}
                     </div>
@@ -111,15 +111,15 @@ export function ServerStatusView() {
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <div className="flex items-center justify-between text-xs mb-1">
-                    <span className="text-gray-400">CPU Usage</span>
-                    <span className="text-gray-300">{service.cpu}%</span>
+                    <span className="text-admin-secondary">CPU Usage</span>
+                    <span className="text-admin-primary">{service.cpu}%</span>
                   </div>
                   <Progress value={service.cpu} className="h-1.5" />
                 </div>
                 <div>
                   <div className="flex items-center justify-between text-xs mb-1">
-                    <span className="text-gray-400">Memory</span>
-                    <span className="text-gray-300">{service.memory} MB</span>
+                    <span className="text-admin-secondary">Memory</span>
+                    <span className="text-admin-primary">{service.memory} MB</span>
                   </div>
                   <Progress value={(service.memory / 2048) * 100} className="h-1.5" />
                 </div>
@@ -130,71 +130,71 @@ export function ServerStatusView() {
       </Card>
 
       {/* System Information */}
-      <div className="grid grid-cols-2 gap-6">
-        <Card className="bg-[#0f1419] border-gray-800 p-6">
+      <div className="grid grid-cols-2 gap-4">
+        <Card className="bg-admin-secondary border-admin p-6">
           <div className="flex items-center gap-2 mb-4">
-            <Server className="w-5 h-5 text-cyan-400" />
-            <h3 className="text-cyan-400">Thông tin hệ thống</h3>
+            <Server className="w-5 h-5 text-admin-accent" />
+            <h3 className="text-admin-accent">Thông tin hệ thống</h3>
           </div>
           <div className="space-y-3 text-sm">
-            <div className="flex justify-between py-2 border-b border-gray-800">
-              <span className="text-gray-400">Hostname</span>
-              <span className="text-gray-300">mamcg-media-server-01</span>
+            <div className="flex justify-between py-2 border-b border-admin">
+              <span className="text-admin-secondary">Hostname</span>
+              <span className="text-admin-primary">mamcg-media-server-01</span>
             </div>
-            <div className="flex justify-between py-2 border-b border-gray-800">
-              <span className="text-gray-400">OS</span>
-              <span className="text-gray-300">Ubuntu 22.04.3 LTS</span>
+            <div className="flex justify-between py-2 border-b border-admin">
+              <span className="text-admin-secondary">OS</span>
+              <span className="text-admin-primary">Ubuntu 22.04.3 LTS</span>
             </div>
-            <div className="flex justify-between py-2 border-b border-gray-800">
-              <span className="text-gray-400">Kernel</span>
-              <span className="text-gray-300">5.15.0-89-generic</span>
+            <div className="flex justify-between py-2 border-b border-admin">
+              <span className="text-admin-secondary">Kernel</span>
+              <span className="text-admin-primary">5.15.0-89-generic</span>
             </div>
-            <div className="flex justify-between py-2 border-b border-gray-800">
-              <span className="text-gray-400">Architecture</span>
-              <span className="text-gray-300">x86_64</span>
+            <div className="flex justify-between py-2 border-b border-admin">
+              <span className="text-admin-secondary">Architecture</span>
+              <span className="text-admin-primary">x86_64</span>
             </div>
-            <div className="flex justify-between py-2 border-b border-gray-800">
-              <span className="text-gray-400">Uptime</span>
-              <span className="text-gray-300">15 days, 7:23:45</span>
+            <div className="flex justify-between py-2 border-b border-admin">
+              <span className="text-admin-secondary">Uptime</span>
+              <span className="text-admin-primary">15 days, 7:23:45</span>
             </div>
             <div className="flex justify-between py-2">
-              <span className="text-gray-400">Last Boot</span>
-              <span className="text-gray-300">2025-10-14 07:10:15</span>
+              <span className="text-admin-secondary">Last Boot</span>
+              <span className="text-admin-primary">2025-10-14 07:10:15</span>
             </div>
           </div>
         </Card>
 
-        <Card className="bg-[#0f1419] border-gray-800 p-6">
+        <Card className="bg-admin-secondary border-admin p-6">
           <div className="flex items-center gap-2 mb-4">
-            <HardDrive className="w-5 h-5 text-cyan-400" />
-            <h3 className="text-cyan-400">Disk Usage</h3>
+            <HardDrive className="w-5 h-5 text-admin-accent" />
+            <h3 className="text-admin-accent">Disk Usage</h3>
           </div>
           <div className="space-y-4">
             <div>
               <div className="flex justify-between text-sm mb-2">
-                <span className="text-gray-400">/ (Root)</span>
-                <span className="text-gray-300">45GB / 100GB</span>
+                <span className="text-admin-secondary">/ (Root)</span>
+                <span className="text-admin-primary">45GB / 100GB</span>
               </div>
               <Progress value={45} className="h-2" />
             </div>
             <div>
               <div className="flex justify-between text-sm mb-2">
-                <span className="text-gray-400">/var (Logs & Cache)</span>
-                <span className="text-gray-300">12GB / 50GB</span>
+                <span className="text-admin-secondary">/var (Logs & Cache)</span>
+                <span className="text-admin-primary">12GB / 50GB</span>
               </div>
               <Progress value={24} className="h-2" />
             </div>
             <div>
               <div className="flex justify-between text-sm mb-2">
-                <span className="text-gray-400">/mnt/media-storage</span>
-                <span className="text-gray-300">4.8TB / 10TB</span>
+                <span className="text-admin-secondary">/mnt/media-storage</span>
+                <span className="text-admin-primary">4.8TB / 10TB</span>
               </div>
               <Progress value={48} className="h-2" />
             </div>
             <div>
               <div className="flex justify-between text-sm mb-2">
-                <span className="text-gray-400">/mnt/archive</span>
-                <span className="text-gray-300">18.5TB / 50TB</span>
+                <span className="text-admin-secondary">/mnt/archive</span>
+                <span className="text-admin-primary">18.5TB / 50TB</span>
               </div>
               <Progress value={37} className="h-2" />
             </div>
@@ -203,23 +203,23 @@ export function ServerStatusView() {
       </div>
 
       {/* Database Connections */}
-      <Card className="bg-[#0f1419] border-gray-800 p-6">
+      <Card className="bg-admin-secondary border-admin p-6">
         <div className="flex items-center gap-2 mb-4">
-          <Database className="w-5 h-5 text-cyan-400" />
-          <h3 className="text-cyan-400">Kết nối Database</h3>
+          <Database className="w-5 h-5 text-admin-accent" />
+          <h3 className="text-admin-accent">Kết nối Database</h3>
         </div>
-        <div className="grid grid-cols-3 gap-6">
-          <div className="text-center p-4 bg-[#0a0e1a] rounded border border-gray-800">
+        <div className="grid grid-cols-3 gap-4">
+          <div className="text-center p-4 bg-admin-input rounded border border-admin">
             <div className="text-3xl text-green-400 mb-2">12</div>
-            <div className="text-sm text-gray-400">Active Connections</div>
+            <div className="text-sm text-admin-secondary">Active Connections</div>
           </div>
-          <div className="text-center p-4 bg-[#0a0e1a] rounded border border-gray-800">
-            <div className="text-3xl text-gray-300 mb-2">50</div>
-            <div className="text-sm text-gray-400">Max Connections</div>
+          <div className="text-center p-4 bg-admin-input rounded border border-admin">
+            <div className="text-3xl text-admin-primary mb-2">50</div>
+            <div className="text-sm text-admin-secondary">Max Connections</div>
           </div>
-          <div className="text-center p-4 bg-[#0a0e1a] rounded border border-gray-800">
-            <div className="text-3xl text-cyan-400 mb-2">24%</div>
-            <div className="text-sm text-gray-400">Usage</div>
+          <div className="text-center p-4 bg-admin-input rounded border border-admin">
+            <div className="text-3xl text-admin-accent mb-2">24%</div>
+            <div className="text-sm text-admin-secondary">Usage</div>
           </div>
         </div>
       </Card>

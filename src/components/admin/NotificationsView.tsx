@@ -123,14 +123,14 @@ export function NotificationsView() {
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4">
       {/* Header */}
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
-          <Bell className="w-6 h-6 text-cyan-400" />
+          <Bell className="w-6 h-6 text-admin-accent" />
           <div>
-            <h3 className="text-cyan-400">Thông báo hệ thống</h3>
-            <p className="text-sm text-gray-500 mt-1">
+            <h3 className="text-admin-accent">Thông báo hệ thống</h3>
+            <p className="text-sm text-admin-muted mt-1">
               {unreadCount} thông báo chưa đọc
             </p>
           </div>
@@ -150,10 +150,10 @@ export function NotificationsView() {
           {notifications.map((notification) => (
             <Card
               key={notification.id}
-              className={`border-gray-800 p-4 transition-all ${
+              className={`border-admin p-4 transition-all ${
                 notification.read
-                  ? 'bg-[#0f1419]'
-                  : 'bg-[#0a0e1a] border-l-4 border-l-cyan-500'
+                  ? 'bg-admin-secondary'
+                  : 'bg-admin-input border-l-4 border-l-cyan-500'
               }`}
             >
               <div className="flex items-start gap-4">
@@ -162,12 +162,12 @@ export function NotificationsView() {
                   <div className="flex items-start justify-between mb-2">
                     <div>
                       <div className="flex items-center gap-2">
-                        <h4 className="text-gray-300">{notification.title}</h4>
+                        <h4 className="text-admin-primary">{notification.title}</h4>
                         {!notification.read && (
                           <div className="w-2 h-2 bg-cyan-500 rounded-full" />
                         )}
                       </div>
-                      <div className="text-xs text-gray-500 mt-1">
+                      <div className="text-xs text-admin-muted mt-1">
                         {notification.timestamp}
                       </div>
                     </div>
@@ -177,19 +177,19 @@ export function NotificationsView() {
                         variant="ghost"
                         size="sm"
                         onClick={() => deleteNotification(notification.id)}
-                        className="text-gray-500 hover:text-red-400 hover:bg-red-900/20"
+                        className="text-admin-muted hover:text-red-400 hover:bg-red-900/20"
                       >
                         <Trash2 className="w-4 h-4" />
                       </Button>
                     </div>
                   </div>
-                  <p className="text-sm text-gray-400">{notification.message}</p>
+                  <p className="text-sm text-admin-secondary">{notification.message}</p>
                   {!notification.read && (
                     <Button
                       variant="link"
                       size="sm"
                       onClick={() => markAsRead(notification.id)}
-                      className="text-cyan-400 hover:text-cyan-300 p-0 h-auto mt-2"
+                      className="text-admin-accent hover:text-cyan-300 p-0 h-auto mt-2"
                     >
                       Đánh dấu đã đọc
                     </Button>

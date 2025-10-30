@@ -27,10 +27,10 @@ export function UsersView() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div className="relative w-80">
-          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-500" />
+          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-admin-muted" />
           <Input 
             placeholder="Tìm kiếm người dùng..." 
-            className="pl-10 bg-[#0f1419] border-gray-700 text-gray-300"
+            className="pl-10 bg-admin-input border-admin text-admin-primary"
           />
         </div>
         <div className="flex gap-3">
@@ -47,48 +47,48 @@ export function UsersView() {
 
       {/* Statistics */}
       <div className="grid grid-cols-4 gap-4">
-        <div className="bg-[#0f1419] border border-gray-800 rounded-lg p-4">
-          <div className="text-sm text-gray-400">Tổng số người dùng</div>
-          <div className="text-2xl text-white mt-2">{mockUsers.length}</div>
+        <div className="bg-admin-secondary border border-admin rounded-lg p-4">
+          <div className="text-sm text-admin-secondary">Tổng số người dùng</div>
+          <div className="text-2xl text-admin-primary mt-2">{mockUsers.length}</div>
         </div>
-        <div className="bg-[#0f1419] border border-gray-800 rounded-lg p-4">
-          <div className="text-sm text-gray-400">Đang hoạt động</div>
+        <div className="bg-admin-secondary border border-admin rounded-lg p-4">
+          <div className="text-sm text-admin-secondary">Đang hoạt động</div>
           <div className="text-2xl text-green-400 mt-2">
             {mockUsers.filter(u => u.status === 'Active').length}
           </div>
         </div>
-        <div className="bg-[#0f1419] border border-gray-800 rounded-lg p-4">
-          <div className="text-sm text-gray-400">Không hoạt động</div>
-          <div className="text-2xl text-gray-400 mt-2">
+        <div className="bg-admin-secondary border border-admin rounded-lg p-4">
+          <div className="text-sm text-admin-secondary">Không hoạt động</div>
+          <div className="text-2xl text-admin-secondary mt-2">
             {mockUsers.filter(u => u.status === 'Inactive').length}
           </div>
         </div>
-        <div className="bg-[#0f1419] border border-gray-800 rounded-lg p-4">
-          <div className="text-sm text-gray-400">Đăng nhập hôm nay</div>
-          <div className="text-2xl text-cyan-400 mt-2">3</div>
+        <div className="bg-admin-secondary border border-admin rounded-lg p-4">
+          <div className="text-sm text-admin-secondary">Đăng nhập hôm nay</div>
+          <div className="text-2xl text-admin-accent mt-2">3</div>
         </div>
       </div>
 
       {/* Table */}
-      <div className="border border-gray-800 rounded-lg overflow-hidden">
+      <div className="border border-admin rounded-lg overflow-hidden">
         <Table>
           <TableHeader>
-            <TableRow className="bg-[#0f1419] border-gray-800 hover:bg-[#0f1419]">
-              <TableHead className="text-gray-400 w-16">STT</TableHead>
-              <TableHead className="text-gray-400">Họ và tên</TableHead>
-              <TableHead className="text-gray-400">Email</TableHead>
-              <TableHead className="text-gray-400">Vai trò</TableHead>
-              <TableHead className="text-gray-400">Trạng thái</TableHead>
-              <TableHead className="text-gray-400">Đăng nhập gần nhất</TableHead>
-              <TableHead className="text-gray-400 text-right">Thao tác</TableHead>
+            <TableRow className="bg-admin-secondary border-admin hover:bg-admin-secondary">
+              <TableHead className="text-admin-secondary w-16">STT</TableHead>
+              <TableHead className="text-admin-secondary">Họ và tên</TableHead>
+              <TableHead className="text-admin-secondary">Email</TableHead>
+              <TableHead className="text-admin-secondary">Vai trò</TableHead>
+              <TableHead className="text-admin-secondary">Trạng thái</TableHead>
+              <TableHead className="text-admin-secondary">Đăng nhập gần nhất</TableHead>
+              <TableHead className="text-admin-secondary text-right">Thao tác</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
             {mockUsers.map((user, index) => (
-              <TableRow key={user.id} className="border-gray-800 hover:bg-gray-900/50">
-                <TableCell className="text-gray-400">{index + 1}</TableCell>
-                <TableCell className="text-gray-300">{user.name}</TableCell>
-                <TableCell className="text-gray-400">{user.email}</TableCell>
+              <TableRow key={user.id} className="border-admin hover:bg-admin-hover">
+                <TableCell className="text-admin-secondary">{index + 1}</TableCell>
+                <TableCell className="text-admin-primary">{user.name}</TableCell>
+                <TableCell className="text-admin-secondary">{user.email}</TableCell>
                 <TableCell>
                   <Badge variant="outline" className="border-cyan-500 text-cyan-400">
                     {user.role}
@@ -102,20 +102,20 @@ export function UsersView() {
                     {user.status === 'Active' ? 'Hoạt động' : 'Không hoạt động'}
                   </Badge>
                 </TableCell>
-                <TableCell className="text-gray-400 text-sm">{user.lastLogin}</TableCell>
+                <TableCell className="text-admin-secondary text-sm">{user.lastLogin}</TableCell>
                 <TableCell>
                   <div className="flex gap-2 justify-end">
                     <Button 
                       variant="ghost" 
                       size="sm" 
-                      className="text-cyan-400 hover:text-cyan-300 hover:bg-gray-800"
+                      className="text-cyan-400 hover:text-cyan-300 hover:bg-admin-hover"
                     >
                       <Pencil className="w-4 h-4" />
                     </Button>
                     <Button 
                       variant="ghost" 
                       size="sm" 
-                      className="text-red-400 hover:text-red-300 hover:bg-gray-800"
+                      className="text-red-400 hover:text-red-300 hover:bg-admin-hover"
                     >
                       <Trash2 className="w-4 h-4" />
                     </Button>

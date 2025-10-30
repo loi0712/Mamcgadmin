@@ -105,27 +105,27 @@ export function DisplayPanelsView() {
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4">
       {/* Header */}
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-4">
           <div className="relative w-80">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-500" />
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-admin-muted" />
             <Input 
               placeholder="Tìm kiếm panel hiển thị..." 
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="pl-10 bg-[#0f1419] border-gray-700 text-gray-300"
+              className="pl-10 bg-admin-input border-admin text-admin-primary"
             />
           </div>
           
           {/* View Mode Toggle */}
-          <div className="flex items-center gap-1 bg-[#0f1419] border border-gray-800 rounded p-1">
+          <div className="flex items-center gap-1 bg-admin-input border border-admin rounded p-1">
             <Button
               variant="ghost"
               size="sm"
               onClick={() => setViewMode('grid')}
-              className={viewMode === 'grid' ? 'bg-gray-800 text-cyan-400' : 'text-gray-400'}
+              className={viewMode === 'grid' ? 'bg-admin-hover text-admin-accent' : 'text-admin-secondary'}
             >
               <Grid3x3 className="w-4 h-4" />
             </Button>
@@ -133,7 +133,7 @@ export function DisplayPanelsView() {
               variant="ghost"
               size="sm"
               onClick={() => setViewMode('list')}
-              className={viewMode === 'list' ? 'bg-gray-800 text-cyan-400' : 'text-gray-400'}
+              className={viewMode === 'list' ? 'bg-admin-hover text-admin-accent' : 'text-admin-secondary'}
             >
               <List className="w-4 h-4" />
             </Button>
@@ -153,70 +153,70 @@ export function DisplayPanelsView() {
               Thêm panel
             </Button>
           </DialogTrigger>
-          <DialogContent className="bg-[#0f1419] border-gray-800 text-gray-100 max-w-2xl">
+          <DialogContent className="bg-admin-secondary border-admin text-admin-primary max-w-2xl">
             <DialogHeader>
-              <DialogTitle className="text-cyan-400">
+              <DialogTitle className="text-admin-accent">
                 {editingPanel ? 'Chỉnh sửa panel hiển thị' : 'Thêm panel hiển thị mới'}
               </DialogTitle>
             </DialogHeader>
             
             <div className="space-y-4 mt-4">
               <div className="space-y-2">
-                <Label className="text-gray-300">Tên panel *</Label>
+                <Label className="text-admin-primary">Tên panel *</Label>
                 <Input 
                   placeholder="Nhập tên panel"
                   defaultValue={editingPanel?.name}
-                  className="bg-[#0a0e1a] border-gray-700 text-gray-300"
+                  className="bg-admin-input border-admin text-admin-primary"
                 />
               </div>
 
               <div className="space-y-2">
-                <Label className="text-gray-300">Mô tả</Label>
+                <Label className="text-admin-primary">Mô tả</Label>
                 <Input 
                   placeholder="Mô tả về panel này"
                   defaultValue={editingPanel?.description}
-                  className="bg-[#0a0e1a] border-gray-700 text-gray-300"
+                  className="bg-admin-input border-admin text-admin-primary"
                 />
               </div>
 
               <div className="space-y-2">
-                <Label className="text-gray-300">Chọn nhóm trường hiển thị *</Label>
-                <ScrollArea className="h-48 border border-gray-800 rounded p-3 bg-[#0a0e1a]">
+                <Label className="text-admin-primary">Chọn nhóm trường hiển thị *</Label>
+                <ScrollArea className="h-48 border border-admin rounded p-3 bg-admin-input">
                   <div className="space-y-2">
                     {availableFieldGroups.map((group) => (
                       <label
                         key={group}
-                        className="flex items-center gap-2 p-2 rounded hover:bg-gray-800/50 cursor-pointer"
+                        className="flex items-center gap-2 p-2 rounded hover:bg-admin-hover cursor-pointer"
                       >
                         <Checkbox
                           checked={selectedFieldGroups.includes(group)}
                           onCheckedChange={() => toggleFieldGroup(group)}
                           className="border-gray-600 data-[state=checked]:bg-cyan-500"
                         />
-                        <span className="text-sm text-gray-300">{group}</span>
+                        <span className="text-sm text-admin-primary">{group}</span>
                       </label>
                     ))}
                   </div>
                 </ScrollArea>
-                <div className="text-xs text-gray-500">
+                <div className="text-xs text-admin-muted">
                   Đã chọn: {selectedFieldGroups.length} nhóm trường
                 </div>
               </div>
 
               <div className="space-y-2">
-                <label className="flex items-center gap-2 cursor-pointer p-3 bg-[#0a0e1a] rounded border border-gray-800">
+                <label className="flex items-center gap-2 cursor-pointer p-3 bg-admin-input rounded border border-admin">
                   <Checkbox
                     defaultChecked={editingPanel?.isDefault}
                     className="border-gray-600 data-[state=checked]:bg-cyan-500"
                   />
                   <div>
-                    <span className="text-sm text-gray-300">Đặt làm panel mặc định</span>
-                    <p className="text-xs text-gray-500 mt-1">Panel này sẽ được hiển thị khi mở media lần đầu</p>
+                    <span className="text-sm text-admin-primary">Đặt làm panel mặc định</span>
+                    <p className="text-xs text-admin-muted mt-1">Panel này sẽ được hiển thị khi mở media lần đầu</p>
                   </div>
                 </label>
               </div>
 
-              <div className="flex gap-3 justify-end mt-6">
+              <div className="flex gap-3 justify-end mt-4">
                 <Button 
                   variant="outline" 
                   onClick={() => {
@@ -224,7 +224,7 @@ export function DisplayPanelsView() {
                     setEditingPanel(null);
                     setSelectedFieldGroups([]);
                   }}
-                  className="border-gray-700 text-gray-300 hover:bg-gray-800"
+                  className="border-admin text-admin-primary hover:bg-admin-hover"
                 >
                   Hủy
                 </Button>
@@ -249,18 +249,18 @@ export function DisplayPanelsView() {
       {viewMode === 'grid' && (
         <div className="grid grid-cols-2 gap-4">
           {filteredPanels.map((panel) => (
-            <Card key={panel.id} className="bg-[#0f1419] border-gray-800 p-5">
+            <Card key={panel.id} className="bg-admin-secondary border-admin p-5">
               <div className="flex items-start justify-between mb-3">
                 <div className="flex-1">
                   <div className="flex items-center gap-2 mb-1">
-                    <h3 className="text-gray-300">{panel.name}</h3>
+                    <h3 className="text-admin-primary">{panel.name}</h3>
                     {panel.isDefault && (
                       <Badge variant="outline" className="border-cyan-500 text-cyan-400 text-xs">
                         Mặc định
                       </Badge>
                     )}
                   </div>
-                  <p className="text-sm text-gray-400">{panel.description}</p>
+                  <p className="text-sm text-admin-secondary">{panel.description}</p>
                 </div>
                 <Badge 
                   variant="outline" 
@@ -274,7 +274,7 @@ export function DisplayPanelsView() {
               </div>
 
               <div className="mb-4">
-                <div className="text-xs text-gray-500 mb-2">Nhóm trường hiển thị:</div>
+                <div className="text-xs text-admin-muted mb-2">Nhóm trường hiển thị:</div>
                 <div className="flex flex-wrap gap-2">
                   {panel.fieldGroups.map((group, idx) => (
                     <Badge 
@@ -288,11 +288,11 @@ export function DisplayPanelsView() {
                 </div>
               </div>
 
-              <div className="flex items-center gap-2 pt-3 border-t border-gray-800">
+              <div className="flex items-center gap-2 pt-3 border-t border-admin">
                 <Button
                   variant="outline"
                   size="sm"
-                  className="flex-1 border-gray-700 text-gray-300 hover:bg-gray-800"
+                  className="flex-1 border-admin text-admin-primary hover:bg-admin-hover"
                 >
                   <Eye className="w-4 h-4 mr-2" />
                   Xem trước
@@ -321,25 +321,25 @@ export function DisplayPanelsView() {
 
       {/* Display Panels - List View */}
       {viewMode === 'list' && (
-        <div className="border border-gray-800 rounded-lg overflow-hidden">
+        <div className="border border-admin rounded-lg overflow-hidden">
           <Table>
             <TableHeader>
-              <TableRow className="bg-[#0f1419] border-gray-800 hover:bg-[#0f1419]">
-                <TableHead className="text-gray-400 w-12">STT</TableHead>
-                <TableHead className="text-gray-400">Tên panel</TableHead>
-                <TableHead className="text-gray-400">Mô tả</TableHead>
-                <TableHead className="text-gray-400 w-48">Nhóm trường</TableHead>
-                <TableHead className="text-gray-400 w-32 text-center">Trạng thái</TableHead>
-                <TableHead className="text-gray-400 w-32 text-center">Thao tác</TableHead>
+              <TableRow className="bg-admin-secondary border-admin hover:bg-admin-secondary">
+                <TableHead className="text-admin-secondary w-12">STT</TableHead>
+                <TableHead className="text-admin-secondary">Tên panel</TableHead>
+                <TableHead className="text-admin-secondary">Mô tả</TableHead>
+                <TableHead className="text-admin-secondary w-48">Nhóm trường</TableHead>
+                <TableHead className="text-admin-secondary w-32 text-center">Trạng thái</TableHead>
+                <TableHead className="text-admin-secondary w-32 text-center">Thao tác</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
               {filteredPanels.map((panel, index) => (
-                <TableRow key={panel.id} className="border-gray-800 hover:bg-gray-900/50">
-                  <TableCell className="text-gray-400">{index + 1}</TableCell>
+                <TableRow key={panel.id} className="border-admin hover:bg-admin-hover">
+                  <TableCell className="text-admin-secondary">{index + 1}</TableCell>
                   <TableCell>
                     <div className="flex items-center gap-2">
-                      <span className="text-gray-300">{panel.name}</span>
+                      <span className="text-admin-primary">{panel.name}</span>
                       {panel.isDefault && (
                         <Badge variant="outline" className="border-cyan-500 text-cyan-400 text-xs">
                           Mặc định
@@ -347,9 +347,9 @@ export function DisplayPanelsView() {
                       )}
                     </div>
                   </TableCell>
-                  <TableCell className="text-gray-400 text-sm">{panel.description}</TableCell>
+                  <TableCell className="text-admin-secondary text-sm">{panel.description}</TableCell>
                   <TableCell>
-                    <div className="text-xs text-gray-400">
+                    <div className="text-xs text-admin-secondary">
                       {panel.fieldGroups.length} nhóm
                     </div>
                   </TableCell>
@@ -399,9 +399,9 @@ export function DisplayPanelsView() {
       )}
 
       {/* Info Card */}
-      <div className="bg-[#0f1419] border border-gray-800 rounded-lg p-4">
-        <div className="text-sm text-gray-400">
-          <strong className="text-cyan-400">Lưu ý:</strong> Panel hiển thị xác định những nhóm trường nào sẽ được hiển thị 
+      <div className="bg-admin-secondary border border-admin rounded-lg p-4">
+        <div className="text-sm text-admin-secondary">
+          <strong className="text-admin-accent">Lưu ý:</strong> Panel hiển thị xác định những nhóm trường nào sẽ được hiển thị 
           khi người dùng xem chi tiết media. Bạn có thể tạo nhiều panel khác nhau cho từng vai trò hoặc mục đích sử dụng.
         </div>
       </div>

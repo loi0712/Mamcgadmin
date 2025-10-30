@@ -91,20 +91,20 @@ export function DatabaseView() {
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4">
       {/* Main Tabs for Connections and Backup */}
       <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-        <TabsList className="bg-[#0f1419] border border-gray-800">
+        <TabsList className="bg-admin-secondary border border-admin">
           <TabsTrigger 
             value="connections" 
-            className="data-[state=active]:bg-gray-800 data-[state=active]:text-cyan-400 text-gray-300"
+            className="data-[state=active]:bg-admin-hover data-[state=active]:text-admin-accent text-admin-primary"
           >
             <Database className="w-4 h-4 mr-2" />
             Kết nối Database
           </TabsTrigger>
           <TabsTrigger 
             value="backup" 
-            className="data-[state=active]:bg-gray-800 data-[state=active]:text-cyan-400 text-gray-300"
+            className="data-[state=active]:bg-admin-hover data-[state=active]:text-admin-accent text-admin-primary"
           >
             <HardDrive className="w-4 h-4 mr-2" />
             Cấu hình Backup
@@ -112,7 +112,7 @@ export function DatabaseView() {
         </TabsList>
 
         {/* Connections Tab */}
-        <TabsContent value="connections" className="space-y-6 mt-4">
+        <TabsContent value="connections" className="space-y-4 mt-4">
           {/* Header */}
           <div className="flex items-center justify-end">
             <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
@@ -122,39 +122,39 @@ export function DatabaseView() {
                   Thêm kết nối
                 </Button>
               </DialogTrigger>
-              <DialogContent className="bg-[#0f1419] border-gray-800 text-gray-100 max-w-2xl">
+              <DialogContent className="bg-admin-secondary border-admin text-admin-primary max-w-2xl">
                 <DialogHeader>
-                  <DialogTitle className="text-cyan-400">Thêm kết nối cơ sở dữ liệu mới</DialogTitle>
+                  <DialogTitle className="text-admin-accent">Thêm kết nối cơ sở dữ liệu mới</DialogTitle>
                 </DialogHeader>
                 
                 <Tabs defaultValue="basic" className="w-full">
-                  <TabsList className="bg-[#0a0e1a] border border-gray-800">
-                    <TabsTrigger value="basic" className="data-[state=active]:bg-gray-800 data-[state=active]:text-cyan-400 text-gray-300">
+                  <TabsList className="bg-admin-input border border-admin">
+                    <TabsTrigger value="basic" className="data-[state=active]:bg-admin-hover data-[state=active]:text-admin-accent text-admin-primary">
                       Thông tin cơ bản
                     </TabsTrigger>
-                    <TabsTrigger value="advanced" className="data-[state=active]:bg-gray-800 data-[state=active]:text-cyan-400 text-gray-300">
+                    <TabsTrigger value="advanced" className="data-[state=active]:bg-admin-hover data-[state=active]:text-admin-accent text-admin-primary">
                       Nâng cao
                     </TabsTrigger>
                   </TabsList>
 
                   <TabsContent value="basic" className="space-y-4 mt-4">
                     <div className="space-y-2">
-                      <Label className="text-gray-300">Tên kết nối *</Label>
+                      <Label className="text-admin-primary">Tên kết nối *</Label>
                       <Input 
                         placeholder="Main Database"
-                        className="bg-[#0a0e1a] border-gray-700 text-gray-300"
+                        className="bg-admin-input border-admin text-admin-primary"
                       />
                     </div>
 
                     <div className="space-y-2">
-                      <Label className="text-gray-300">Loại cơ sở dữ liệu *</Label>
+                      <Label className="text-admin-primary">Loại cơ sở dữ liệu *</Label>
                       <Select value={selectedType} onValueChange={setSelectedType}>
-                        <SelectTrigger className="bg-[#0a0e1a] border-gray-700 text-gray-300">
+                        <SelectTrigger className="bg-admin-input border-admin text-admin-primary">
                           <SelectValue />
                         </SelectTrigger>
-                        <SelectContent className="bg-[#0f1419] border-gray-700">
+                        <SelectContent className="bg-admin-secondary border-admin">
                           {databaseTypes.map(type => (
-                            <SelectItem key={type.value} value={type.value} className="text-gray-300">
+                            <SelectItem key={type.value} value={type.value} className="text-admin-primary">
                               {type.label}
                             </SelectItem>
                           ))}
@@ -164,89 +164,89 @@ export function DatabaseView() {
 
                     <div className="grid grid-cols-2 gap-4">
                       <div className="space-y-2">
-                        <Label className="text-gray-300">Host/IP *</Label>
+                        <Label className="text-admin-primary">Host/IP *</Label>
                         <Input 
                           placeholder="192.168.1.50"
-                          className="bg-[#0a0e1a] border-gray-700 text-gray-300"
+                          className="bg-admin-input border-admin text-admin-primary"
                         />
                       </div>
                       <div className="space-y-2">
-                        <Label className="text-gray-300">Cổng (Port) *</Label>
+                        <Label className="text-admin-primary">Cổng (Port) *</Label>
                         <Input 
                           placeholder={getDefaultPort(selectedType)}
-                          className="bg-[#0a0e1a] border-gray-700 text-gray-300"
+                          className="bg-admin-input border-admin text-admin-primary"
                         />
                       </div>
                     </div>
 
                     <div className="space-y-2">
-                      <Label className="text-gray-300">Tên Database *</Label>
+                      <Label className="text-admin-primary">Tên Database *</Label>
                       <Input 
                         placeholder="database_name"
-                        className="bg-[#0a0e1a] border-gray-700 text-gray-300"
+                        className="bg-admin-input border-admin text-admin-primary"
                       />
                     </div>
 
                     <div className="space-y-2">
-                      <Label className="text-gray-300">Username *</Label>
+                      <Label className="text-admin-primary">Username *</Label>
                       <Input 
                         placeholder="username"
-                        className="bg-[#0a0e1a] border-gray-700 text-gray-300"
+                        className="bg-admin-input border-admin text-admin-primary"
                       />
                     </div>
 
                     <div className="space-y-2">
-                      <Label className="text-gray-300">Password *</Label>
+                      <Label className="text-admin-primary">Password *</Label>
                       <Input 
                         type="password"
                         placeholder="••••••••"
-                        className="bg-[#0a0e1a] border-gray-700 text-gray-300"
+                        className="bg-admin-input border-admin text-admin-primary"
                       />
                     </div>
                   </TabsContent>
 
                   <TabsContent value="advanced" className="space-y-4 mt-4">
                     <div className="space-y-2">
-                      <Label className="text-gray-300">Connection String</Label>
+                      <Label className="text-admin-primary">Connection String</Label>
                       <Input 
                         placeholder="Tùy chỉnh connection string"
-                        className="bg-[#0a0e1a] border-gray-700 text-gray-300"
+                        className="bg-admin-input border-admin text-admin-primary"
                       />
                     </div>
 
                     <div className="grid grid-cols-2 gap-4">
                       <div className="space-y-2">
-                        <Label className="text-gray-300">Max Pool Size</Label>
+                        <Label className="text-admin-primary">Max Pool Size</Label>
                         <Input 
                           placeholder="100"
                           type="number"
-                          className="bg-[#0a0e1a] border-gray-700 text-gray-300"
+                          className="bg-admin-input border-admin text-admin-primary"
                         />
                       </div>
                       <div className="space-y-2">
-                        <Label className="text-gray-300">Timeout (giây)</Label>
+                        <Label className="text-admin-primary">Timeout (giây)</Label>
                         <Input 
                           placeholder="30"
                           type="number"
-                          className="bg-[#0a0e1a] border-gray-700 text-gray-300"
+                          className="bg-admin-input border-admin text-admin-primary"
                         />
                       </div>
                     </div>
 
                     <div className="space-y-2">
-                      <Label className="text-gray-300">Schema mặc định</Label>
+                      <Label className="text-admin-primary">Schema mặc định</Label>
                       <Input 
                         placeholder="public"
-                        className="bg-[#0a0e1a] border-gray-700 text-gray-300"
+                        className="bg-admin-input border-admin text-admin-primary"
                       />
                     </div>
                   </TabsContent>
                 </Tabs>
 
-                <div className="flex gap-3 justify-end mt-6">
+                <div className="flex gap-3 justify-end mt-4">
                   <Button 
                     variant="outline" 
-                    className="border-gray-700 text-gray-300 hover:bg-gray-800 flex items-center gap-2"
+                    className="border-admin text-admin-primary hover:bg-admin-hover flex items-center gap-2"
                   >
                     <TestTube className="w-4 h-4" />
                     Kiểm tra kết nối
@@ -254,7 +254,7 @@ export function DatabaseView() {
                   <Button 
                     variant="outline" 
                     onClick={() => setIsDialogOpen(false)}
-                    className="border-gray-700 text-gray-300 hover:bg-gray-800"
+                    className="border-admin text-admin-primary hover:bg-admin-hover"
                   >
                     Hủy
                   </Button>
@@ -274,24 +274,24 @@ export function DatabaseView() {
 
           {/* Statistics */}
           <div className="grid grid-cols-4 gap-4">
-            <div className="bg-[#0f1419] border border-gray-800 rounded-lg p-4">
-              <div className="text-sm text-gray-400">Tổng số kết nối</div>
-              <div className="text-2xl text-white mt-2">{databases.length}</div>
+            <div className="bg-admin-secondary border border-admin rounded-lg p-4">
+              <div className="text-sm text-admin-secondary">Tổng số kết nối</div>
+              <div className="text-2xl text-admin-primary mt-2">{databases.length}</div>
             </div>
-            <div className="bg-[#0f1419] border border-gray-800 rounded-lg p-4">
-              <div className="text-sm text-gray-400">Đang hoạt động</div>
+            <div className="bg-admin-secondary border border-admin rounded-lg p-4">
+              <div className="text-sm text-admin-secondary">Đang hoạt động</div>
               <div className="text-2xl text-green-400 mt-2">
                 {databases.filter(d => d.status === 'connected').length}
               </div>
             </div>
-            <div className="bg-[#0f1419] border border-gray-800 rounded-lg p-4">
-              <div className="text-sm text-gray-400">Ngắt kết nối</div>
-              <div className="text-2xl text-gray-400 mt-2">
+            <div className="bg-admin-secondary border border-admin rounded-lg p-4">
+              <div className="text-sm text-admin-secondary">Ngắt kết nối</div>
+              <div className="text-2xl text-admin-secondary mt-2">
                 {databases.filter(d => d.status === 'disconnected').length}
               </div>
             </div>
-            <div className="bg-[#0f1419] border border-gray-800 rounded-lg p-4">
-              <div className="text-sm text-gray-400">Lỗi</div>
+            <div className="bg-admin-secondary border border-admin rounded-lg p-4">
+              <div className="text-sm text-admin-secondary">Lỗi</div>
               <div className="text-2xl text-red-400 mt-2">
                 {databases.filter(d => d.status === 'error').length}
               </div>
@@ -299,27 +299,27 @@ export function DatabaseView() {
           </div>
 
           {/* Table */}
-          <div className="border border-gray-800 rounded-lg overflow-hidden">
+          <div className="border border-admin rounded-lg overflow-hidden">
             <Table>
               <TableHeader>
-                <TableRow className="bg-[#0f1419] border-gray-800 hover:bg-[#0f1419]">
-                  <TableHead className="text-gray-400 w-16">STT</TableHead>
-                  <TableHead className="text-gray-400">Tên kết nối</TableHead>
-                  <TableHead className="text-gray-400">Loại DB</TableHead>
-                  <TableHead className="text-gray-400">Host</TableHead>
-                  <TableHead className="text-gray-400">Port</TableHead>
-                  <TableHead className="text-gray-400">Database</TableHead>
-                  <TableHead className="text-gray-400">Trạng thái</TableHead>
-                  <TableHead className="text-gray-400">Kết nối gần nhất</TableHead>
-                  <TableHead className="text-gray-400 text-right">Thao tác</TableHead>
+                <TableRow className="bg-admin-secondary border-admin hover:bg-admin-secondary">
+                  <TableHead className="text-admin-secondary w-16">STT</TableHead>
+                  <TableHead className="text-admin-secondary">Tên kết nối</TableHead>
+                  <TableHead className="text-admin-secondary">Loại DB</TableHead>
+                  <TableHead className="text-admin-secondary">Host</TableHead>
+                  <TableHead className="text-admin-secondary">Port</TableHead>
+                  <TableHead className="text-admin-secondary">Database</TableHead>
+                  <TableHead className="text-admin-secondary">Trạng thái</TableHead>
+                  <TableHead className="text-admin-secondary">Kết nối gần nhất</TableHead>
+                  <TableHead className="text-admin-secondary text-right">Thao tác</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
                 {databases.map((db, index) => (
-                  <TableRow key={db.id} className="border-gray-800 hover:bg-gray-900/50">
-                    <TableCell className="text-gray-400">{index + 1}</TableCell>
-                    <TableCell className="text-gray-300 flex items-center gap-2">
-                      <Database className="w-4 h-4 text-cyan-400" />
+                  <TableRow key={db.id} className="border-admin hover:bg-admin-hover">
+                    <TableCell className="text-admin-secondary">{index + 1}</TableCell>
+                    <TableCell className="text-admin-primary flex items-center gap-2">
+                      <Database className="w-4 h-4 text-admin-accent" />
                       {db.name}
                     </TableCell>
                     <TableCell>
@@ -327,24 +327,24 @@ export function DatabaseView() {
                         {db.type}
                       </Badge>
                     </TableCell>
-                    <TableCell className="text-gray-300 font-mono text-sm">{db.host}</TableCell>
-                    <TableCell className="text-gray-300 font-mono">{db.port}</TableCell>
-                    <TableCell className="text-gray-300 font-mono text-sm">{db.database}</TableCell>
+                    <TableCell className="text-admin-primary font-mono text-sm">{db.host}</TableCell>
+                    <TableCell className="text-admin-primary font-mono">{db.port}</TableCell>
+                    <TableCell className="text-admin-primary font-mono text-sm">{db.database}</TableCell>
                     <TableCell>{getStatusBadge(db.status)}</TableCell>
-                    <TableCell className="text-gray-400 text-sm">{db.lastConnection}</TableCell>
+                    <TableCell className="text-admin-secondary text-sm">{db.lastConnection}</TableCell>
                     <TableCell>
                       <div className="flex gap-2 justify-end">
                         <Button 
                           variant="ghost" 
                           size="sm" 
-                          className="text-cyan-400 hover:text-cyan-300 hover:bg-gray-800"
+                          className="text-cyan-400 hover:text-cyan-300 hover:bg-admin-hover"
                         >
                           <Pencil className="w-4 h-4" />
                         </Button>
                         <Button 
                           variant="ghost" 
                           size="sm" 
-                          className="text-red-400 hover:text-red-300 hover:bg-gray-800"
+                          className="text-red-400 hover:text-red-300 hover:bg-admin-hover"
                         >
                           <Trash2 className="w-4 h-4" />
                         </Button>
@@ -358,102 +358,102 @@ export function DatabaseView() {
         </TabsContent>
 
         {/* Backup Tab */}
-        <TabsContent value="backup" className="space-y-6 mt-4">
-          <div className="grid grid-cols-2 gap-6">
+        <TabsContent value="backup" className="space-y-4 mt-4">
+          <div className="grid grid-cols-2 gap-4">
             {/* Left: Backup Configuration */}
             <div className="space-y-4">
-              <Card className="bg-[#0f1419] border-gray-800 p-6">
-                <h3 className="text-cyan-400 mb-4 flex items-center gap-2">
+              <Card className="bg-admin-secondary border-admin p-6">
+                <h3 className="text-admin-accent mb-4 flex items-center gap-2">
                   <HardDrive className="w-5 h-5" />
                   Cấu hình Backup tự động
                 </h3>
 
                 <div className="space-y-4">
                   <div className="flex items-center justify-between">
-                    <Label className="text-gray-300">Kích hoạt backup tự động</Label>
+                    <Label className="text-admin-primary">Kích hoạt backup tự động</Label>
                     <Switch className="data-[state=checked]:bg-cyan-500" />
                   </div>
 
                   <div className="space-y-2">
-                    <Label className="text-gray-300">Database cần backup *</Label>
+                    <Label className="text-admin-primary">Database cần backup *</Label>
                     <Select defaultValue="all">
-                      <SelectTrigger className="bg-[#0a0e1a] border-gray-700 text-gray-300">
+                      <SelectTrigger className="bg-admin-input border-admin text-admin-primary">
                         <SelectValue />
                       </SelectTrigger>
-                      <SelectContent className="bg-[#0f1419] border-gray-700">
-                        <SelectItem value="all" className="text-gray-300">Tất cả databases</SelectItem>
-                        <SelectItem value="1" className="text-gray-300">Main Database</SelectItem>
-                        <SelectItem value="2" className="text-gray-300">Archive Database</SelectItem>
+                      <SelectContent className="bg-admin-secondary border-admin">
+                        <SelectItem value="all" className="text-admin-primary">Tất cả databases</SelectItem>
+                        <SelectItem value="1" className="text-admin-primary">Main Database</SelectItem>
+                        <SelectItem value="2" className="text-admin-primary">Archive Database</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>
 
                   <div className="space-y-2">
-                    <Label className="text-gray-300">Tần suất backup *</Label>
+                    <Label className="text-admin-primary">Tần suất backup *</Label>
                     <Select defaultValue="daily">
-                      <SelectTrigger className="bg-[#0a0e1a] border-gray-700 text-gray-300">
+                      <SelectTrigger className="bg-admin-input border-admin text-admin-primary">
                         <SelectValue />
                       </SelectTrigger>
-                      <SelectContent className="bg-[#0f1419] border-gray-700">
-                        <SelectItem value="hourly" className="text-gray-300">Hàng giờ</SelectItem>
-                        <SelectItem value="daily" className="text-gray-300">Hàng ngày</SelectItem>
-                        <SelectItem value="weekly" className="text-gray-300">Hàng tuần</SelectItem>
-                        <SelectItem value="monthly" className="text-gray-300">Hàng tháng</SelectItem>
+                      <SelectContent className="bg-admin-secondary border-admin">
+                        <SelectItem value="hourly" className="text-admin-primary">Hàng giờ</SelectItem>
+                        <SelectItem value="daily" className="text-admin-primary">Hàng ngày</SelectItem>
+                        <SelectItem value="weekly" className="text-admin-primary">Hàng tuần</SelectItem>
+                        <SelectItem value="monthly" className="text-admin-primary">Hàng tháng</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>
 
                   <div className="grid grid-cols-2 gap-4">
                     <div className="space-y-2">
-                      <Label className="text-gray-300">Thời gian backup</Label>
+                      <Label className="text-admin-primary">Thời gian backup</Label>
                       <Input 
                         type="time"
                         defaultValue="02:00"
-                        className="bg-[#0a0e1a] border-gray-700 text-gray-300"
+                        className="bg-admin-input border-admin text-admin-primary"
                       />
                     </div>
                     <div className="space-y-2">
-                      <Label className="text-gray-300">Giữ lại bản backup</Label>
+                      <Label className="text-admin-primary">Giữ lại bản backup</Label>
                       <Select defaultValue="30">
-                        <SelectTrigger className="bg-[#0a0e1a] border-gray-700 text-gray-300">
+                        <SelectTrigger className="bg-admin-input border-admin text-admin-primary">
                           <SelectValue />
                         </SelectTrigger>
-                        <SelectContent className="bg-[#0f1419] border-gray-700">
-                          <SelectItem value="7" className="text-gray-300">7 ngày</SelectItem>
-                          <SelectItem value="30" className="text-gray-300">30 ngày</SelectItem>
-                          <SelectItem value="90" className="text-gray-300">90 ngày</SelectItem>
-                          <SelectItem value="365" className="text-gray-300">1 năm</SelectItem>
+                        <SelectContent className="bg-admin-secondary border-admin">
+                          <SelectItem value="7" className="text-admin-primary">7 ngày</SelectItem>
+                          <SelectItem value="30" className="text-admin-primary">30 ngày</SelectItem>
+                          <SelectItem value="90" className="text-admin-primary">90 ngày</SelectItem>
+                          <SelectItem value="365" className="text-admin-primary">1 năm</SelectItem>
                         </SelectContent>
                       </Select>
                     </div>
                   </div>
 
                   <div className="space-y-2">
-                    <Label className="text-gray-300">Đường dẫn lưu backup *</Label>
+                    <Label className="text-admin-primary">Đường dẫn lưu backup *</Label>
                     <Input 
                       placeholder="/var/backups/database"
                       defaultValue="/var/backups/database"
-                      className="bg-[#0a0e1a] border-gray-700 text-gray-300"
+                      className="bg-admin-input border-admin text-admin-primary"
                     />
                   </div>
 
                   <div className="space-y-2">
-                    <Label className="text-gray-300">Loại nén</Label>
+                    <Label className="text-admin-primary">Loại nén</Label>
                     <Select defaultValue="gzip">
-                      <SelectTrigger className="bg-[#0a0e1a] border-gray-700 text-gray-300">
+                      <SelectTrigger className="bg-admin-input border-admin text-admin-primary">
                         <SelectValue />
                       </SelectTrigger>
-                      <SelectContent className="bg-[#0f1419] border-gray-700">
-                        <SelectItem value="none" className="text-gray-300">Không nén</SelectItem>
-                        <SelectItem value="gzip" className="text-gray-300">GZIP</SelectItem>
-                        <SelectItem value="zip" className="text-gray-300">ZIP</SelectItem>
-                        <SelectItem value="tar" className="text-gray-300">TAR</SelectItem>
+                      <SelectContent className="bg-admin-secondary border-admin">
+                        <SelectItem value="none" className="text-admin-primary">Không nén</SelectItem>
+                        <SelectItem value="gzip" className="text-admin-primary">GZIP</SelectItem>
+                        <SelectItem value="zip" className="text-admin-primary">ZIP</SelectItem>
+                        <SelectItem value="tar" className="text-admin-primary">TAR</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>
 
                   <div className="flex items-center justify-between pt-2">
-                    <Label className="text-gray-300">Gửi email thông báo</Label>
+                    <Label className="text-admin-primary">Gửi email thông báo</Label>
                     <Switch className="data-[state=checked]:bg-cyan-500" />
                   </div>
 
@@ -462,7 +462,7 @@ export function DatabaseView() {
                       <Save className="w-4 h-4 mr-2" />
                       Lưu cấu hình
                     </Button>
-                    <Button variant="outline" className="border-gray-700 text-gray-300 hover:bg-gray-800">
+                    <Button variant="outline" className="border-admin text-admin-primary hover:bg-admin-hover">
                       <HardDrive className="w-4 h-4 mr-2" />
                       Backup ngay
                     </Button>
@@ -473,8 +473,8 @@ export function DatabaseView() {
 
             {/* Right: Backup History */}
             <div className="space-y-4">
-              <Card className="bg-[#0f1419] border-gray-800 p-6">
-                <h3 className="text-cyan-400 mb-4 flex items-center gap-2">
+              <Card className="bg-admin-secondary border-admin p-6">
+                <h3 className="text-admin-accent mb-4 flex items-center gap-2">
                   <Calendar className="w-5 h-5" />
                   Lịch sử Backup
                 </h3>
@@ -495,12 +495,12 @@ export function DatabaseView() {
                     ].map((backup, index) => (
                       <div 
                         key={index}
-                        className="bg-[#0a0e1a] border border-gray-800 rounded p-3 hover:bg-gray-900/50 transition-colors"
+                        className="bg-admin-input border border-admin rounded p-3 hover:bg-admin-hover transition-colors"
                       >
                         <div className="flex items-start justify-between mb-2">
                           <div>
-                            <div className="text-gray-300 text-sm">{backup.db}</div>
-                            <div className="text-xs text-gray-500 flex items-center gap-2 mt-1">
+                            <div className="text-admin-primary text-sm">{backup.db}</div>
+                            <div className="text-xs text-admin-muted flex items-center gap-2 mt-1">
                               <Calendar className="w-3 h-3" />
                               {backup.date}
                               <Clock className="w-3 h-3 ml-2" />
@@ -518,7 +518,7 @@ export function DatabaseView() {
                           </Badge>
                         </div>
                         <div className="flex items-center justify-between">
-                          <span className="text-xs text-gray-400">Kích thước: {backup.size}</span>
+                          <span className="text-xs text-admin-secondary">Kích thước: {backup.size}</span>
                           <div className="flex gap-1">
                             <Button 
                               variant="ghost" 

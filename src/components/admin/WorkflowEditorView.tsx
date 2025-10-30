@@ -398,15 +398,15 @@ export function WorkflowEditorView({ workflowId, onBack }: WorkflowEditorViewPro
   const selectedNode = nodes.find(n => n.id === selectedNodeId) || null;
 
   return (
-    <div className="h-screen flex flex-col bg-[#050810]">
+    <div className="h-screen flex flex-col bg-admin-bg">
       {/* Top Toolbar */}
-      <div className="bg-[#0f1419] border-b border-gray-800 p-3">
+      <div className="bg-admin-secondary border-b border-admin p-3">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3 flex-1">
             <Button
               variant="ghost"
               onClick={onBack}
-              className="text-gray-400 hover:text-gray-300"
+              className="text-admin-secondary hover:text-admin-primary"
               size="sm"
             >
               <ArrowLeft className="w-4 h-4 mr-2" />
@@ -418,13 +418,13 @@ export function WorkflowEditorView({ workflowId, onBack }: WorkflowEditorViewPro
                 value={workflowName}
                 onChange={(e) => setWorkflowName(e.target.value)}
                 placeholder="Tên workflow..."
-                className="bg-[#0a0e1a] border-gray-700 text-gray-300 h-9"
+                className="bg-admin-input border-admin text-admin-primary h-9"
               />
             </div>
-            <Badge variant="outline" className="border-gray-600 text-gray-400">
+            <Badge variant="outline" className="border-gray-600 text-admin-secondary">
               {nodes.length} nodes
             </Badge>
-            <Badge variant="outline" className="border-gray-600 text-gray-400">
+            <Badge variant="outline" className="border-gray-600 text-admin-secondary">
               {connections.length} connections
             </Badge>
           </div>
@@ -436,7 +436,7 @@ export function WorkflowEditorView({ workflowId, onBack }: WorkflowEditorViewPro
               size="sm"
               onClick={handleUndo}
               disabled={historyIndex <= 0}
-              className="border-gray-700 text-gray-300 hover:bg-gray-800"
+              className="border-admin text-admin-primary hover:bg-admin-hover"
               title="Undo"
             >
               <Undo2 className="w-4 h-4" />
@@ -446,7 +446,7 @@ export function WorkflowEditorView({ workflowId, onBack }: WorkflowEditorViewPro
               size="sm"
               onClick={handleRedo}
               disabled={historyIndex >= history.length - 1}
-              className="border-gray-700 text-gray-300 hover:bg-gray-800"
+              className="border-admin text-admin-primary hover:bg-admin-hover"
               title="Redo"
             >
               <Redo2 className="w-4 h-4" />
@@ -455,12 +455,12 @@ export function WorkflowEditorView({ workflowId, onBack }: WorkflowEditorViewPro
             <Separator orientation="vertical" className="h-6 bg-gray-700" />
             
             {/* Tool selection */}
-            <div className="flex gap-1 bg-[#0a0e1a] border border-gray-800 rounded p-1">
+            <div className="flex gap-1 bg-admin-input border border-admin rounded p-1">
               <Button
                 variant="ghost"
                 size="sm"
                 onClick={() => setTool('select')}
-                className={tool === 'select' ? 'bg-gray-800 text-cyan-400' : 'text-gray-400'}
+                className={tool === 'select' ? 'bg-admin-hover text-admin-accent' : 'text-admin-secondary'}
                 title="Select tool"
               >
                 <MousePointer2 className="w-4 h-4" />
@@ -469,7 +469,7 @@ export function WorkflowEditorView({ workflowId, onBack }: WorkflowEditorViewPro
                 variant="ghost"
                 size="sm"
                 onClick={() => setTool('pan')}
-                className={tool === 'pan' ? 'bg-gray-800 text-cyan-400' : 'text-gray-400'}
+                className={tool === 'pan' ? 'bg-admin-hover text-admin-accent' : 'text-admin-secondary'}
                 title="Pan tool"
               >
                 <Move className="w-4 h-4" />
@@ -480,7 +480,7 @@ export function WorkflowEditorView({ workflowId, onBack }: WorkflowEditorViewPro
               variant="outline"
               size="sm"
               onClick={() => setShowGrid(!showGrid)}
-              className={`border-gray-700 ${showGrid ? 'text-cyan-400 bg-cyan-900/20' : 'text-gray-400'} hover:bg-gray-800`}
+              className={`border-admin ${showGrid ? 'text-admin-accent bg-cyan-900/20' : 'text-admin-secondary'} hover:bg-admin-hover`}
               title="Toggle grid"
             >
               <Grid3x3 className="w-4 h-4" />
@@ -493,17 +493,17 @@ export function WorkflowEditorView({ workflowId, onBack }: WorkflowEditorViewPro
               variant="outline"
               size="sm"
               onClick={handleZoomOut}
-              className="border-gray-700 text-gray-300 hover:bg-gray-800"
+              className="border-admin text-admin-primary hover:bg-admin-hover"
               title="Zoom out"
             >
               <ZoomOut className="w-4 h-4" />
             </Button>
-            <span className="text-xs text-gray-400 w-12 text-center">{Math.round(scale * 100)}%</span>
+            <span className="text-xs text-admin-secondary w-12 text-center">{Math.round(scale * 100)}%</span>
             <Button
               variant="outline"
               size="sm"
               onClick={handleZoomIn}
-              className="border-gray-700 text-gray-300 hover:bg-gray-800"
+              className="border-admin text-admin-primary hover:bg-admin-hover"
               title="Zoom in"
             >
               <ZoomIn className="w-4 h-4" />
@@ -512,7 +512,7 @@ export function WorkflowEditorView({ workflowId, onBack }: WorkflowEditorViewPro
               variant="outline"
               size="sm"
               onClick={handleZoomReset}
-              className="border-gray-700 text-gray-300 hover:bg-gray-800"
+              className="border-admin text-admin-primary hover:bg-admin-hover"
               title="Reset zoom"
             >
               <Maximize2 className="w-4 h-4" />
@@ -525,7 +525,7 @@ export function WorkflowEditorView({ workflowId, onBack }: WorkflowEditorViewPro
               variant="outline"
               size="sm"
               onClick={() => document.getElementById('import-file')?.click()}
-              className="border-gray-700 text-gray-300 hover:bg-gray-800"
+              className="border-admin text-admin-primary hover:bg-admin-hover"
               title="Import"
             >
               <Upload className="w-4 h-4" />
@@ -541,7 +541,7 @@ export function WorkflowEditorView({ workflowId, onBack }: WorkflowEditorViewPro
               variant="outline"
               size="sm"
               onClick={handleExport}
-              className="border-gray-700 text-gray-300 hover:bg-gray-800"
+              className="border-admin text-admin-primary hover:bg-admin-hover"
               title="Export"
             >
               <Download className="w-4 h-4" />
@@ -553,7 +553,7 @@ export function WorkflowEditorView({ workflowId, onBack }: WorkflowEditorViewPro
             <Button
               variant="outline"
               size="sm"
-              className="border-gray-700 text-gray-300 hover:bg-gray-800"
+              className="border-admin text-admin-primary hover:bg-admin-hover"
             >
               <Play className="w-4 h-4 mr-2" />
               Chạy thử
@@ -572,7 +572,7 @@ export function WorkflowEditorView({ workflowId, onBack }: WorkflowEditorViewPro
         {connectingFrom && (
           <div className="mt-2 flex items-center gap-3 p-2 bg-cyan-900/20 border border-cyan-500/50 rounded">
             <span className="text-cyan-400 text-sm">Đang kết nối từ node: <strong>{nodes.find(n => n.id === connectingFrom)?.label}</strong></span>
-            <span className="text-gray-400 text-xs">→ Click vào node đích để tạo kết nối</span>
+            <span className="text-admin-secondary text-xs">→ Click vào node đích để tạo kết nối</span>
             <Button
               size="sm"
               variant="outline"
@@ -587,20 +587,20 @@ export function WorkflowEditorView({ workflowId, onBack }: WorkflowEditorViewPro
 
       <div className="flex flex-1 overflow-hidden">
         {/* Left Sidebar - Node Palette */}
-        <div className="w-64 bg-[#0f1419] border-r border-gray-800 flex flex-col overflow-hidden">
-          <div className="p-3 border-b border-gray-800 flex-shrink-0">
-            <h3 className="text-cyan-400 text-sm">Thư viện Node</h3>
-            <p className="text-xs text-gray-500 mt-1">Kéo thả vào canvas</p>
+        <div className="w-64 bg-admin-secondary border-r border-admin flex flex-col overflow-hidden">
+          <div className="p-3 border-b border-admin flex-shrink-0">
+            <h3 className="text-admin-accent text-sm">Thư viện Node</h3>
+            <p className="text-xs text-admin-muted mt-1">Kéo thả vào canvas</p>
           </div>
           
           <ScrollArea className="flex-1 h-full">
             <div className="p-3 space-y-4">
               {categories.map(category => (
                 <div key={category}>
-                  <div className="text-xs text-gray-400 mb-2 flex items-center gap-2">
-                    <div className="h-px flex-1 bg-gray-800" />
+                  <div className="text-xs text-admin-secondary mb-2 flex items-center gap-2">
+                    <div className="h-px flex-1 bg-admin" />
                     <span>{category}</span>
-                    <div className="h-px flex-1 bg-gray-800" />
+                    <div className="h-px flex-1 bg-admin" />
                   </div>
                   <div className="space-y-1.5">
                     {nodeTemplates.filter(n => n.category === category).map(template => (
@@ -608,7 +608,7 @@ export function WorkflowEditorView({ workflowId, onBack }: WorkflowEditorViewPro
                         key={template.id}
                         draggable
                         onDragStart={(e) => handleDragStart(e, template)}
-                        className="border-gray-700 p-2.5 cursor-move hover:bg-gray-800/50 transition-colors"
+                        className="border-gray-700 p-2.5 cursor-move hover:bg-admin-hover transition-colors"
                       >
                         <div className="flex items-start gap-2">
                           <div 
@@ -618,8 +618,8 @@ export function WorkflowEditorView({ workflowId, onBack }: WorkflowEditorViewPro
                             {template.label.charAt(0)}
                           </div>
                           <div className="flex-1 min-w-0">
-                            <div className="text-xs text-gray-300 leading-tight">{template.label}</div>
-                            <div className="text-[10px] text-gray-500 leading-tight mt-0.5 truncate">{template.description}</div>
+                            <div className="text-xs text-admin-primary leading-tight">{template.label}</div>
+                            <div className="text-[10px] text-admin-muted leading-tight mt-0.5 truncate">{template.description}</div>
                           </div>
                         </div>
                       </Card>
@@ -633,7 +633,7 @@ export function WorkflowEditorView({ workflowId, onBack }: WorkflowEditorViewPro
 
         {/* Canvas */}
         <div 
-          className="flex-1 relative bg-[#0a0e1a] overflow-hidden"
+          className="flex-1 relative bg-admin-input overflow-hidden"
         >
           <div
             ref={canvasRef}
@@ -703,7 +703,7 @@ export function WorkflowEditorView({ workflowId, onBack }: WorkflowEditorViewPro
           {/* Mini-map */}
           <div className="absolute bottom-4 right-4 w-48 h-32 bg-gray-900/90 border border-gray-700 rounded overflow-hidden">
             <div className="relative w-full h-full">
-              <div className="text-xs text-gray-400 absolute top-1 left-1 z-10">Mini-map</div>
+              <div className="text-xs text-admin-secondary absolute top-1 left-1 z-10">Mini-map</div>
               <svg className="w-full h-full">
                 {nodes.map(node => (
                   <rect
@@ -722,9 +722,9 @@ export function WorkflowEditorView({ workflowId, onBack }: WorkflowEditorViewPro
         </div>
 
         {/* Right Sidebar - Properties */}
-        <div className="w-80 bg-[#0f1419] border-l border-gray-800 flex flex-col overflow-hidden">
-          <div className="p-3 border-b border-gray-800 flex-shrink-0">
-            <h3 className="text-cyan-400 text-sm">Thuộc tính Node</h3>
+        <div className="w-80 bg-admin-secondary border-l border-admin flex flex-col overflow-hidden">
+          <div className="p-3 border-b border-admin flex-shrink-0">
+            <h3 className="text-admin-accent text-sm">Thuộc tính Node</h3>
           </div>
           
           <div className="flex-1 overflow-hidden">

@@ -150,28 +150,28 @@ export function PermissionsView() {
   }, {} as Record<string, FunctionPermission[]>);
 
   return (
-    <div className="grid grid-cols-12 gap-6">
+    <div className="grid grid-cols-12 gap-4">
       {/* Left Column - Users Table */}
       <div className="col-span-5">
         <div className="mb-4">
           <div className="relative">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-500" />
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-admin-muted" />
             <Input 
               placeholder="Tìm kiếm tài khoản..." 
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="pl-10 bg-[#0f1419] border-gray-700 text-gray-300"
+              className="pl-10 bg-admin-input border-admin text-admin-primary"
             />
           </div>
         </div>
         
-        <div className="border border-gray-800 rounded-lg overflow-hidden">
+        <div className="border border-admin rounded-lg overflow-hidden">
           <Table>
             <TableHeader>
-              <TableRow className="bg-[#0f1419] border-gray-800 hover:bg-[#0f1419]">
-                <TableHead className="text-gray-400 w-16">STT</TableHead>
-                <TableHead className="text-gray-400">Tên</TableHead>
-                <TableHead className="text-gray-400">Nhóm quyền</TableHead>
+              <TableRow className="bg-admin-secondary border-admin hover:bg-admin-secondary">
+                <TableHead className="text-admin-secondary w-16">STT</TableHead>
+                <TableHead className="text-admin-secondary">Tên</TableHead>
+                <TableHead className="text-admin-secondary">Nhóm quyền</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -179,16 +179,16 @@ export function PermissionsView() {
                 <TableRow 
                   key={user.id} 
                   onClick={() => handleUserSelect(user)}
-                  className={`border-gray-800 cursor-pointer transition-colors ${
+                  className={`border-admin cursor-pointer transition-colors ${
                     selectedUser?.id === user.id 
                       ? 'bg-cyan-900/20 hover:bg-cyan-900/30' 
-                      : 'hover:bg-gray-900/50'
+                      : 'hover:bg-admin-hover'
                   }`}
                 >
-                  <TableCell className="text-gray-400">{index + 1}</TableCell>
+                  <TableCell className="text-admin-secondary">{index + 1}</TableCell>
                   <TableCell>
-                    <div className="text-gray-300">{user.name}</div>
-                    <div className="text-xs text-gray-500 mt-1">{user.email}</div>
+                    <div className="text-admin-primary">{user.name}</div>
+                    <div className="text-xs text-admin-muted mt-1">{user.email}</div>
                   </TableCell>
                   <TableCell>
                     <Badge variant="outline" className="border-cyan-500 text-cyan-400">
@@ -205,23 +205,23 @@ export function PermissionsView() {
       {/* Right Column - Permissions Tabs */}
       <div className="col-span-7">
         {selectedUser ? (
-          <div className="border border-gray-800 rounded-lg bg-[#0f1419] p-6">
-            <div className="mb-6">
-              <div className="text-cyan-400 mb-1">Phân quyền cho: {selectedUser.name}</div>
-              <div className="text-sm text-gray-500">{selectedUser.email}</div>
+          <div className="border border-admin rounded-lg bg-admin-secondary p-6">
+            <div className="mb-4">
+              <div className="text-admin-accent mb-1">Phân quyền cho: {selectedUser.name}</div>
+              <div className="text-sm text-admin-muted">{selectedUser.email}</div>
             </div>
 
             <Tabs defaultValue="functions" className="w-full">
-              <TabsList className="bg-[#0a0e1a] border border-gray-800 w-full">
+              <TabsList className="bg-admin-input border border-admin w-full">
                 <TabsTrigger 
                   value="functions" 
-                  className="flex-1 data-[state=active]:bg-gray-800 data-[state=active]:text-cyan-400 text-gray-300"
+                  className="flex-1 data-[state=active]:bg-admin-hover data-[state=active]:text-admin-accent text-admin-primary"
                 >
                   Chức năng
                 </TabsTrigger>
                 <TabsTrigger 
                   value="role-groups" 
-                  className="flex-1 data-[state=active]:bg-gray-800 data-[state=active]:text-cyan-400 text-gray-300"
+                  className="flex-1 data-[state=active]:bg-admin-hover data-[state=active]:text-admin-accent text-admin-primary"
                 >
                   Nhóm quyền
                 </TabsTrigger>
@@ -233,15 +233,15 @@ export function PermissionsView() {
                   <div className="space-y-4 pr-4">
                     {Object.entries(groupedFunctions).map(([category, functions]) => (
                       <div key={category} className="space-y-2">
-                        <div className="text-sm text-gray-400 border-b border-gray-800 pb-2">
+                        <div className="text-sm text-admin-secondary border-b border-admin pb-2">
                           {category}
                         </div>
                         {functions.map((func) => (
                           <div
                             key={func.id}
-                            className="p-4 rounded-lg bg-[#0a0e1a] border border-gray-800"
+                            className="p-4 rounded-lg bg-admin-input border border-admin"
                           >
-                            <div className="text-gray-300 mb-3">{func.name}</div>
+                            <div className="text-admin-primary mb-3">{func.name}</div>
                             <div className="flex items-center gap-6">
                               <label className="flex items-center gap-2 cursor-pointer">
                                 <Checkbox
@@ -249,7 +249,7 @@ export function PermissionsView() {
                                   onCheckedChange={() => handlePermissionToggle(func.id, 'view')}
                                   className="border-gray-600 data-[state=checked]:bg-cyan-500 data-[state=checked]:border-cyan-500"
                                 />
-                                <span className="text-sm text-gray-400">Xem</span>
+                                <span className="text-sm text-admin-secondary">Xem</span>
                               </label>
                               <label className="flex items-center gap-2 cursor-pointer">
                                 <Checkbox
@@ -257,7 +257,7 @@ export function PermissionsView() {
                                   onCheckedChange={() => handlePermissionToggle(func.id, 'edit')}
                                   className="border-gray-600 data-[state=checked]:bg-cyan-500 data-[state=checked]:border-cyan-500"
                                 />
-                                <span className="text-sm text-gray-400">Sửa</span>
+                                <span className="text-sm text-admin-secondary">Sửa</span>
                               </label>
                               <label className="flex items-center gap-2 cursor-pointer">
                                 <Checkbox
@@ -265,7 +265,7 @@ export function PermissionsView() {
                                   onCheckedChange={() => handlePermissionToggle(func.id, 'delete')}
                                   className="border-gray-600 data-[state=checked]:bg-cyan-500 data-[state=checked]:border-cyan-500"
                                 />
-                                <span className="text-sm text-gray-400">Xóa</span>
+                                <span className="text-sm text-admin-secondary">Xóa</span>
                               </label>
                               <label className="flex items-center gap-2 cursor-pointer">
                                 <Checkbox
@@ -273,7 +273,7 @@ export function PermissionsView() {
                                   onCheckedChange={() => handlePermissionToggle(func.id, 'display')}
                                   className="border-gray-600 data-[state=checked]:bg-cyan-500 data-[state=checked]:border-cyan-500"
                                 />
-                                <span className="text-sm text-gray-400">Hiển thị</span>
+                                <span className="text-admin-secondary">Hiển thị</span>
                               </label>
                               <label className="flex items-center gap-2 cursor-pointer">
                                 <Checkbox
@@ -281,7 +281,7 @@ export function PermissionsView() {
                                   onCheckedChange={() => handlePermissionToggle(func.id, 'config')}
                                   className="border-gray-600 data-[state=checked]:bg-cyan-500 data-[state=checked]:border-cyan-500"
                                 />
-                                <span className="text-sm text-gray-400">Cấu hình</span>
+                                <span className="text-sm text-admin-secondary">Cấu hình</span>
                               </label>
                             </div>
                           </div>
@@ -294,7 +294,7 @@ export function PermissionsView() {
 
               {/* Role Groups Tab */}
               <TabsContent value="role-groups" className="mt-4">
-                <div className="text-sm text-gray-400 mb-4">
+                <div className="text-sm text-admin-secondary mb-4">
                   Chọn các nhóm quyền để gán cho người dùng này
                 </div>
                 
@@ -307,7 +307,7 @@ export function PermissionsView() {
                         className={`p-4 rounded-lg border cursor-pointer transition-all ${
                           userRoleGroups.includes(roleGroup.id)
                             ? 'bg-cyan-900/20 border-cyan-500'
-                            : 'bg-[#0a0e1a] border-gray-800 hover:border-gray-700'
+                            : 'bg-admin-input border-admin hover:border-gray-700'
                         }`}
                       >
                         <div className="flex items-start gap-3">
@@ -319,8 +319,8 @@ export function PermissionsView() {
                             onClick={(e) => e.stopPropagation()}
                           />
                           <div className="flex-1">
-                            <div className="text-gray-300">{roleGroup.name}</div>
-                            <p className="text-xs text-gray-500 mt-1">
+                            <div className="text-admin-primary">{roleGroup.name}</div>
+                            <p className="text-xs text-admin-muted mt-1">
                               {roleGroup.description}
                             </p>
                           </div>
@@ -333,8 +333,8 @@ export function PermissionsView() {
             </Tabs>
           </div>
         ) : (
-          <div className="border border-gray-800 rounded-lg bg-[#0f1419] p-6">
-            <div className="flex items-center justify-center h-[400px] text-gray-500">
+          <div className="border border-admin rounded-lg bg-admin-secondary p-6">
+            <div className="flex items-center justify-center h-[400px] text-admin-muted">
               Chọn một tài khoản để phân quyền
             </div>
           </div>

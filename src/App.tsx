@@ -123,7 +123,7 @@ export default function App() {
 
   return (
     <ThemeProvider>
-      <div className="min-h-screen bg-[#050810] text-gray-100 flex overflow-hidden">
+      <div className="min-h-screen bg-admin-main text-admin-primary flex overflow-hidden">
         {/* Sidebar */}
         <div className="flex-shrink-0">
           <Sidebar 
@@ -134,7 +134,7 @@ export default function App() {
         </div>
 
         {/* Main Content Area */}
-        <div className="flex-1 flex flex-col min-w-0">
+        <div className="flex-1 flex flex-col min-w-0 bg-admin-main">
           {/* Top Navigation */}
           <TopNav 
             items={['MONITORING', 'ADMINISTRATION', 'CUSTOMISATION']}
@@ -158,7 +158,7 @@ export default function App() {
           )}
 
           {/* Content */}
-          <div className="flex-1 overflow-auto p-6">
+          <div className="flex-1 overflow-auto p-4 bg-admin-main">
             {renderContent()}
           </div>
         </div>

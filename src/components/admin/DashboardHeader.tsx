@@ -23,18 +23,18 @@ export function DashboardHeader() {
   const { dayName, dateStr, timeStr } = formatDateTime(currentTime);
 
   return (
-    <div className="flex items-center justify-between px-6 py-4 border-b border-gray-800 bg-[#0a0e1a]">
+    <div className="flex items-center justify-between px-4 py-3 border-b border-admin bg-admin-secondary">
       <div>
-        <h1 className="text-2xl text-cyan-400 mb-1">MAMCG Dashboard</h1>
-        <p className="text-sm text-gray-500">Tổng quan hệ thống quản lý media</p>
+        <h1 className="text-2xl text-admin-accent mb-1">MAMCG Dashboard</h1>
+        <p className="text-sm text-admin-muted">Tổng quan hệ thống quản lý media</p>
       </div>
       <div className="text-right">
         <div className="flex items-center gap-3">
           <div className="text-right">
-            <div className="text-sm text-gray-400">{dayName}, {dateStr}</div>
-            <div className="text-xl text-gray-300 font-mono">{timeStr}</div>
+            <div className="text-sm text-admin-secondary">{dayName}, {dateStr}</div>
+            <div className="text-xl text-admin-primary font-mono">{timeStr}</div>
           </div>
-          <div className="h-12 w-px bg-gray-700" />
+          <div className="h-12 w-px bg-admin-border" />
           <div className="flex items-center gap-2 px-4 py-2 bg-green-900/20 border border-green-500/50 rounded">
             <CheckCircle2 className="w-5 h-5 text-green-400" />
             <div>
