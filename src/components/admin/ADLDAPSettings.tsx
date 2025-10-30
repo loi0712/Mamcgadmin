@@ -6,11 +6,87 @@ import { RadioGroup, RadioGroupItem } from '../ui/radio-group';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../ui/tabs';
 import { Switch } from '../ui/switch';
 import { useState } from 'react';
-import { Save, TestTube } from 'lucide-react';
+import { Save, TestTube, RefreshCw } from 'lucide-react';
+import { toast } from 'sonner';
 
 export function ADLDAPSettings() {
   const [connectionType, setConnectionType] = useState('ad');
   const [useSSL, setUseSSL] = useState(false);
+  const [isTestingConnection, setIsTestingConnection] = useState(false);
+  const [isSaving, setIsSaving] = useState(false);
+  const [isSyncing, setIsSyncing] = useState(false);
+  
+  const [ldapConfig, setLdapConfig] = useState({
+    enabled: false,
+    host: '',
+    port: 389,
+    baseDN: '',
+    bindDN: '',
+    bindPassword: '',
+    userSearchFilter: '',
+    ssl: false,
+  });
+
+  const handleTestConnection = async () => {
+    if (!ldapConfig.host || !ldapConfig.baseDN) {
+      toast.error('Vui lòng nhập đầy đủ thông tin', {
+        description: 'Địa chỉ server và Base DN là bắt buộc'
+      });
+      return;
+    }
+
+    setIsTestingConnection(true);
+    try {
+      // Simulate API call
+      await new Promise(resolve => setTimeout(resolve, 2000));
+      toast.success('Kết nối LDAP thành công!', {
+        description: 'Tìm thấy 125 người dùng trong hệ thống'
+      });
+    } catch (err) {
+      toast.error('Kết nối thất bại', {
+        description: 'Kiểm tra lại host, port và credentials'
+      });
+    } finally {
+      setIsTestingConnection(false);
+    }
+  };
+
+  const handleSaveConfig = async () => {
+    if (!ldapConfig.host || !ldapConfig.baseDN) {
+      toast.error('Vui lòng nhập đầy đủ thông tin');
+      return;
+    }
+
+    setIsSaving(true);
+    try {
+      // Simulate API call
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      toast.success('Đã lưu cấu hình AD/LDAP', {
+        description: 'Các thay đổi đã được áp dụng'
+      });
+    } catch (err) {
+      toast.error('Lỗi khi lưu cấu hình');
+    } finally {
+      setIsSaving(false);
+    }
+  };
+
+  const handleSyncNow = async () => {
+    setIsSyncing(true);
+    try {
+      // Simulate API call
+      await new Promise(resolve => setTimeout(resolve, 3000));
+      toast.success('Đồng bộ người dùng thành công!', {
+        description: 'Đã thêm 12 người dùng mới, cập nhật 35 người dùng'
+      });
+    } catch (err) {
+      toast.error('Đồng bộ thất bại', {
+        description: 'Vui lòng kiểm tra lại kết nối'
+      });
+    } finally {
+      setIsSyncing(false);
+    }
+  };
 
   return (
     <div className="space-y-4">
@@ -23,12 +99,12 @@ export function ADLDAPSettings() {
           </p>
         </div>
         <div className="flex gap-3">
-          <Button className="bg-gray-700 hover:bg-gray-600 text-white flex items-center gap-2">
-            <TestTube className="w-4 h-4" />
+          <Button className="bg-gray-700 hover:bg-gray-600 text-white flex items-center gap-2" onClick={handleTestConnection} disabled={isTestingConnection}>
+            {isTestingConnection ? <RefreshCw className="w-4 h-4 animate-spin" /> : <TestTube className="w-4 h-4" />}
             Kiểm tra kết nối
           </Button>
-          <Button className="bg-cyan-600 hover:bg-cyan-700 text-white flex items-center gap-2">
-            <Save className="w-4 h-4" />
+          <Button className="bg-cyan-600 hover:bg-cyan-700 text-white flex items-center gap-2" onClick={handleSaveConfig} disabled={isSaving}>
+            {isSaving ? <RefreshCw className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />}
             Lưu cấu hình
           </Button>
         </div>
@@ -231,6 +307,12 @@ export function ADLDAPSettings() {
             <span className="text-admin-secondary">Số người dùng đồng bộ:</span>
             <span className="text-admin-primary">-</span>
           </div>
+        </div>
+        <div className="mt-4">
+          <Button className="bg-cyan-600 hover:bg-cyan-700 text-white flex items-center gap-2" onClick={handleSyncNow} disabled={isSyncing}>
+            {isSyncing ? <RefreshCw className="w-4 h-4 animate-spin" /> : <RefreshCw className="w-4 h-4" />}
+            Đồng bộ ngay
+          </Button>
         </div>
       </Card>
     </div>

@@ -2,11 +2,15 @@ import { Card } from '../ui/card';
 import { Input } from '../ui/input';
 import { Badge } from '../ui/badge';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select';
-import { Search, Download, Filter } from 'lucide-react';
+import { Search, Download, Filter, Server, Monitor, RefreshCw, Trash2 } from 'lucide-react';
 import { Button } from '../ui/button';
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from '../ui/alert-dialog';
 import { useState } from 'react';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '../ui/table';
 import { ScrollArea } from '../ui/scroll-area';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '../ui/tabs';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '../ui/tooltip';
+import { toast } from 'sonner';
 
 interface LogEntry {
   id: string;
@@ -16,6 +20,18 @@ interface LogEntry {
   message: string;
   user?: string;
   ip?: string;
+  userAgent?: string;
+}
+
+interface CGServerLog {
+  id: string;
+  timestamp: string;
+  serverName: string;
+  serverId: string;
+  level: 'info' | 'warning' | 'error';
+  channel?: number;
+  message: string;
+  details?: string;
 }
 
 const mockLogs: LogEntry[] = [
@@ -26,7 +42,8 @@ const mockLogs: LogEntry[] = [
     category: 'Media',
     message: 'Tải lên thành công 5 video files',
     user: 'Nguyễn Văn An',
-    ip: '192.168.1.105'
+    ip: '192.168.1.105',
+    userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) Chrome/119.0.0.0'
   },
   {
     id: '2',
@@ -35,7 +52,8 @@ const mockLogs: LogEntry[] = [
     category: 'User',
     message: 'Người dùng đăng nhập vào hệ thống',
     user: 'Trần Thị Bình',
-    ip: '192.168.1.112'
+    ip: '192.168.1.112',
+    userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) Firefox/120.0'
   },
   {
     id: '3',
@@ -44,7 +62,8 @@ const mockLogs: LogEntry[] = [
     category: 'Metadata',
     message: 'Cập nhật metadata cho 12 clips',
     user: 'Trần Thị Bình',
-    ip: '192.168.1.112'
+    ip: '192.168.1.112',
+    userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) Firefox/120.0'
   },
   {
     id: '4',
@@ -77,7 +96,8 @@ const mockLogs: LogEntry[] = [
     category: 'Permission',
     message: 'Tạo nhóm quyền mới: "Editor Team"',
     user: 'Lê Văn Cường',
-    ip: '192.168.1.98'
+    ip: '192.168.1.98',
+    userAgent: 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) Safari/17.0'
   },
   {
     id: '8',
@@ -94,7 +114,8 @@ const mockLogs: LogEntry[] = [
     category: 'User',
     message: 'Người dùng đăng xuất khỏi hệ thống',
     user: 'Phạm Thị Dung',
-    ip: '192.168.1.87'
+    ip: '192.168.1.87',
+    userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) Edge/119.0.0.0'
   },
   {
     id: '10',
@@ -102,22 +123,169 @@ const mockLogs: LogEntry[] = [
     level: 'warning',
     category: 'Security',
     message: 'Phát hiện 3 lần đăng nhập thất bại liên tiếp',
-    ip: '192.168.1.200'
+    ip: '192.168.1.200',
+    userAgent: 'Mozilla/5.0 (X11; Linux x86_64) Chrome/119.0.0.0'
+  },
+];
+
+const mockCGLogs: CGServerLog[] = [
+  {
+    id: 'cg-1',
+    timestamp: '2025-10-30 14:25:30',
+    serverName: 'CG Server - Studio A',
+    serverId: 'cg-1',
+    level: 'info',
+    channel: 1,
+    message: 'Template loaded successfully',
+    details: 'Template: NEWS_LOWER_THIRD'
+  },
+  {
+    id: 'cg-2',
+    timestamp: '2025-10-30 14:23:15',
+    serverName: 'CG Server - Studio A',
+    serverId: 'cg-1',
+    level: 'info',
+    channel: 2,
+    message: 'Playback started',
+    details: 'File: intro_animation.mp4'
+  },
+  {
+    id: 'cg-3',
+    timestamp: '2025-10-30 14:20:42',
+    serverName: 'CG Server - Studio B',
+    serverId: 'cg-2',
+    level: 'warning',
+    channel: 1,
+    message: 'Frame dropped',
+    details: 'Dropped 3 frames due to high CPU usage'
+  },
+  {
+    id: 'cg-4',
+    timestamp: '2025-10-30 14:18:55',
+    serverName: 'CG Server - Studio A',
+    serverId: 'cg-1',
+    level: 'info',
+    message: 'Channel initialized',
+    details: 'Channel 1-4 ready'
+  },
+  {
+    id: 'cg-5',
+    timestamp: '2025-10-30 14:15:22',
+    serverName: 'CG Server - Backup',
+    serverId: 'cg-3',
+    level: 'error',
+    message: 'Connection failed',
+    details: 'Unable to connect to server at 192.168.1.103:5250'
+  },
+  {
+    id: 'cg-6',
+    timestamp: '2025-10-30 14:12:08',
+    serverName: 'CG Server - Studio B',
+    serverId: 'cg-2',
+    level: 'info',
+    channel: 3,
+    message: 'Media file loaded',
+    details: 'File: background_loop.mov'
+  },
+  {
+    id: 'cg-7',
+    timestamp: '2025-10-30 14:10:33',
+    serverName: 'CG Server - Studio A',
+    serverId: 'cg-1',
+    level: 'info',
+    channel: 1,
+    message: 'Template updated',
+    details: 'Data: {"name":"John Doe","title":"Reporter"}'
+  },
+  {
+    id: 'cg-8',
+    timestamp: '2025-10-30 14:08:15',
+    serverName: 'CG Server - Studio B',
+    serverId: 'cg-2',
+    level: 'warning',
+    message: 'High memory usage detected',
+    details: 'Memory: 1.8GB / 2GB (90%)'
   },
 ];
 
 export function LogsView() {
+  const [activeTab, setActiveTab] = useState('system');
   const [searchTerm, setSearchTerm] = useState('');
   const [levelFilter, setLevelFilter] = useState('all');
   const [categoryFilter, setCategoryFilter] = useState('all');
+  const [cgServerFilter, setCGServerFilter] = useState('all');
+  const [logs, setLogs] = useState<LogEntry[]>(mockLogs);
+  const [cgLogs, setCGLogs] = useState<CGServerLog[]>(mockCGLogs);
+  const [isRefreshing, setIsRefreshing] = useState(false);
+  const [isClearDialogOpen, setIsClearDialogOpen] = useState(false);
 
-  const filteredLogs = mockLogs.filter(log => {
+  const filteredLogs = logs.filter(log => {
     const matchesSearch = log.message.toLowerCase().includes(searchTerm.toLowerCase()) ||
                          log.user?.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesLevel = levelFilter === 'all' || log.level === levelFilter;
     const matchesCategory = categoryFilter === 'all' || log.category === categoryFilter;
     return matchesSearch && matchesLevel && matchesCategory;
   });
+
+  const filteredCGLogs = cgLogs.filter(log => {
+    const matchesSearch = log.message.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                         log.serverName.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesLevel = levelFilter === 'all' || log.level === levelFilter;
+    const matchesServer = cgServerFilter === 'all' || log.serverId === cgServerFilter;
+    return matchesSearch && matchesLevel && matchesServer;
+  });
+
+  const handleRefresh = async () => {
+    setIsRefreshing(true);
+    try {
+      // Simulate API call
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      setLogs([...mockLogs]);
+      setCGLogs([...mockCGLogs]);
+      toast.success('Đã làm mới nhật ký', {
+        description: `Tải lại ${mockLogs.length} logs thành công`
+      });
+    } catch (err) {
+      toast.error('Lỗi khi làm mới nhật ký');
+    } finally {
+      setIsRefreshing(false);
+    }
+  };
+
+  const handleExport = () => {
+    const dataToExport = activeTab === 'system' ? filteredLogs : filteredCGLogs;
+    const dataStr = JSON.stringify(dataToExport, null, 2);
+    const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
+    const exportFileDefaultName = `logs_${activeTab}_${new Date().toISOString().split('T')[0]}.json`;
+    
+    const linkElement = document.createElement('a');
+    linkElement.setAttribute('href', dataUri);
+    linkElement.setAttribute('download', exportFileDefaultName);
+    linkElement.click();
+    
+    toast.success('Đã xuất file logs', {
+      description: `${dataToExport.length} logs đã được export`
+    });
+  };
+
+  const handleClearLogs = () => {
+    setIsClearDialogOpen(true);
+  };
+
+  const confirmClearLogs = () => {
+    if (activeTab === 'system') {
+      setLogs([]);
+      toast.success('Đã xóa tất cả nhật ký hệ thống', {
+        description: `${logs.length} logs đã được xóa`
+      });
+    } else {
+      setCGLogs([]);
+      toast.success('Đã xóa tất cả nhật ký CG Server', {
+        description: `${cgLogs.length} logs đã được xóa`
+      });
+    }
+    setIsClearDialogOpen(false);
+  };
 
   const getLevelBadge = (level: LogEntry['level']) => {
     const config = {
@@ -130,93 +298,283 @@ export function LogsView() {
     return <Badge variant="outline" className={cfg.className}>{cfg.label}</Badge>;
   };
 
+  const getBrowserIcon = (userAgent?: string) => {
+    if (!userAgent) return null;
+    
+    if (userAgent.includes('Chrome')) return '🌐 Chrome';
+    if (userAgent.includes('Firefox')) return '🦊 Firefox';
+    if (userAgent.includes('Safari')) return '🧭 Safari';
+    if (userAgent.includes('Edge')) return '🌊 Edge';
+    return '🖥️ Browser';
+  };
+
+  const getOSFromUserAgent = (userAgent?: string) => {
+    if (!userAgent) return null;
+    
+    if (userAgent.includes('Windows NT')) return 'Windows';
+    if (userAgent.includes('Mac OS X')) return 'macOS';
+    if (userAgent.includes('Linux')) return 'Linux';
+    return 'Unknown OS';
+  };
+
   return (
-    <div className="space-y-4">
-      {/* Filters */}
-      <Card className="bg-admin-secondary border-admin p-4">
-        <div className="flex items-center gap-4">
-          <div className="flex-1 relative">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-admin-muted" />
-            <Input 
-              placeholder="Tìm kiếm trong nhật ký..." 
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="pl-10 bg-admin-input border-admin text-admin-primary"
-            />
-          </div>
-          
-          <Select value={levelFilter} onValueChange={setLevelFilter}>
-            <SelectTrigger className="w-40 bg-admin-input border-admin text-admin-primary">
-              <SelectValue placeholder="Mức độ" />
-            </SelectTrigger>
-            <SelectContent className="bg-admin-secondary border-admin">
-              <SelectItem value="all" className="text-admin-primary">Tất cả</SelectItem>
-              <SelectItem value="info" className="text-admin-primary">Info</SelectItem>
-              <SelectItem value="success" className="text-admin-primary">Success</SelectItem>
-              <SelectItem value="warning" className="text-admin-primary">Warning</SelectItem>
-              <SelectItem value="error" className="text-admin-primary">Error</SelectItem>
-            </SelectContent>
-          </Select>
+    <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-4">
+      <div className="flex items-center justify-between mb-4">
+        <TabsList className="bg-admin-input border border-admin">
+          <TabsTrigger value="system">
+            <Monitor className="w-4 h-4 mr-2" />
+            Nhật ký Hệ thống
+          </TabsTrigger>
+          <TabsTrigger value="cg-servers">
+            <Server className="w-4 h-4 mr-2" />
+            Nhật ký Server CG
+          </TabsTrigger>
+        </TabsList>
 
-          <Select value={categoryFilter} onValueChange={setCategoryFilter}>
-            <SelectTrigger className="w-40 bg-admin-input border-admin text-admin-primary">
-              <SelectValue placeholder="Danh mục" />
-            </SelectTrigger>
-            <SelectContent className="bg-admin-secondary border-admin">
-              <SelectItem value="all" className="text-admin-primary">Tất cả</SelectItem>
-              <SelectItem value="System" className="text-admin-primary">System</SelectItem>
-              <SelectItem value="User" className="text-admin-primary">User</SelectItem>
-              <SelectItem value="Media" className="text-admin-primary">Media</SelectItem>
-              <SelectItem value="Database" className="text-admin-primary">Database</SelectItem>
-              <SelectItem value="Storage" className="text-admin-primary">Storage</SelectItem>
-              <SelectItem value="Security" className="text-admin-primary">Security</SelectItem>
-            </SelectContent>
-          </Select>
-
-          <Button className="bg-cyan-600 hover:bg-cyan-700 text-white flex items-center gap-2">
-            <Download className="w-4 h-4" />
-            Export
+        <div className="flex items-center gap-2">
+          <Button 
+            onClick={handleRefresh}
+            disabled={isRefreshing}
+            variant="outline"
+            className="border-admin text-admin-primary hover:bg-admin-hover flex items-center gap-2"
+          >
+            <RefreshCw className={`w-4 h-4 ${isRefreshing ? 'animate-spin' : ''}`} />
+            {isRefreshing ? 'Đang làm mới...' : 'Làm mới'}
+          </Button>
+          <Button 
+            onClick={handleClearLogs}
+            variant="outline"
+            className="border-red-500 text-red-400 hover:bg-red-900/20 flex items-center gap-2"
+          >
+            <Trash2 className="w-4 h-4" />
+            Xóa logs
           </Button>
         </div>
-      </Card>
+      </div>
 
-      {/* Logs Table */}
-      <Card className="bg-admin-secondary border-admin">
-        <ScrollArea className="h-[600px]">
-          <Table>
-            <TableHeader className="sticky top-0 bg-admin-secondary z-10">
-              <TableRow className="border-admin hover:bg-admin-secondary">
-                <TableHead className="text-admin-secondary w-40">Thời gian</TableHead>
-                <TableHead className="text-admin-secondary w-24">Mức độ</TableHead>
-                <TableHead className="text-admin-secondary w-32">Danh mục</TableHead>
-                <TableHead className="text-admin-secondary">Nội dung</TableHead>
-                <TableHead className="text-admin-secondary w-40">Người dùng</TableHead>
-                <TableHead className="text-admin-secondary w-32">IP</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {filteredLogs.map((log) => (
-                <TableRow key={log.id} className="border-admin hover:bg-admin-hover">
-                  <TableCell className="text-admin-secondary text-xs font-mono">
-                    {log.timestamp}
-                  </TableCell>
-                  <TableCell>{getLevelBadge(log.level)}</TableCell>
-                  <TableCell>
-                    <Badge variant="outline" className="border-gray-600 text-gray-400">
-                      {log.category}
-                    </Badge>
-                  </TableCell>
-                  <TableCell className="text-admin-primary">{log.message}</TableCell>
-                  <TableCell className="text-admin-secondary">{log.user || '-'}</TableCell>
-                  <TableCell className="text-admin-secondary text-xs font-mono">
-                    {log.ip || '-'}
-                  </TableCell>
+      {/* System Logs Tab */}
+      <TabsContent value="system" className="space-y-4">
+        {/* Filters */}
+        <Card className="bg-admin-secondary border-admin p-4">
+          <div className="flex items-center gap-4">
+            <div className="flex-1 relative">
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-admin-muted" />
+              <Input 
+                placeholder="Tìm kiếm trong nhật ký..." 
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="pl-10 bg-admin-input border-admin text-admin-primary"
+              />
+            </div>
+            
+            <Select value={levelFilter} onValueChange={setLevelFilter}>
+              <SelectTrigger className="w-40 bg-admin-input border-admin text-admin-primary">
+                <SelectValue placeholder="Mức độ" />
+              </SelectTrigger>
+              <SelectContent className="bg-admin-secondary border-admin">
+                <SelectItem value="all" className="text-admin-primary">Tất cả</SelectItem>
+                <SelectItem value="info" className="text-admin-primary">Info</SelectItem>
+                <SelectItem value="success" className="text-admin-primary">Success</SelectItem>
+                <SelectItem value="warning" className="text-admin-primary">Warning</SelectItem>
+                <SelectItem value="error" className="text-admin-primary">Error</SelectItem>
+              </SelectContent>
+            </Select>
+
+            <Select value={categoryFilter} onValueChange={setCategoryFilter}>
+              <SelectTrigger className="w-40 bg-admin-input border-admin text-admin-primary">
+                <SelectValue placeholder="Danh mục" />
+              </SelectTrigger>
+              <SelectContent className="bg-admin-secondary border-admin">
+                <SelectItem value="all" className="text-admin-primary">Tất cả</SelectItem>
+                <SelectItem value="System" className="text-admin-primary">System</SelectItem>
+                <SelectItem value="User" className="text-admin-primary">User</SelectItem>
+                <SelectItem value="Media" className="text-admin-primary">Media</SelectItem>
+                <SelectItem value="Database" className="text-admin-primary">Database</SelectItem>
+                <SelectItem value="Storage" className="text-admin-primary">Storage</SelectItem>
+                <SelectItem value="Security" className="text-admin-primary">Security</SelectItem>
+              </SelectContent>
+            </Select>
+
+            <Button className="bg-cyan-600 hover:bg-cyan-700 text-white flex items-center gap-2" onClick={handleExport}>
+              <Download className="w-4 h-4" />
+              Export
+            </Button>
+          </div>
+        </Card>
+
+        {/* Logs Table */}
+        <Card className="bg-admin-secondary border-admin">
+          <ScrollArea className="h-[600px]">
+            <Table>
+              <TableHeader className="sticky top-0 bg-admin-secondary z-10">
+                <TableRow className="border-admin hover:bg-admin-secondary">
+                  <TableHead className="text-admin-secondary w-40">Thời gian</TableHead>
+                  <TableHead className="text-admin-secondary w-24">Mức độ</TableHead>
+                  <TableHead className="text-admin-secondary w-32">Danh mục</TableHead>
+                  <TableHead className="text-admin-secondary">Nội dung</TableHead>
+                  <TableHead className="text-admin-secondary w-36">Người dùng</TableHead>
+                  <TableHead className="text-admin-secondary w-32">IP</TableHead>
+                  <TableHead className="text-admin-secondary w-36">User Agent</TableHead>
                 </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </ScrollArea>
-      </Card>
-    </div>
+              </TableHeader>
+              <TableBody>
+                {filteredLogs.map((log) => (
+                  <TableRow key={log.id} className="border-admin hover:bg-admin-hover">
+                    <TableCell className="text-admin-secondary text-xs font-mono">
+                      {log.timestamp}
+                    </TableCell>
+                    <TableCell>{getLevelBadge(log.level)}</TableCell>
+                    <TableCell>
+                      <Badge variant="outline" className="border-gray-600 text-gray-400">
+                        {log.category}
+                      </Badge>
+                    </TableCell>
+                    <TableCell className="text-admin-primary">{log.message}</TableCell>
+                    <TableCell className="text-admin-secondary">{log.user || '-'}</TableCell>
+                    <TableCell className="text-admin-secondary text-xs font-mono">
+                      {log.ip || '-'}
+                    </TableCell>
+                    <TableCell className="text-admin-secondary text-xs">
+                      {log.userAgent ? (
+                        <TooltipProvider>
+                          <Tooltip>
+                            <TooltipTrigger asChild>
+                              <div className="flex flex-col gap-1">
+                                <span className="text-admin-primary">{getBrowserIcon(log.userAgent)}</span>
+                                <span className="text-admin-muted text-[10px]">{getOSFromUserAgent(log.userAgent)}</span>
+                              </div>
+                            </TooltipTrigger>
+                            <TooltipContent className="max-w-md bg-admin-secondary border-admin">
+                              <p className="text-xs text-admin-primary break-all">{log.userAgent}</p>
+                            </TooltipContent>
+                          </Tooltip>
+                        </TooltipProvider>
+                      ) : '-'}
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </ScrollArea>
+        </Card>
+      </TabsContent>
+
+      {/* CG Server Logs Tab */}
+      <TabsContent value="cg-servers" className="space-y-4">
+        {/* Filters */}
+        <Card className="bg-admin-secondary border-admin p-4">
+          <div className="flex items-center gap-4">
+            <div className="flex-1 relative">
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-admin-muted" />
+              <Input 
+                placeholder="Tìm kiếm trong nhật ký CG Server..." 
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="pl-10 bg-admin-input border-admin text-admin-primary"
+              />
+            </div>
+            
+            <Select value={cgServerFilter} onValueChange={setCGServerFilter}>
+              <SelectTrigger className="w-48 bg-admin-input border-admin text-admin-primary">
+                <SelectValue placeholder="Server" />
+              </SelectTrigger>
+              <SelectContent className="bg-admin-secondary border-admin">
+                <SelectItem value="all" className="text-admin-primary">Tất cả Servers</SelectItem>
+                <SelectItem value="cg-1" className="text-admin-primary">CG Server - Studio A</SelectItem>
+                <SelectItem value="cg-2" className="text-admin-primary">CG Server - Studio B</SelectItem>
+                <SelectItem value="cg-3" className="text-admin-primary">CG Server - Backup</SelectItem>
+              </SelectContent>
+            </Select>
+
+            <Select value={levelFilter} onValueChange={setLevelFilter}>
+              <SelectTrigger className="w-40 bg-admin-input border-admin text-admin-primary">
+                <SelectValue placeholder="Mức độ" />
+              </SelectTrigger>
+              <SelectContent className="bg-admin-secondary border-admin">
+                <SelectItem value="all" className="text-admin-primary">Tất cả</SelectItem>
+                <SelectItem value="info" className="text-admin-primary">Info</SelectItem>
+                <SelectItem value="warning" className="text-admin-primary">Warning</SelectItem>
+                <SelectItem value="error" className="text-admin-primary">Error</SelectItem>
+              </SelectContent>
+            </Select>
+
+            <Button className="bg-cyan-600 hover:bg-cyan-700 text-white flex items-center gap-2" onClick={handleExport}>
+              <Download className="w-4 h-4" />
+              Export
+            </Button>
+          </div>
+        </Card>
+
+        {/* CG Server Logs Table */}
+        <Card className="bg-admin-secondary border-admin">
+          <ScrollArea className="h-[600px]">
+            <Table>
+              <TableHeader className="sticky top-0 bg-admin-secondary z-10">
+                <TableRow className="border-admin hover:bg-admin-secondary">
+                  <TableHead className="text-admin-secondary w-40">Thời gian</TableHead>
+                  <TableHead className="text-admin-secondary w-24">Mức độ</TableHead>
+                  <TableHead className="text-admin-secondary w-48">Server</TableHead>
+                  <TableHead className="text-admin-secondary w-24">Channel</TableHead>
+                  <TableHead className="text-admin-secondary">Message</TableHead>
+                  <TableHead className="text-admin-secondary w-64">Details</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {filteredCGLogs.map((log) => (
+                  <TableRow key={log.id} className="border-admin hover:bg-admin-hover">
+                    <TableCell className="text-admin-secondary text-xs font-mono">
+                      {log.timestamp}
+                    </TableCell>
+                    <TableCell>{getLevelBadge(log.level)}</TableCell>
+                    <TableCell className="text-admin-primary">
+                      <div className="flex items-center gap-2">
+                        <Server className="w-3 h-3 text-admin-accent" />
+                        {log.serverName}
+                      </div>
+                    </TableCell>
+                    <TableCell className="text-admin-secondary text-center">
+                      {log.channel ? (
+                        <Badge variant="outline" className="border-cyan-500 text-cyan-400">
+                          CH {log.channel}
+                        </Badge>
+                      ) : '-'}
+                    </TableCell>
+                    <TableCell className="text-admin-primary">{log.message}</TableCell>
+                    <TableCell className="text-admin-muted text-xs font-mono">
+                      {log.details || '-'}
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </ScrollArea>
+        </Card>
+      </TabsContent>
+
+      {/* Clear Logs Confirmation Dialog */}
+      <AlertDialog open={isClearDialogOpen} onValueChange={setIsClearDialogOpen}>
+        <AlertDialogContent className="bg-admin-secondary border-admin">
+          <AlertDialogHeader>
+            <AlertDialogTitle className="text-admin-accent">Xác nhận xóa logs</AlertDialogTitle>
+            <AlertDialogDescription className="text-admin-primary">
+              Bạn có chắc chắn muốn xóa tất cả {activeTab === 'system' ? 'nhật ký hệ thống' : 'nhật ký CG Server'}?
+              <br />
+              <span className="text-red-400">Hành động này không thể hoàn tác.</span>
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel className="border-admin text-admin-primary hover:bg-admin-hover">
+              Hủy
+            </AlertDialogCancel>
+            <AlertDialogAction 
+              onClick={confirmClearLogs}
+              className="bg-red-600 hover:bg-red-700"
+            >
+              Xóa tất cả
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+    </Tabs>
   );
 }

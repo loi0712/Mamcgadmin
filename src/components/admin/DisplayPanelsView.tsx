@@ -1,14 +1,16 @@
 import { Input } from '../ui/input';
 import { Label } from '../ui/label';
 import { Button } from '../ui/button';
-import { Plus, Pencil, Trash2, Search, Save, Eye, Grid3x3, List } from 'lucide-react';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '../ui/dialog';
+import { Plus, Pencil, Trash2, Search, Save, Eye, Grid3x3, List, Star } from 'lucide-react';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogFooter } from '../ui/dialog';
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from '../ui/alert-dialog';
 import { useState } from 'react';
 import { Card } from '../ui/card';
 import { Badge } from '../ui/badge';
 import { Checkbox } from '../ui/checkbox';
 import { ScrollArea } from '../ui/scroll-area';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '../ui/table';
+import { toast } from 'sonner';
 
 interface DisplayPanel {
   id: string;
@@ -74,26 +76,115 @@ const availableFieldGroups = [
 export function DisplayPanelsView() {
   const [displayPanels, setDisplayPanels] = useState<DisplayPanel[]>(mockDisplayPanels);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const [editingPanel, setEditingPanel] = useState<DisplayPanel | null>(null);
+  const [deletingPanel, setDeletingPanel] = useState<DisplayPanel | null>(null);
   const [selectedFieldGroups, setSelectedFieldGroups] = useState<string[]>([]);
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
+  
+  // Form state
+  const [formData, setFormData] = useState({
+    name: '',
+    description: '',
+    isDefault: false,
+    isActive: true,
+  });
 
   const filteredPanels = displayPanels.filter(panel =>
     panel.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
     panel.description.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
+  const resetForm = () => {
+    setFormData({
+      name: '',
+      description: '',
+      isDefault: false,
+      isActive: true,
+    });
+    setSelectedFieldGroups([]);
+    setEditingPanel(null);
+  };
+
+  const handleAdd = () => {
+    resetForm();
+    setIsDialogOpen(true);
+  };
+
   const handleEdit = (panel: DisplayPanel) => {
     setEditingPanel(panel);
+    setFormData({
+      name: panel.name,
+      description: panel.description,
+      isDefault: panel.isDefault,
+      isActive: panel.isActive,
+    });
     setSelectedFieldGroups(panel.fieldGroups);
     setIsDialogOpen(true);
   };
 
-  const handleDelete = (id: string) => {
-    if (confirm('Bạn có chắc muốn xóa panel hiển thị này?')) {
-      setDisplayPanels(prev => prev.filter(p => p.id !== id));
+  const handleSave = () => {
+    // Validation
+    if (!formData.name.trim()) {
+      toast.error('Vui lòng nhập tên panel');
+      return;
     }
+
+    if (selectedFieldGroups.length === 0) {
+      toast.error('Vui lòng chọn ít nhất một nhóm trường');
+      return;
+    }
+
+    if (editingPanel) {
+      // Update existing panel
+      setDisplayPanels(prev => prev.map(p => 
+        p.id === editingPanel.id 
+          ? { ...p, ...formData, fieldGroups: selectedFieldGroups }
+          : p
+      ));
+      toast.success('Đã cập nhật panel hiển thị', {
+        description: `Panel "${formData.name}" đã được cập nhật`
+      });
+    } else {
+      // Add new panel
+      const newPanel: DisplayPanel = {
+        id: `${Date.now()}`,
+        ...formData,
+        fieldGroups: selectedFieldGroups,
+      };
+      setDisplayPanels(prev => [...prev, newPanel]);
+      toast.success('Đã thêm panel hiển thị mới', {
+        description: `Panel "${formData.name}" đã được tạo`
+      });
+    }
+
+    setIsDialogOpen(false);
+    resetForm();
+  };
+
+  const handleDeleteClick = (panel: DisplayPanel) => {
+    setDeletingPanel(panel);
+    setIsDeleteDialogOpen(true);
+  };
+
+  const confirmDelete = () => {
+    if (!deletingPanel) return;
+    
+    setDisplayPanels(prev => prev.filter(p => p.id !== deletingPanel.id));
+    toast.success('Đã xóa panel hiển thị', {
+      description: `Panel "${deletingPanel.name}" đã được xóa`
+    });
+    setIsDeleteDialogOpen(false);
+    setDeletingPanel(null);
+  };
+
+  const handleSetDefault = (panel: DisplayPanel) => {
+    setDisplayPanels(prev => prev.map(p => ({
+      ...p,
+      isDefault: p.id === panel.id
+    })));
+    toast.success(`Đã đặt "${panel.name}" làm panel mặc định`);
   };
 
   const toggleFieldGroup = (group: string) => {
@@ -143,8 +234,7 @@ export function DisplayPanelsView() {
         <Dialog open={isDialogOpen} onOpenChange={(open) => {
           setIsDialogOpen(open);
           if (!open) {
-            setEditingPanel(null);
-            setSelectedFieldGroups([]);
+            resetForm();
           }
         }}>
           <DialogTrigger asChild>
@@ -165,7 +255,8 @@ export function DisplayPanelsView() {
                 <Label className="text-admin-primary">Tên panel *</Label>
                 <Input 
                   placeholder="Nhập tên panel"
-                  defaultValue={editingPanel?.name}
+                  value={formData.name}
+                  onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                   className="bg-admin-input border-admin text-admin-primary"
                 />
               </div>
@@ -174,7 +265,8 @@ export function DisplayPanelsView() {
                 <Label className="text-admin-primary">Mô tả</Label>
                 <Input 
                   placeholder="Mô tả về panel này"
-                  defaultValue={editingPanel?.description}
+                  value={formData.description}
+                  onChange={(e) => setFormData({ ...formData, description: e.target.value })}
                   className="bg-admin-input border-admin text-admin-primary"
                 />
               </div>
@@ -206,7 +298,8 @@ export function DisplayPanelsView() {
               <div className="space-y-2">
                 <label className="flex items-center gap-2 cursor-pointer p-3 bg-admin-input rounded border border-admin">
                   <Checkbox
-                    defaultChecked={editingPanel?.isDefault}
+                    checked={formData.isDefault}
+                    onCheckedChange={(checked) => setFormData({ ...formData, isDefault: checked })}
                     className="border-gray-600 data-[state=checked]:bg-cyan-500"
                   />
                   <div>
@@ -221,19 +314,14 @@ export function DisplayPanelsView() {
                   variant="outline" 
                   onClick={() => {
                     setIsDialogOpen(false);
-                    setEditingPanel(null);
-                    setSelectedFieldGroups([]);
+                    resetForm();
                   }}
                   className="border-admin text-admin-primary hover:bg-admin-hover"
                 >
                   Hủy
                 </Button>
                 <Button 
-                  onClick={() => {
-                    setIsDialogOpen(false);
-                    setEditingPanel(null);
-                    setSelectedFieldGroups([]);
-                  }}
+                  onClick={handleSave}
                   className="bg-cyan-600 hover:bg-cyan-700 text-white flex items-center gap-2"
                 >
                   <Save className="w-4 h-4" />
@@ -243,6 +331,32 @@ export function DisplayPanelsView() {
             </div>
           </DialogContent>
         </Dialog>
+
+        <AlertDialog open={isDeleteDialogOpen} onOpenChange={setIsDeleteDialogOpen}>
+          <AlertDialogContent className="bg-admin-secondary border-admin text-admin-primary max-w-2xl">
+            <AlertDialogHeader>
+              <AlertDialogTitle className="text-admin-accent">
+                Xác nhận xóa panel hiển thị
+              </AlertDialogTitle>
+              <AlertDialogDescription className="text-admin-secondary">
+                Bạn có chắc muốn xóa panel hiển thị này? Hành động này không thể hoàn tác.
+              </AlertDialogDescription>
+            </AlertDialogHeader>
+            <AlertDialogFooter>
+              <AlertDialogCancel
+                className="border-admin text-admin-primary hover:bg-admin-hover"
+              >
+                Hủy
+              </AlertDialogCancel>
+              <AlertDialogAction
+                className="bg-red-600 hover:bg-red-700 text-white"
+                onClick={confirmDelete}
+              >
+                Xóa
+              </AlertDialogAction>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
       </div>
 
       {/* Display Panels - Grid View */}
@@ -308,7 +422,7 @@ export function DisplayPanelsView() {
                 <Button
                   variant="ghost"
                   size="sm"
-                  onClick={() => handleDelete(panel.id)}
+                  onClick={() => handleDeleteClick(panel)}
                   className="text-red-400 hover:text-red-300 hover:bg-red-900/20"
                 >
                   <Trash2 className="w-4 h-4" />
@@ -384,7 +498,7 @@ export function DisplayPanelsView() {
                       <Button
                         variant="ghost"
                         size="sm"
-                        onClick={() => handleDelete(panel.id)}
+                        onClick={() => handleDeleteClick(panel)}
                         className="text-red-400 hover:text-red-300 hover:bg-red-900/20"
                       >
                         <Trash2 className="w-4 h-4" />

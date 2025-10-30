@@ -1,13 +1,24 @@
+import { Button } from '../ui/button';
+import { Plus, Pencil, Trash2, Search, Save } from 'lucide-react';
 import { Input } from '../ui/input';
 import { Label } from '../ui/label';
-import { Button } from '../ui/button';
 import { Checkbox } from '../ui/checkbox';
-import { Plus, Pencil, Trash2, Search, Save } from 'lucide-react';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '../ui/dialog';
-import { useState } from 'react';
-import { ScrollArea } from '../ui/scroll-area';
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '../ui/dialog';
+import { 
+  AlertDialog, 
+  AlertDialogAction, 
+  AlertDialogCancel, 
+  AlertDialogContent, 
+  AlertDialogDescription, 
+  AlertDialogFooter, 
+  AlertDialogHeader, 
+  AlertDialogTitle 
+} from '../ui/alert-dialog';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '../ui/table';
+import { ScrollArea } from '../ui/scroll-area';
 import { Badge } from '../ui/badge';
+import { toast } from 'sonner@2.0.3';
+import { useState } from 'react';
 
 interface FunctionPermission {
   id: string;
@@ -114,11 +125,13 @@ const initialFunctionPermissions: FunctionPermission[] = [
 ];
 
 export function RoleGroupsView() {
-  const [roleGroups] = useState<RoleGroup[]>(mockRoleGroups);
+  const [roleGroups, setRoleGroups] = useState<RoleGroup[]>(mockRoleGroups);
   const [selectedRole, setSelectedRole] = useState<RoleGroup | null>(roleGroups[0]);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const [functionPermissions, setFunctionPermissions] = useState<FunctionPermission[]>(initialFunctionPermissions);
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+  const [roleToDelete, setRoleToDelete] = useState<RoleGroup | null>(null);
 
   const filteredRoleGroups = roleGroups.filter(role =>
     role.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -127,6 +140,30 @@ export function RoleGroupsView() {
 
   const handleRoleSelect = (role: RoleGroup) => {
     setSelectedRole(role);
+  };
+
+  const handleDeleteClick = (role: RoleGroup, e: React.MouseEvent) => {
+    e.stopPropagation(); // Prevent row selection
+    setRoleToDelete(role);
+    setDeleteDialogOpen(true);
+  };
+
+  const handleConfirmDelete = () => {
+    if (roleToDelete) {
+      setRoleGroups(prev => prev.filter(role => role.id !== roleToDelete.id));
+      
+      // If deleted role was selected, clear selection
+      if (selectedRole?.id === roleToDelete.id) {
+        setSelectedRole(roleGroups[0] || null);
+      }
+      
+      toast.success('Đã xóa nhóm quyền', {
+        description: `Nhóm quyền "${roleToDelete.name}" đã được xóa thành công`
+      });
+      
+      setDeleteDialogOpen(false);
+      setRoleToDelete(null);
+    }
   };
 
   const handlePermissionToggle = (functionId: string, permissionType: keyof FunctionPermission['permissions']) => {
@@ -232,28 +269,43 @@ export function RoleGroupsView() {
                   <TableHead className="text-admin-secondary w-16">STT</TableHead>
                   <TableHead className="text-admin-secondary">Tên nhóm</TableHead>
                   <TableHead className="text-admin-secondary w-24">Người dùng</TableHead>
+                  <TableHead className="text-admin-secondary w-16 text-right">Thao tác</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
                 {filteredRoleGroups.map((role, index) => (
                   <TableRow 
                     key={role.id} 
-                    onClick={() => handleRoleSelect(role)}
                     className={`border-admin cursor-pointer transition-colors ${
                       selectedRole?.id === role.id 
                         ? 'bg-cyan-900/20 hover:bg-cyan-900/30' 
                         : 'hover:bg-admin-hover'
                     }`}
                   >
-                    <TableCell className="text-admin-secondary">{index + 1}</TableCell>
-                    <TableCell>
+                    <TableCell 
+                      className="text-admin-secondary"
+                      onClick={() => handleRoleSelect(role)}
+                    >
+                      {index + 1}
+                    </TableCell>
+                    <TableCell onClick={() => handleRoleSelect(role)}>
                       <div className="text-admin-primary">{role.name}</div>
                       <div className="text-xs text-admin-muted mt-1">{role.description}</div>
                     </TableCell>
-                    <TableCell>
+                    <TableCell onClick={() => handleRoleSelect(role)}>
                       <Badge variant="outline" className="border-gray-600 text-gray-400">
                         {role.userCount}
                       </Badge>
+                    </TableCell>
+                    <TableCell className="text-right">
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={(e) => handleDeleteClick(role, e)}
+                        className="text-red-400 hover:text-red-500 hover:bg-red-900/20"
+                      >
+                        <Trash2 className="w-4 h-4" />
+                      </Button>
                     </TableCell>
                   </TableRow>
                 ))}
@@ -342,6 +394,41 @@ export function RoleGroupsView() {
           )}
         </div>
       </div>
+
+      {/* Delete Confirmation Dialog */}
+      <AlertDialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
+        <AlertDialogContent className="bg-admin-secondary border-admin text-admin-primary max-w-md">
+          <AlertDialogHeader>
+            <AlertDialogTitle className="text-admin-accent">Xác nhận xóa nhóm quyền</AlertDialogTitle>
+          </AlertDialogHeader>
+          
+          <div className="space-y-4 mt-4">
+            <div className="space-y-2">
+              <Label className="text-admin-primary">Bạn có chắc chắn muốn xóa nhóm quyền này?</Label>
+              <div className="text-sm text-admin-muted">
+                Nhóm quyền "{roleToDelete?.name}" sẽ bị xóa và không thể khôi phục.
+              </div>
+            </div>
+
+            <div className="flex gap-3 justify-end mt-4">
+              <Button 
+                variant="outline" 
+                onClick={() => setDeleteDialogOpen(false)}
+                className="border-admin text-admin-primary hover:bg-admin-hover"
+              >
+                Hủy
+              </Button>
+              <Button 
+                onClick={handleConfirmDelete}
+                className="bg-red-500 hover:bg-red-600 text-white flex items-center gap-2"
+              >
+                <Trash2 className="w-4 h-4" />
+                Xóa
+              </Button>
+            </div>
+          </div>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 }

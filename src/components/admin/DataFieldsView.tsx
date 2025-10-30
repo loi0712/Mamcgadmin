@@ -1,14 +1,25 @@
 import { Input } from '../ui/input';
 import { Label } from '../ui/label';
 import { Button } from '../ui/button';
-import { Plus, Pencil, Trash2, Search, Save, AlertCircle } from 'lucide-react';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '../ui/dialog';
+import { Plus, Pencil, Trash2, Search, Save, AlertCircle, X } from 'lucide-react';
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '../ui/dialog';
+import { 
+  AlertDialog, 
+  AlertDialogAction, 
+  AlertDialogCancel, 
+  AlertDialogContent, 
+  AlertDialogDescription, 
+  AlertDialogFooter, 
+  AlertDialogHeader, 
+  AlertDialogTitle 
+} from '../ui/alert-dialog';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select';
 import { useState } from 'react';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '../ui/table';
 import { Badge } from '../ui/badge';
 import { Checkbox } from '../ui/checkbox';
 import { Alert, AlertDescription } from '../ui/alert';
+import { toast } from 'sonner@2.0.3';
 
 interface DataField {
   id: string;
@@ -19,6 +30,7 @@ interface DataField {
   isSearchable: boolean;
   isEditable: boolean;
   order: number;
+  dropdownOptions?: string[];
 }
 
 const mockDataFields: DataField[] = [
@@ -66,11 +78,12 @@ const mockDataFields: DataField[] = [
     id: 'resolution',
     name: 'Độ phân giải',
     fieldGroup: 'Metadata kỹ thuật',
-    dataType: 'Select',
+    dataType: 'Dropdown',
     isRequired: false,
     isSearchable: true,
     isEditable: true,
-    order: 5
+    order: 5,
+    dropdownOptions: ['4K (2160p)', '1080p (Full HD)', '720p (HD)', '480p (SD)', '360p']
   },
   {
     id: 'video_codec',
@@ -120,7 +133,8 @@ const mockDataFields: DataField[] = [
     isRequired: false,
     isSearchable: true,
     isEditable: true,
-    order: 10
+    order: 10,
+    dropdownOptions: ['Tin tức', 'Phóng sự', 'Phim tài liệu', 'Giải trí', 'Thể thao']
   },
   {
     id: 'tags',
@@ -142,6 +156,26 @@ const mockDataFields: DataField[] = [
     isEditable: true,
     order: 12
   },
+  {
+    id: 'is_published',
+    name: 'Đã xuất bản',
+    fieldGroup: 'Thông tin cơ bản',
+    dataType: 'Boolean',
+    isRequired: false,
+    isSearchable: false,
+    isEditable: true,
+    order: 13
+  },
+  {
+    id: 'thumbnail_url',
+    name: 'Ảnh đại diện',
+    fieldGroup: 'Thông tin cơ bản',
+    dataType: 'File Upload',
+    isRequired: false,
+    isSearchable: false,
+    isEditable: true,
+    order: 14
+  },
 ];
 
 export function DataFieldsView() {
@@ -150,10 +184,23 @@ export function DataFieldsView() {
   const [searchTerm, setSearchTerm] = useState('');
   const [groupFilter, setGroupFilter] = useState('all');
   const [editingField, setEditingField] = useState<DataField | null>(null);
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+  const [fieldToDelete, setFieldToDelete] = useState<DataField | null>(null);
 
   // Form state
   const [formId, setFormId] = useState('');
   const [formName, setFormName] = useState('');
+  const [formFieldGroup, setFormFieldGroup] = useState('');
+  const [formDataType, setFormDataType] = useState('');
+  const [formOrder, setFormOrder] = useState('1');
+  const [formIsRequired, setFormIsRequired] = useState(false);
+  const [formIsSearchable, setFormIsSearchable] = useState(false);
+  const [formIsEditable, setFormIsEditable] = useState(true);
+  
+  // Dropdown options state
+  const [dropdownOptions, setDropdownOptions] = useState<string[]>([]);
+  const [newOptionInput, setNewOptionInput] = useState('');
+  
   const [idError, setIdError] = useState('');
   const [nameError, setNameError] = useState('');
 
@@ -165,6 +212,11 @@ export function DataFieldsView() {
   });
 
   const fieldGroups = Array.from(new Set(dataFields.map(f => f.fieldGroup)));
+
+  // Check if the selected data type requires dropdown options
+  const requiresDropdownOptions = (dataType: string) => {
+    return ['Dropdown', 'Multi Select', 'Select'].includes(dataType);
+  };
 
   const validateId = (value: string) => {
     if (!value) {
@@ -213,6 +265,13 @@ export function DataFieldsView() {
     setEditingField(field);
     setFormId(field.id);
     setFormName(field.name);
+    setFormFieldGroup(field.fieldGroup);
+    setFormDataType(field.dataType);
+    setFormOrder(field.order.toString());
+    setFormIsRequired(field.isRequired);
+    setFormIsSearchable(field.isSearchable);
+    setFormIsEditable(field.isEditable);
+    setDropdownOptions(field.dropdownOptions || []);
     setIdError('');
     setNameError('');
     setIsDialogOpen(true);
@@ -225,6 +284,45 @@ export function DataFieldsView() {
     if (!isIdValid || !isNameValid) {
       return;
     }
+
+    if (!formFieldGroup || !formDataType) {
+      toast.error('Vui lòng điền đầy đủ thông tin', {
+        description: 'Nhóm trường và Kiểu dữ liệu là bắt buộc'
+      });
+      return;
+    }
+
+    // Check if dropdown options are required but not provided
+    if (requiresDropdownOptions(formDataType) && dropdownOptions.length === 0) {
+      toast.error('Vui lòng thêm các tùy chọn', {
+        description: 'Kiểu dữ liệu này yêu cầu ít nhất một tùy chọn'
+      });
+      return;
+    }
+
+    const newField: DataField = {
+      id: formId,
+      name: formName,
+      fieldGroup: formFieldGroup,
+      dataType: formDataType,
+      isRequired: formIsRequired,
+      isSearchable: formIsSearchable,
+      isEditable: formIsEditable,
+      order: parseInt(formOrder) || 1,
+      ...(requiresDropdownOptions(formDataType) && { dropdownOptions })
+    };
+
+    if (editingField) {
+      setDataFields(dataFields.map(f => f.id === editingField.id ? newField : f));
+      toast.success('Đã cập nhật trường dữ liệu', {
+        description: `Trường "${formName}" đã được cập nhật`
+      });
+    } else {
+      setDataFields([...dataFields, newField]);
+      toast.success('Đã thêm trường dữ liệu', {
+        description: `Trường "${formName}" đã được thêm vào hệ thống`
+      });
+    }
     
     setIsDialogOpen(false);
     setEditingField(null);
@@ -234,22 +332,72 @@ export function DataFieldsView() {
   const resetForm = () => {
     setFormId('');
     setFormName('');
+    setFormFieldGroup('');
+    setFormDataType('');
+    setFormOrder('1');
+    setFormIsRequired(false);
+    setFormIsSearchable(false);
+    setFormIsEditable(true);
+    setDropdownOptions([]);
+    setNewOptionInput('');
     setIdError('');
     setNameError('');
+  };
+
+  const addDropdownOption = () => {
+    if (newOptionInput.trim()) {
+      if (!dropdownOptions.includes(newOptionInput.trim())) {
+        setDropdownOptions([...dropdownOptions, newOptionInput.trim()]);
+        setNewOptionInput('');
+      } else {
+        toast.error('Tùy chọn đã tồn tại', {
+          description: 'Vui lòng nhập tùy chọn khác'
+        });
+      }
+    }
+  };
+
+  const removeDropdownOption = (index: number) => {
+    setDropdownOptions(dropdownOptions.filter((_, i) => i !== index));
   };
 
   const getDataTypeBadge = (type: string) => {
     const colors: Record<string, string> = {
       'Text': 'border-blue-500 text-blue-400',
       'Text Area': 'border-blue-500 text-blue-400',
+      'Rich Text': 'border-indigo-500 text-indigo-400',
       'Number': 'border-green-500 text-green-400',
+      'Decimal': 'border-green-500 text-green-400',
       'Date': 'border-purple-500 text-purple-400',
       'Time': 'border-purple-500 text-purple-400',
+      'DateTime': 'border-purple-500 text-purple-400',
+      'Dropdown': 'border-yellow-500 text-yellow-400',
       'Select': 'border-yellow-500 text-yellow-400',
       'Multi Select': 'border-yellow-500 text-yellow-400',
       'Tags': 'border-cyan-500 text-cyan-400',
+      'Boolean': 'border-pink-500 text-pink-400',
+      'File Upload': 'border-orange-500 text-orange-400',
+      'Email': 'border-teal-500 text-teal-400',
+      'URL': 'border-teal-500 text-teal-400',
+      'JSON': 'border-red-500 text-red-400',
     };
-    return <Badge variant="outline" className={colors[type] || 'border-gray-500 text-gray-400'}>{type}</Badge>;
+    return <Badge variant="outline" className={`${colors[type] || 'border-gray-500 text-gray-400'} text-[10px]`}>{type}</Badge>;
+  };
+
+  const handleDelete = (field: DataField) => {
+    setFieldToDelete(field);
+    setDeleteDialogOpen(true);
+  };
+
+  const confirmDelete = () => {
+    if (fieldToDelete) {
+      setDataFields(dataFields.filter(f => f.id !== fieldToDelete.id));
+      toast.success('Đã xóa trường dữ liệu', {
+        description: `Trường "${fieldToDelete.name}" đã được xóa thành công`
+      });
+      setDeleteDialogOpen(false);
+      setFieldToDelete(null);
+    }
   };
 
   return (
@@ -291,11 +439,14 @@ export function DataFieldsView() {
               Thêm trường
             </Button>
           </DialogTrigger>
-          <DialogContent className="bg-admin-secondary border-admin text-admin-primary max-w-2xl">
+          <DialogContent className="bg-admin-secondary border-admin text-admin-primary max-w-3xl max-h-[90vh] overflow-y-auto">
             <DialogHeader>
               <DialogTitle className="text-admin-accent">
                 {editingField ? 'Chỉnh sửa trường dữ liệu' : 'Thêm trường dữ liệu mới'}
               </DialogTitle>
+              <DialogDescription className="text-admin-muted">
+                Điền đầy đủ thông tin để tạo hoặc chỉnh sửa trường dữ liệu
+              </DialogDescription>
             </DialogHeader>
             
             <div className="space-y-4 mt-4">
@@ -350,7 +501,7 @@ export function DataFieldsView() {
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-2">
                   <Label className="text-admin-primary">Nhóm trường *</Label>
-                  <Select>
+                  <Select value={formFieldGroup} onValueChange={setFormFieldGroup}>
                     <SelectTrigger className="bg-admin-input border-admin text-admin-primary">
                       <SelectValue placeholder="Chọn nhóm" />
                     </SelectTrigger>
@@ -364,29 +515,97 @@ export function DataFieldsView() {
 
                 <div className="space-y-2">
                   <Label className="text-admin-primary">Kiểu dữ liệu *</Label>
-                  <Select>
+                  <Select value={formDataType} onValueChange={(value) => {
+                    setFormDataType(value);
+                    // Reset dropdown options if changing from a dropdown type
+                    if (!requiresDropdownOptions(value)) {
+                      setDropdownOptions([]);
+                    }
+                  }}>
                     <SelectTrigger className="bg-admin-input border-admin text-admin-primary">
                       <SelectValue placeholder="Chọn kiểu" />
                     </SelectTrigger>
-                    <SelectContent className="bg-admin-secondary border-admin">
-                      <SelectItem value="text" className="text-admin-primary">Text</SelectItem>
-                      <SelectItem value="textarea" className="text-admin-primary">Text Area</SelectItem>
-                      <SelectItem value="number" className="text-admin-primary">Number</SelectItem>
-                      <SelectItem value="date" className="text-admin-primary">Date</SelectItem>
-                      <SelectItem value="time" className="text-admin-primary">Time</SelectItem>
-                      <SelectItem value="select" className="text-admin-primary">Select</SelectItem>
-                      <SelectItem value="multiselect" className="text-admin-primary">Multi Select</SelectItem>
-                      <SelectItem value="tags" className="text-admin-primary">Tags</SelectItem>
+                    <SelectContent className="bg-admin-secondary border-admin max-h-80">
+                      <SelectItem value="Text" className="text-admin-primary">Text - Văn bản ngắn</SelectItem>
+                      <SelectItem value="Text Area" className="text-admin-primary">Text Area - Văn bản dài</SelectItem>
+                      <SelectItem value="Rich Text" className="text-admin-primary">Rich Text - Soạn thảo định dạng</SelectItem>
+                      <SelectItem value="Number" className="text-admin-primary">Number - Số nguyên</SelectItem>
+                      <SelectItem value="Decimal" className="text-admin-primary">Decimal - Số thập phân</SelectItem>
+                      <SelectItem value="Date" className="text-admin-primary">Date - Ngày tháng</SelectItem>
+                      <SelectItem value="Time" className="text-admin-primary">Time - Thời gian</SelectItem>
+                      <SelectItem value="DateTime" className="text-admin-primary">DateTime - Ngày giờ</SelectItem>
+                      <SelectItem value="Dropdown" className="text-admin-primary">Dropdown - Chọn một</SelectItem>
+                      <SelectItem value="Multi Select" className="text-admin-primary">Multi Select - Chọn nhiều</SelectItem>
+                      <SelectItem value="Tags" className="text-admin-primary">Tags - Nhãn</SelectItem>
+                      <SelectItem value="Boolean" className="text-admin-primary">Boolean - Đúng/Sai</SelectItem>
+                      <SelectItem value="File Upload" className="text-admin-primary">File Upload - Tải file</SelectItem>
+                      <SelectItem value="Email" className="text-admin-primary">Email - Địa chỉ email</SelectItem>
+                      <SelectItem value="URL" className="text-admin-primary">URL - Đường dẫn</SelectItem>
+                      <SelectItem value="JSON" className="text-admin-primary">JSON - Dữ liệu JSON</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
               </div>
+
+              {/* Dropdown Options - Show only for Dropdown, Multi Select types */}
+              {requiresDropdownOptions(formDataType) && (
+                <div className="space-y-3 p-4 bg-admin-input rounded border border-admin">
+                  <Label className="text-admin-primary">Tùy chọn Dropdown *</Label>
+                  <p className="text-xs text-admin-muted">Thêm các tùy chọn cho dropdown/select</p>
+                  
+                  <div className="flex gap-2">
+                    <Input 
+                      placeholder="Nhập tùy chọn mới..."
+                      value={newOptionInput}
+                      onChange={(e) => setNewOptionInput(e.target.value)}
+                      onKeyPress={(e) => {
+                        if (e.key === 'Enter') {
+                          e.preventDefault();
+                          addDropdownOption();
+                        }
+                      }}
+                      className="bg-admin-secondary border-admin text-admin-primary flex-1"
+                    />
+                    <Button 
+                      type="button"
+                      onClick={addDropdownOption}
+                      className="bg-cyan-600 hover:bg-cyan-700 text-white"
+                    >
+                      <Plus className="w-4 h-4" />
+                    </Button>
+                  </div>
+
+                  {dropdownOptions.length > 0 && (
+                    <div className="space-y-2 mt-3">
+                      <Label className="text-admin-secondary text-xs">Danh sách tùy chọn ({dropdownOptions.length}):</Label>
+                      <div className="space-y-1 max-h-40 overflow-y-auto">
+                        {dropdownOptions.map((option, index) => (
+                          <div key={index} className="flex items-center justify-between bg-admin-secondary p-2 rounded border border-admin">
+                            <span className="text-sm text-admin-primary">{option}</span>
+                            <Button
+                              type="button"
+                              variant="ghost"
+                              size="sm"
+                              onClick={() => removeDropdownOption(index)}
+                              className="text-red-400 hover:text-red-300 hover:bg-red-900/20 h-6 w-6 p-0"
+                            >
+                              <X className="w-3 h-3" />
+                            </Button>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                </div>
+              )}
 
               <div className="space-y-2">
                 <Label className="text-admin-primary">Thứ tự hiển thị</Label>
                 <Input 
                   type="number"
                   placeholder="1"
+                  value={formOrder}
+                  onChange={(e) => setFormOrder(e.target.value)}
                   className="bg-admin-input border-admin text-admin-primary"
                 />
               </div>
@@ -395,15 +614,27 @@ export function DataFieldsView() {
                 <Label className="text-admin-primary">Tùy chọn</Label>
                 <div className="space-y-2">
                   <label className="flex items-center gap-2 cursor-pointer">
-                    <Checkbox className="border-gray-600 data-[state=checked]:bg-cyan-500" />
+                    <Checkbox 
+                      checked={formIsRequired}
+                      onCheckedChange={(checked) => setFormIsRequired(checked as boolean)}
+                      className="border-gray-600 data-[state=checked]:bg-cyan-500" 
+                    />
                     <span className="text-sm text-admin-secondary">Bắt buộc</span>
                   </label>
                   <label className="flex items-center gap-2 cursor-pointer">
-                    <Checkbox className="border-gray-600 data-[state=checked]:bg-cyan-500" />
+                    <Checkbox 
+                      checked={formIsSearchable}
+                      onCheckedChange={(checked) => setFormIsSearchable(checked as boolean)}
+                      className="border-gray-600 data-[state=checked]:bg-cyan-500" 
+                    />
                     <span className="text-sm text-admin-secondary">Có thể tìm kiếm</span>
                   </label>
                   <label className="flex items-center gap-2 cursor-pointer">
-                    <Checkbox className="border-gray-600 data-[state=checked]:bg-cyan-500" />
+                    <Checkbox 
+                      checked={formIsEditable}
+                      onCheckedChange={(checked) => setFormIsEditable(checked as boolean)}
+                      className="border-gray-600 data-[state=checked]:bg-cyan-500" 
+                    />
                     <span className="text-sm text-admin-secondary">Có thể chỉnh sửa</span>
                   </label>
                 </div>
@@ -443,7 +674,7 @@ export function DataFieldsView() {
               <TableHead className="text-admin-secondary w-40">ID</TableHead>
               <TableHead className="text-admin-secondary">Tên trường</TableHead>
               <TableHead className="text-admin-secondary">Nhóm trường</TableHead>
-              <TableHead className="text-admin-secondary w-32">Kiểu dữ liệu</TableHead>
+              <TableHead className="text-admin-secondary w-36">Kiểu dữ liệu</TableHead>
               <TableHead className="text-admin-secondary w-24 text-center">Bắt buộc</TableHead>
               <TableHead className="text-admin-secondary w-24 text-center">Tìm kiếm</TableHead>
               <TableHead className="text-admin-secondary w-24 text-center">Sửa được</TableHead>
@@ -455,26 +686,35 @@ export function DataFieldsView() {
               <TableRow key={field.id} className="border-admin hover:bg-admin-hover">
                 <TableCell className="text-admin-secondary">{index + 1}</TableCell>
                 <TableCell className="text-admin-accent text-xs font-mono">{field.id}</TableCell>
-                <TableCell className="text-admin-primary">{field.name}</TableCell>
+                <TableCell>
+                  <div className="flex flex-col">
+                    <span className="text-admin-primary">{field.name}</span>
+                    {field.dropdownOptions && field.dropdownOptions.length > 0 && (
+                      <span className="text-xs text-admin-muted mt-1">
+                        {field.dropdownOptions.length} tùy chọn
+                      </span>
+                    )}
+                  </div>
+                </TableCell>
                 <TableCell className="text-admin-secondary text-sm">{field.fieldGroup}</TableCell>
                 <TableCell>{getDataTypeBadge(field.dataType)}</TableCell>
                 <TableCell className="text-center">
                   {field.isRequired ? (
-                    <Badge variant="outline" className="border-red-500 text-red-400">✓</Badge>
+                    <Badge variant="outline" className="border-red-500 text-red-400 text-[10px]">✓</Badge>
                   ) : (
                     <span className="text-gray-600">-</span>
                   )}
                 </TableCell>
                 <TableCell className="text-center">
                   {field.isSearchable ? (
-                    <Badge variant="outline" className="border-green-500 text-green-400">✓</Badge>
+                    <Badge variant="outline" className="border-green-500 text-green-400 text-[10px]">✓</Badge>
                   ) : (
                     <span className="text-gray-600">-</span>
                   )}
                 </TableCell>
                 <TableCell className="text-center">
                   {field.isEditable ? (
-                    <Badge variant="outline" className="border-blue-500 text-blue-400">✓</Badge>
+                    <Badge variant="outline" className="border-blue-500 text-blue-400 text-[10px]">✓</Badge>
                   ) : (
                     <span className="text-gray-600">-</span>
                   )}
@@ -492,6 +732,7 @@ export function DataFieldsView() {
                     <Button
                       variant="ghost"
                       size="sm"
+                      onClick={() => handleDelete(field)}
                       className="text-red-400 hover:text-red-300 hover:bg-red-900/20"
                     >
                       <Trash2 className="w-4 h-4" />
@@ -503,6 +744,45 @@ export function DataFieldsView() {
           </TableBody>
         </Table>
       </div>
+
+      {/* Delete Confirmation Dialog */}
+      <AlertDialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
+        <AlertDialogContent className="bg-admin-secondary border-admin text-admin-primary max-w-md">
+          <AlertDialogHeader>
+            <AlertDialogTitle className="text-admin-accent">
+              Xác nhận xóa trường dữ liệu
+            </AlertDialogTitle>
+            <AlertDialogDescription className="text-admin-muted">
+              Bạn có chắc chắn muốn xóa trường dữ liệu này không?
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          
+          <div className="space-y-2 py-4">
+            <div className="p-3 bg-admin-input rounded border border-admin">
+              <p className="text-sm text-admin-secondary">Tên trường:</p>
+              <p className="text-admin-primary font-bold">{fieldToDelete?.name}</p>
+            </div>
+            <Alert className="bg-red-900/20 border-red-500">
+              <AlertCircle className="h-4 w-4 text-red-400" />
+              <AlertDescription className="text-red-400 text-xs ml-2">
+                Hành động này không thể hoàn tác
+              </AlertDescription>
+            </Alert>
+          </div>
+
+          <AlertDialogFooter>
+            <AlertDialogCancel className="border-admin text-admin-primary hover:bg-admin-hover">
+              Hủy
+            </AlertDialogCancel>
+            <AlertDialogAction
+              className="bg-red-600 hover:bg-red-700 text-white"
+              onClick={confirmDelete}
+            >
+              Xóa
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 }

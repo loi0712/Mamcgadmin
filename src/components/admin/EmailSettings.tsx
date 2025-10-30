@@ -1,28 +1,52 @@
-import { Card } from '../ui/card';
-import { Input } from '../ui/input';
-import { Label } from '../ui/label';
-import { Button } from '../ui/button';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select';
-import { Switch } from '../ui/switch';
-import { Textarea } from '../ui/textarea';
 import { Mail, Send, CheckCircle, AlertCircle, Server, Lock, FileText } from 'lucide-react';
 import { useState } from 'react';
 import { Badge } from '../ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../ui/tabs';
 import { ScrollArea } from '../ui/scroll-area';
+import { toast } from 'sonner';
 
 export function EmailSettings() {
   const [testEmailStatus, setTestEmailStatus] = useState<'idle' | 'sending' | 'success' | 'error'>('idle');
   const [enableSSL, setEnableSSL] = useState(true);
   const [enableAuth, setEnableAuth] = useState(true);
+  const [isSaving, setIsSaving] = useState(false);
 
-  const handleTestEmail = () => {
+  const handleTestEmail = async () => {
     setTestEmailStatus('sending');
-    // Simulate sending test email
-    setTimeout(() => {
+    try {
+      // Simulate sending test email
+      await new Promise(resolve => setTimeout(resolve, 2000));
       setTestEmailStatus('success');
+      toast.success('Email thử nghiệm đã được gửi!', {
+        description: 'Vui lòng kiểm tra hộp thư đến'
+      });
       setTimeout(() => setTestEmailStatus('idle'), 3000);
-    }, 2000);
+    } catch (err) {
+      setTestEmailStatus('error');
+      toast.error('Không thể gửi email', {
+        description: 'Vui lòng kiểm tra lại cấu hình SMTP'
+      });
+      setTimeout(() => setTestEmailStatus('idle'), 3000);
+    }
+  };
+
+  const handleSaveConfig = async () => {
+    setIsSaving(true);
+    try {
+      // Simulate API call
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      toast.success('Đã lưu cấu hình email', {
+        description: 'Các thay đổi đã được áp dụng'
+      });
+    } catch (err) {
+      toast.error('Lỗi khi lưu cấu hình');
+    } finally {
+      setIsSaving(false);
+    }
+  };
+
+  const handleReset = () => {
+    toast.info('Đã khôi phục cấu hình mặc định');
   };
 
   return (
@@ -268,11 +292,16 @@ export function EmailSettings() {
             <Button 
               variant="outline" 
               className="border-admin text-admin-secondary hover:bg-admin-hover"
+              onClick={handleReset}
             >
               Khôi phục mặc định
             </Button>
-            <Button className="bg-admin-accent hover:bg-admin-accent-hover text-white">
-              Lưu cấu hình
+            <Button 
+              className="bg-admin-accent hover:bg-admin-accent-hover text-white"
+              onClick={handleSaveConfig}
+              disabled={isSaving}
+            >
+              {isSaving ? 'Đang lưu...' : 'Lưu cấu hình'}
             </Button>
           </div>
         </TabsContent>
@@ -564,11 +593,16 @@ MAMCG System`}
             <Button 
               variant="outline" 
               className="border-admin text-admin-secondary hover:bg-admin-hover"
+              onClick={handleReset}
             >
               Khôi phục mặc định
             </Button>
-            <Button className="bg-admin-accent hover:bg-admin-accent-hover text-white">
-              Lưu cấu hình
+            <Button 
+              className="bg-admin-accent hover:bg-admin-accent-hover text-white"
+              onClick={handleSaveConfig}
+              disabled={isSaving}
+            >
+              {isSaving ? 'Đang lưu...' : 'Lưu cấu hình'}
             </Button>
           </div>
         </TabsContent>

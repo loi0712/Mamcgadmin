@@ -1,13 +1,33 @@
 import { Input } from '../ui/input';
 import { Label } from '../ui/label';
 import { Button } from '../ui/button';
-import { Plus, Pencil, Trash2, Search, Save, GripVertical, AlertCircle } from 'lucide-react';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '../ui/dialog';
+import { Plus, Pencil, Trash2, Search, Save, GripVertical, AlertCircle, ChevronDown, ChevronRight } from 'lucide-react';
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '../ui/dialog';
+import { 
+  AlertDialog, 
+  AlertDialogAction, 
+  AlertDialogCancel, 
+  AlertDialogContent, 
+  AlertDialogDescription, 
+  AlertDialogFooter, 
+  AlertDialogHeader, 
+  AlertDialogTitle 
+} from '../ui/alert-dialog';
 import { useState } from 'react';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '../ui/table';
 import { Badge } from '../ui/badge';
 import { Textarea } from '../ui/textarea';
 import { Alert, AlertDescription } from '../ui/alert';
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '../ui/collapsible';
+import { toast } from 'sonner@2.0.3';
+
+interface DataField {
+  id: string;
+  name: string;
+  dataType: string;
+  isRequired: boolean;
+  isSearchable: boolean;
+}
 
 interface FieldGroup {
   id: string;
@@ -16,7 +36,71 @@ interface FieldGroup {
   fieldCount: number;
   order: number;
   isActive: boolean;
+  fields?: DataField[];
 }
+
+const mockFields: Record<string, DataField[]> = {
+  basic_info: [
+    { id: 'title', name: 'Tiêu đề', dataType: 'text', isRequired: true, isSearchable: true },
+    { id: 'description', name: 'Mô tả', dataType: 'textarea', isRequired: false, isSearchable: true },
+    { id: 'date_created', name: 'Ngày tạo', dataType: 'date', isRequired: true, isSearchable: false },
+    { id: 'duration', name: 'Thời lượng', dataType: 'number', isRequired: false, isSearchable: false },
+    { id: 'language', name: 'Ngôn ngữ', dataType: 'select', isRequired: false, isSearchable: true },
+    { id: 'location', name: 'Địa điểm', dataType: 'text', isRequired: false, isSearchable: true },
+    { id: 'keywords', name: 'Từ khóa', dataType: 'tags', isRequired: false, isSearchable: true },
+    { id: 'status', name: 'Trạng thái', dataType: 'select', isRequired: true, isSearchable: false },
+  ],
+  technical_metadata: [
+    { id: 'video_codec', name: 'Video Codec', dataType: 'text', isRequired: false, isSearchable: false },
+    { id: 'audio_codec', name: 'Audio Codec', dataType: 'text', isRequired: false, isSearchable: false },
+    { id: 'resolution', name: 'Độ phân giải', dataType: 'text', isRequired: false, isSearchable: false },
+    { id: 'bitrate', name: 'Bitrate', dataType: 'number', isRequired: false, isSearchable: false },
+    { id: 'frame_rate', name: 'Frame Rate', dataType: 'number', isRequired: false, isSearchable: false },
+    { id: 'aspect_ratio', name: 'Tỷ lệ khung hình', dataType: 'text', isRequired: false, isSearchable: false },
+    { id: 'file_size', name: 'Kích thước file', dataType: 'number', isRequired: false, isSearchable: false },
+    { id: 'format', name: 'Định dạng', dataType: 'text', isRequired: false, isSearchable: true },
+    { id: 'audio_channels', name: 'Audio Channels', dataType: 'number', isRequired: false, isSearchable: false },
+    { id: 'sample_rate', name: 'Sample Rate', dataType: 'number', isRequired: false, isSearchable: false },
+    { id: 'color_space', name: 'Color Space', dataType: 'text', isRequired: false, isSearchable: false },
+    { id: 'timecode', name: 'Timecode', dataType: 'text', isRequired: false, isSearchable: false },
+  ],
+  copyright_info: [
+    { id: 'copyright_holder', name: 'Chủ sở hữu bản quyền', dataType: 'text', isRequired: false, isSearchable: true },
+    { id: 'license_type', name: 'Loại giấy phép', dataType: 'select', isRequired: false, isSearchable: true },
+    { id: 'usage_rights', name: 'Quyền sử dụng', dataType: 'textarea', isRequired: false, isSearchable: false },
+    { id: 'expiry_date', name: 'Ngày hết hạn', dataType: 'date', isRequired: false, isSearchable: false },
+    { id: 'author', name: 'Tác giả', dataType: 'text', isRequired: false, isSearchable: true },
+    { id: 'credit', name: 'Credit', dataType: 'text', isRequired: false, isSearchable: true },
+  ],
+  content_classification: [
+    { id: 'category', name: 'Danh mục', dataType: 'select', isRequired: true, isSearchable: true },
+    { id: 'genre', name: 'Thể loại', dataType: 'multiselect', isRequired: false, isSearchable: true },
+    { id: 'tags', name: 'Tags', dataType: 'tags', isRequired: false, isSearchable: true },
+    { id: 'subject', name: 'Chủ đề', dataType: 'text', isRequired: false, isSearchable: true },
+    { id: 'rating', name: 'Đánh giá', dataType: 'select', isRequired: false, isSearchable: false },
+    { id: 'audience', name: 'Đối tượng', dataType: 'select', isRequired: false, isSearchable: true },
+    { id: 'content_type', name: 'Loại nội dung', dataType: 'select', isRequired: false, isSearchable: true },
+    { id: 'priority', name: 'Độ ưu tiên', dataType: 'select', isRequired: false, isSearchable: false },
+    { id: 'sensitivity', name: 'Độ nhạy cảm', dataType: 'select', isRequired: false, isSearchable: false },
+    { id: 'custom_tags', name: 'Tags tùy chỉnh', dataType: 'tags', isRequired: false, isSearchable: true },
+  ],
+  production_info: [
+    { id: 'producer', name: 'Nhà sản xuất', dataType: 'text', isRequired: false, isSearchable: true },
+    { id: 'director', name: 'Đạo diễn', dataType: 'text', isRequired: false, isSearchable: true },
+    { id: 'editor', name: 'Biên tập viên', dataType: 'text', isRequired: false, isSearchable: true },
+    { id: 'camera_operator', name: 'Quay phim', dataType: 'text', isRequired: false, isSearchable: true },
+    { id: 'production_date', name: 'Ngày sản xuất', dataType: 'date', isRequired: false, isSearchable: false },
+    { id: 'production_unit', name: 'Đơn vị sản xuất', dataType: 'text', isRequired: false, isSearchable: true },
+    { id: 'production_notes', name: 'Ghi chú sản xuất', dataType: 'textarea', isRequired: false, isSearchable: false },
+  ],
+  storage_archiving: [
+    { id: 'storage_location', name: 'Vị trí lưu trữ', dataType: 'text', isRequired: false, isSearchable: false },
+    { id: 'archive_status', name: 'Trạng thái lưu trữ', dataType: 'select', isRequired: false, isSearchable: false },
+    { id: 'backup_location', name: 'Vị trí backup', dataType: 'text', isRequired: false, isSearchable: false },
+    { id: 'retention_period', name: 'Thời gian lưu trữ', dataType: 'number', isRequired: false, isSearchable: false },
+    { id: 'archive_date', name: 'Ngày lưu trữ', dataType: 'date', isRequired: false, isSearchable: false },
+  ],
+};
 
 const mockFieldGroups: FieldGroup[] = [
   {
@@ -25,7 +109,8 @@ const mockFieldGroups: FieldGroup[] = [
     description: 'Các trường thông tin cơ bản của media',
     fieldCount: 8,
     order: 1,
-    isActive: true
+    isActive: true,
+    fields: mockFields.basic_info
   },
   {
     id: 'technical_metadata',
@@ -33,7 +118,8 @@ const mockFieldGroups: FieldGroup[] = [
     description: 'Thông tin kỹ thuật về video, audio, codec',
     fieldCount: 12,
     order: 2,
-    isActive: true
+    isActive: true,
+    fields: mockFields.technical_metadata
   },
   {
     id: 'copyright_info',
@@ -41,7 +127,8 @@ const mockFieldGroups: FieldGroup[] = [
     description: 'Thông tin về bản quyền, tác giả, license',
     fieldCount: 6,
     order: 3,
-    isActive: true
+    isActive: true,
+    fields: mockFields.copyright_info
   },
   {
     id: 'content_classification',
@@ -49,7 +136,8 @@ const mockFieldGroups: FieldGroup[] = [
     description: 'Danh mục, thể loại, tags, keywords',
     fieldCount: 10,
     order: 4,
-    isActive: true
+    isActive: true,
+    fields: mockFields.content_classification
   },
   {
     id: 'production_info',
@@ -57,7 +145,8 @@ const mockFieldGroups: FieldGroup[] = [
     description: 'Đơn vị sản xuất, đạo diễn, biên tập viên',
     fieldCount: 7,
     order: 5,
-    isActive: true
+    isActive: true,
+    fields: mockFields.production_info
   },
   {
     id: 'storage_archiving',
@@ -65,7 +154,8 @@ const mockFieldGroups: FieldGroup[] = [
     description: 'Thông tin lưu trữ, vị trí, backup',
     fieldCount: 5,
     order: 6,
-    isActive: false
+    isActive: false,
+    fields: mockFields.storage_archiving
   },
 ];
 
@@ -74,6 +164,9 @@ export function FieldGroupsView() {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const [editingGroup, setEditingGroup] = useState<FieldGroup | null>(null);
+  const [expandedGroups, setExpandedGroups] = useState<Set<string>>(new Set());
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+  const [groupToDelete, setGroupToDelete] = useState<FieldGroup | null>(null);
   
   // Form state
   const [formId, setFormId] = useState('');
@@ -91,6 +184,32 @@ export function FieldGroupsView() {
     group.id.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
+  const toggleExpand = (groupId: string) => {
+    setExpandedGroups(prev => {
+      const newSet = new Set(prev);
+      if (newSet.has(groupId)) {
+        newSet.delete(groupId);
+      } else {
+        newSet.add(groupId);
+      }
+      return newSet;
+    });
+  };
+
+  const getDataTypeBadge = (dataType: string) => {
+    const config: Record<string, { label: string; className: string }> = {
+      text: { label: 'Text', className: 'border-blue-500 text-blue-400' },
+      textarea: { label: 'Textarea', className: 'border-purple-500 text-purple-400' },
+      number: { label: 'Number', className: 'border-green-500 text-green-400' },
+      date: { label: 'Date', className: 'border-orange-500 text-orange-400' },
+      select: { label: 'Select', className: 'border-cyan-500 text-cyan-400' },
+      multiselect: { label: 'Multi-Select', className: 'border-pink-500 text-pink-400' },
+      tags: { label: 'Tags', className: 'border-yellow-500 text-yellow-400' },
+    };
+    const cfg = config[dataType] || { label: dataType, className: 'border-gray-500 text-gray-400' };
+    return <Badge variant="outline" className={`${cfg.className} text-[10px]`}>{cfg.label}</Badge>;
+  };
+
   const handleEdit = (group: FieldGroup) => {
     setEditingGroup(group);
     setFormId(group.id);
@@ -103,8 +222,21 @@ export function FieldGroupsView() {
   };
 
   const handleDelete = (id: string) => {
-    if (confirm('Bạn có chắc muốn xóa nhóm trường này?')) {
-      setFieldGroups(prev => prev.filter(g => g.id !== id));
+    const group = fieldGroups.find(g => g.id === id);
+    if (group) {
+      setGroupToDelete(group);
+      setDeleteDialogOpen(true);
+    }
+  };
+
+  const confirmDelete = () => {
+    if (groupToDelete) {
+      setFieldGroups(prev => prev.filter(g => g.id !== groupToDelete.id));
+      toast.success('Đã xóa nhóm trường', {
+        description: `Nhóm trường "${groupToDelete.name}" đã được xóa thành công`
+      });
+      setDeleteDialogOpen(false);
+      setGroupToDelete(null);
     }
   };
 
@@ -324,51 +456,131 @@ export function FieldGroupsView() {
           </TableHeader>
           <TableBody>
             {filteredGroups.map((group) => (
-              <TableRow key={group.id} className="border-admin hover:bg-admin-hover">
-                <TableCell>
-                  <GripVertical className="w-4 h-4 text-gray-600 cursor-move" />
-                </TableCell>
-                <TableCell className="text-admin-secondary">{group.order}</TableCell>
-                <TableCell className="text-admin-accent text-xs font-mono">{group.id}</TableCell>
-                <TableCell className="text-admin-primary">{group.name}</TableCell>
-                <TableCell className="text-admin-secondary text-sm">{group.description}</TableCell>
-                <TableCell className="text-center">
-                  <Badge variant="outline" className="border-cyan-500 text-cyan-400">
-                    {group.fieldCount}
-                  </Badge>
-                </TableCell>
-                <TableCell className="text-center">
-                  <Badge 
-                    variant="outline" 
-                    className={group.isActive 
-                      ? 'border-green-500 text-green-400' 
-                      : 'border-gray-500 text-gray-400'
-                    }
-                  >
-                    {group.isActive ? 'Hoạt động' : 'Tạm dừng'}
-                  </Badge>
-                </TableCell>
-                <TableCell className="text-center">
-                  <div className="flex items-center justify-center gap-2">
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      onClick={() => handleEdit(group)}
-                      className="text-cyan-400 hover:text-cyan-300 hover:bg-cyan-900/20"
-                    >
-                      <Pencil className="w-4 h-4" />
-                    </Button>
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      onClick={() => handleDelete(group.id)}
-                      className="text-red-400 hover:text-red-300 hover:bg-red-900/20"
-                    >
-                      <Trash2 className="w-4 h-4" />
-                    </Button>
-                  </div>
-                </TableCell>
-              </TableRow>
+              <Collapsible
+                key={group.id}
+                open={expandedGroups.has(group.id)}
+                onOpenChange={() => group.fieldCount > 0 && toggleExpand(group.id)}
+                asChild
+              >
+                <>
+                  <TableRow className="border-admin hover:bg-admin-hover">
+                    <TableCell>
+                      {group.fieldCount > 0 ? (
+                        <CollapsibleTrigger asChild>
+                          <Button variant="ghost" size="sm" className="p-0 h-auto hover:bg-transparent">
+                            {expandedGroups.has(group.id) ? (
+                              <ChevronDown className="w-4 h-4 text-admin-accent" />
+                            ) : (
+                              <ChevronRight className="w-4 h-4 text-admin-secondary" />
+                            )}
+                          </Button>
+                        </CollapsibleTrigger>
+                      ) : (
+                        <GripVertical className="w-4 h-4 text-gray-600 cursor-move ml-1" />
+                      )}
+                    </TableCell>
+                    <TableCell className="text-admin-secondary">{group.order}</TableCell>
+                    <TableCell className="text-admin-accent text-xs font-mono">{group.id}</TableCell>
+                    <TableCell className="text-admin-primary">{group.name}</TableCell>
+                    <TableCell className="text-admin-secondary text-sm">{group.description}</TableCell>
+                    <TableCell className="text-center">
+                      <Badge 
+                        variant="outline" 
+                        className={group.fieldCount > 0 ? 'border-cyan-500 text-cyan-400 cursor-pointer hover:bg-cyan-900/20' : 'border-gray-500 text-gray-400'}
+                        onClick={() => group.fieldCount > 0 && toggleExpand(group.id)}
+                      >
+                        {group.fieldCount}
+                      </Badge>
+                    </TableCell>
+                    <TableCell className="text-center">
+                      <Badge 
+                        variant="outline" 
+                        className={group.isActive 
+                          ? 'border-green-500 text-green-400' 
+                          : 'border-gray-500 text-gray-400'
+                        }
+                      >
+                        {group.isActive ? 'Hoạt động' : 'Tạm dừng'}
+                      </Badge>
+                    </TableCell>
+                    <TableCell className="text-center">
+                      <div className="flex items-center justify-center gap-2">
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          onClick={() => handleEdit(group)}
+                          className="text-cyan-400 hover:text-cyan-300 hover:bg-cyan-900/20"
+                        >
+                          <Pencil className="w-4 h-4" />
+                        </Button>
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          onClick={() => handleDelete(group.id)}
+                          className="text-red-400 hover:text-red-300 hover:bg-red-900/20"
+                        >
+                          <Trash2 className="w-4 h-4" />
+                        </Button>
+                      </div>
+                    </TableCell>
+                  </TableRow>
+
+                  {/* Expanded Fields Section */}
+                  {group.fields && group.fields.length > 0 && (
+                    <CollapsibleContent asChild>
+                      <tr>
+                        <td colSpan={8} className="p-0">
+                          <div className="bg-admin-input border-t border-admin">
+                            <div className="p-4">
+                              <div className="text-xs text-admin-accent mb-2 flex items-center gap-2">
+                                <span>📋 Danh sách trường dữ liệu ({group.fields.length})</span>
+                              </div>
+                              <Table>
+                                <TableHeader>
+                                  <TableRow className="border-admin hover:bg-admin-hover">
+                                    <TableHead className="text-admin-muted text-xs w-48">Tên trường</TableHead>
+                                    <TableHead className="text-admin-muted text-xs w-32">ID</TableHead>
+                                    <TableHead className="text-admin-muted text-xs w-32">Kiểu dữ liệu</TableHead>
+                                    <TableHead className="text-admin-muted text-xs w-24 text-center">Bắt buộc</TableHead>
+                                    <TableHead className="text-admin-muted text-xs w-24 text-center">Tìm kiếm</TableHead>
+                                  </TableRow>
+                                </TableHeader>
+                                <TableBody>
+                                  {group.fields.map((field) => (
+                                    <TableRow key={field.id} className="border-admin hover:bg-admin-hover">
+                                      <TableCell className="text-admin-primary text-sm">{field.name}</TableCell>
+                                      <TableCell className="text-admin-muted text-xs font-mono">{field.id}</TableCell>
+                                      <TableCell>{getDataTypeBadge(field.dataType)}</TableCell>
+                                      <TableCell className="text-center">
+                                        {field.isRequired ? (
+                                          <Badge variant="outline" className="border-red-500 text-red-400 text-[10px]">
+                                            Có
+                                          </Badge>
+                                        ) : (
+                                          <span className="text-admin-muted text-xs">-</span>
+                                        )}
+                                      </TableCell>
+                                      <TableCell className="text-center">
+                                        {field.isSearchable ? (
+                                          <Badge variant="outline" className="border-green-500 text-green-400 text-[10px]">
+                                            Có
+                                          </Badge>
+                                        ) : (
+                                          <span className="text-admin-muted text-xs">-</span>
+                                        )}
+                                      </TableCell>
+                                    </TableRow>
+                                  ))}
+                                </TableBody>
+                              </Table>
+                            </div>
+                          </div>
+                        </td>
+                      </tr>
+                    </CollapsibleContent>
+                  )}
+                </>
+              </Collapsible>
             ))}
           </TableBody>
         </Table>
@@ -378,9 +590,45 @@ export function FieldGroupsView() {
       <div className="bg-admin-secondary border border-admin rounded-lg p-4">
         <div className="text-sm text-admin-secondary">
           <strong className="text-admin-accent">Lưu ý:</strong> Nhóm trường được sử dụng để tổ chức các trường dữ liệu thành các nhóm logic. 
+          Click vào số lượng trường hoặc icon mũi tên để xem chi tiết các trường trong nhóm. 
           Thứ tự hiển thị có thể điều chỉnh bằng cách kéo thả các hàng trong bảng.
         </div>
       </div>
+
+      {/* Delete Confirmation Dialog */}
+      <AlertDialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
+        <AlertDialogContent className="bg-admin-secondary border-admin text-admin-primary max-w-md">
+          <AlertDialogHeader>
+            <AlertDialogTitle className="text-admin-accent">
+              Xác nhận xóa nhóm trường
+            </AlertDialogTitle>
+          </AlertDialogHeader>
+          
+          <div className="space-y-4 mt-4">
+            <div className="space-y-2">
+              <Label className="text-admin-primary">Bạn có chắc chắn muốn xóa nhóm trường này?</Label>
+              <p className="text-xs text-admin-muted">Nhóm trường sẽ bị xóa vĩnh viễn và không thể khôi phục.</p>
+            </div>
+
+            <div className="flex gap-3 justify-end mt-4">
+              <Button 
+                variant="outline" 
+                onClick={() => setDeleteDialogOpen(false)}
+                className="border-admin text-admin-primary hover:bg-admin-hover"
+              >
+                Hủy
+              </Button>
+              <Button 
+                onClick={confirmDelete}
+                className="bg-red-600 hover:bg-red-700 text-white flex items-center gap-2"
+              >
+                <Trash2 className="w-4 h-4" />
+                Xóa
+              </Button>
+            </div>
+          </div>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 }

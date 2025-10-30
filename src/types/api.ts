@@ -224,11 +224,104 @@ export interface Storage {
   updatedAt: string;
 }
 
+export interface StorageConnection {
+  id: string;
+  name: string;
+  type: 'NAS' | 'SAN' | 'FTP' | 'Amazon S3' | 'Wasabi' | 'Azure Blob' | 'Google Cloud';
+  host: string;
+  path: string;
+  capacity: string;
+  used: string;
+  status: 'connected' | 'disconnected' | 'error';
+  lastConnection?: string;
+  config?: {
+    port?: string;
+    username?: string;
+    useSSL?: boolean;
+    accessKey?: string;
+    secretKey?: string;
+    region?: string;
+    bucket?: string;
+    timeout?: number;
+    maxCapacity?: number;
+    mountPoint?: string;
+    autoConnect?: boolean;
+    isDefault?: boolean;
+  };
+  createdAt: string;
+  updatedAt: string;
+}
+
 export interface CreateStorageRequest {
   name: string;
   type: string;
   config: Record<string, any>;
   isDefault?: boolean;
+}
+
+export interface CreateStorageConnectionRequest {
+  name: string;
+  type: string;
+  host: string;
+  path: string;
+  port?: string;
+  username?: string;
+  password?: string;
+  accessKey?: string;
+  secretKey?: string;
+  region?: string;
+  bucket?: string;
+  config?: {
+    useSSL?: boolean;
+    timeout?: number;
+    maxCapacity?: number;
+    mountPoint?: string;
+    autoConnect?: boolean;
+    isDefault?: boolean;
+  };
+}
+
+export interface StorageStats {
+  total: number;
+  used: number;
+  available: number;
+  usage: number;
+  fileCount?: number;
+  largestFile?: {
+    name: string;
+    size: number;
+  };
+  recentActivity?: Array<{
+    action: string;
+    timestamp: string;
+    size: number;
+  }>;
+}
+
+export interface StorageSyncRequest {
+  storageId: string;
+  recursive?: boolean;
+  deleteOrphaned?: boolean;
+}
+
+export interface StorageCleanupRequest {
+  storageId: string;
+  deleteTemp?: boolean;
+  deleteDuplicates?: boolean;
+  deleteOlderThan?: number;
+}
+
+export interface TestStorageConnectionRequest {
+  host: string;
+  path: string;
+  type: string;
+  port?: string;
+  username?: string;
+  password?: string;
+  accessKey?: string;
+  secretKey?: string;
+  region?: string;
+  bucket?: string;
 }
 
 // Database Types
@@ -242,19 +335,89 @@ export interface DatabaseInfo {
   lastBackup?: string;
 }
 
+export interface DatabaseConnection {
+  id: string;
+  name: string;
+  type: 'postgresql' | 'mysql' | 'mssql' | 'oracle' | 'mongodb' | 'mariadb';
+  host: string;
+  port: string;
+  database: string;
+  username?: string;
+  status: 'connected' | 'disconnected' | 'error';
+  lastConnection?: string;
+  config?: {
+    maxPoolSize?: number;
+    timeout?: number;
+    schema?: string;
+    connectionString?: string;
+  };
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface CreateDatabaseConnectionRequest {
+  name: string;
+  type: string;
+  host: string;
+  port: string;
+  database: string;
+  username: string;
+  password: string;
+  config?: {
+    maxPoolSize?: number;
+    timeout?: number;
+    schema?: string;
+    connectionString?: string;
+  };
+}
+
+export interface TestConnectionRequest {
+  host: string;
+  port: string;
+  database: string;
+  username: string;
+  password: string;
+  type: string;
+}
+
+export interface TestConnectionResponse {
+  success: boolean;
+  message: string;
+  latency?: number;
+  version?: string;
+}
+
 export interface DatabaseBackup {
   id: string;
+  databaseId: string;
+  databaseName: string;
   filename: string;
   size: number;
   type: 'full' | 'incremental';
   status: 'running' | 'completed' | 'failed';
+  compressionType?: 'none' | 'gzip' | 'zip' | 'tar';
+  path?: string;
   createdAt: string;
   duration?: number;
+  error?: string;
 }
 
 export interface CreateBackupRequest {
+  databaseId: string;
   type?: 'full' | 'incremental';
   description?: string;
+  compressionType?: 'none' | 'gzip' | 'zip' | 'tar';
+}
+
+export interface BackupConfig {
+  enabled: boolean;
+  databaseId: string;
+  frequency: 'hourly' | 'daily' | 'weekly' | 'monthly';
+  time?: string;
+  retentionDays: number;
+  path: string;
+  compressionType: 'none' | 'gzip' | 'zip' | 'tar';
+  emailNotification: boolean;
 }
 
 // Log Types

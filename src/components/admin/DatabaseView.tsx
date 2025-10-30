@@ -5,8 +5,9 @@ import { Button } from '../ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '../ui/table';
 import { Badge } from '../ui/badge';
-import { Plus, Pencil, Trash2, TestTube, Save, Database, HardDrive, Calendar, Clock } from 'lucide-react';
+import { Plus, Pencil, Trash2, TestTube, Save, Database, HardDrive, Calendar, Clock, Settings2, Play, Square, RefreshCw, Eye, Download } from 'lucide-react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '../ui/dialog';
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from '../ui/dropdown-menu';
 import { useState } from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../ui/tabs';
 import { Switch } from '../ui/switch';
@@ -333,21 +334,74 @@ export function DatabaseView() {
                     <TableCell>{getStatusBadge(db.status)}</TableCell>
                     <TableCell className="text-admin-secondary text-sm">{db.lastConnection}</TableCell>
                     <TableCell>
-                      <div className="flex gap-2 justify-end">
-                        <Button 
-                          variant="ghost" 
-                          size="sm" 
-                          className="text-cyan-400 hover:text-cyan-300 hover:bg-admin-hover"
-                        >
-                          <Pencil className="w-4 h-4" />
-                        </Button>
-                        <Button 
-                          variant="ghost" 
-                          size="sm" 
-                          className="text-red-400 hover:text-red-300 hover:bg-admin-hover"
-                        >
-                          <Trash2 className="w-4 h-4" />
-                        </Button>
+                      <div className="flex items-center justify-center">
+                        <DropdownMenu>
+                          <DropdownMenuTrigger asChild>
+                            <Button 
+                              variant="ghost" 
+                              size="sm"
+                              className="text-admin-accent hover:text-admin-primary hover:bg-admin-hover h-8 w-8 p-0"
+                            >
+                              <Settings2 className="w-4 h-4" />
+                            </Button>
+                          </DropdownMenuTrigger>
+                          <DropdownMenuContent align="end" className="bg-admin-secondary border-admin w-52">
+                            <DropdownMenuItem 
+                              className="text-admin-primary hover:bg-admin-hover cursor-pointer"
+                            >
+                              <Eye className="w-4 h-4 mr-2" />
+                              Xem chi tiết
+                            </DropdownMenuItem>
+                            <DropdownMenuItem 
+                              className="text-admin-primary hover:bg-admin-hover cursor-pointer"
+                            >
+                              <Pencil className="w-4 h-4 mr-2" />
+                              Chỉnh sửa cấu hình
+                            </DropdownMenuItem>
+                            <DropdownMenuItem 
+                              className="text-admin-primary hover:bg-admin-hover cursor-pointer"
+                            >
+                              <TestTube className="w-4 h-4 mr-2" />
+                              Kiểm tra kết nối
+                            </DropdownMenuItem>
+                            <DropdownMenuSeparator className="bg-admin-border" />
+                            {db.status === 'disconnected' ? (
+                              <DropdownMenuItem 
+                                className="text-green-400 hover:bg-green-900/20 cursor-pointer"
+                              >
+                                <Play className="w-4 h-4 mr-2" />
+                                Kết nối
+                              </DropdownMenuItem>
+                            ) : (
+                              <DropdownMenuItem 
+                                className="text-yellow-400 hover:bg-yellow-900/20 cursor-pointer"
+                              >
+                                <Square className="w-4 h-4 mr-2" />
+                                Ngắt kết nối
+                              </DropdownMenuItem>
+                            )}
+                            <DropdownMenuItem 
+                              className="text-admin-primary hover:bg-admin-hover cursor-pointer"
+                            >
+                              <RefreshCw className="w-4 h-4 mr-2" />
+                              Làm mới kết nối
+                            </DropdownMenuItem>
+                            <DropdownMenuSeparator className="bg-admin-border" />
+                            <DropdownMenuItem 
+                              className="text-cyan-400 hover:bg-cyan-900/20 cursor-pointer"
+                            >
+                              <Download className="w-4 h-4 mr-2" />
+                              Backup ngay
+                            </DropdownMenuItem>
+                            <DropdownMenuSeparator className="bg-admin-border" />
+                            <DropdownMenuItem 
+                              className="text-red-400 hover:bg-red-900/20 cursor-pointer"
+                            >
+                              <Trash2 className="w-4 h-4 mr-2" />
+                              Xóa kết nối
+                            </DropdownMenuItem>
+                          </DropdownMenuContent>
+                        </DropdownMenu>
                       </div>
                     </TableCell>
                   </TableRow>

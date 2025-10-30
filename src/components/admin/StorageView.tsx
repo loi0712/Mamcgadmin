@@ -5,8 +5,9 @@ import { Button } from '../ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '../ui/table';
 import { Badge } from '../ui/badge';
-import { Plus, Pencil, Trash2, TestTube, Save, HardDrive, Cloud, FolderOpen } from 'lucide-react';
+import { Plus, Pencil, Trash2, TestTube, Save, HardDrive, Cloud, FolderOpen, Settings2, Eye, Play, Square, RefreshCw, BarChart3, Eraser } from 'lucide-react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '../ui/dialog';
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from '../ui/dropdown-menu';
 import { useState } from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../ui/tabs';
 import { Switch } from '../ui/switch';
@@ -400,21 +401,80 @@ export function StorageView() {
                 <TableCell className="text-yellow-400">{storage.used}</TableCell>
                 <TableCell>{getStatusBadge(storage.status)}</TableCell>
                 <TableCell>
-                  <div className="flex gap-2 justify-end">
-                    <Button 
-                      variant="ghost" 
-                      size="sm" 
-                      className="text-cyan-400 hover:text-cyan-300 hover:bg-admin-hover"
-                    >
-                      <Pencil className="w-4 h-4" />
-                    </Button>
-                    <Button 
-                      variant="ghost" 
-                      size="sm" 
-                      className="text-red-400 hover:text-red-300 hover:bg-admin-hover"
-                    >
-                      <Trash2 className="w-4 h-4" />
-                    </Button>
+                  <div className="flex items-center justify-center">
+                    <DropdownMenu>
+                      <DropdownMenuTrigger asChild>
+                        <Button 
+                          variant="ghost" 
+                          size="sm"
+                          className="text-admin-accent hover:text-admin-primary hover:bg-admin-hover h-8 w-8 p-0"
+                        >
+                          <Settings2 className="w-4 h-4" />
+                        </Button>
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent align="end" className="bg-admin-secondary border-admin w-56">
+                        <DropdownMenuItem 
+                          className="text-admin-primary hover:bg-admin-hover cursor-pointer"
+                        >
+                          <Eye className="w-4 h-4 mr-2" />
+                          Xem chi tiết
+                        </DropdownMenuItem>
+                        <DropdownMenuItem 
+                          className="text-admin-primary hover:bg-admin-hover cursor-pointer"
+                        >
+                          <Pencil className="w-4 h-4 mr-2" />
+                          Chỉnh sửa cấu hình
+                        </DropdownMenuItem>
+                        <DropdownMenuItem 
+                          className="text-admin-primary hover:bg-admin-hover cursor-pointer"
+                        >
+                          <TestTube className="w-4 h-4 mr-2" />
+                          Kiểm tra kết nối
+                        </DropdownMenuItem>
+                        <DropdownMenuItem 
+                          className="text-admin-primary hover:bg-admin-hover cursor-pointer"
+                        >
+                          <BarChart3 className="w-4 h-4 mr-2" />
+                          Xem thống kê usage
+                        </DropdownMenuItem>
+                        <DropdownMenuSeparator className="bg-admin-border" />
+                        {storage.status === 'disconnected' ? (
+                          <DropdownMenuItem 
+                            className="text-green-400 hover:bg-green-900/20 cursor-pointer"
+                          >
+                            <Play className="w-4 h-4 mr-2" />
+                            Kết nối
+                          </DropdownMenuItem>
+                        ) : (
+                          <DropdownMenuItem 
+                            className="text-yellow-400 hover:bg-yellow-900/20 cursor-pointer"
+                          >
+                            <Square className="w-4 h-4 mr-2" />
+                            Ngắt kết nối
+                          </DropdownMenuItem>
+                        )}
+                        <DropdownMenuItem 
+                          className="text-admin-primary hover:bg-admin-hover cursor-pointer"
+                        >
+                          <RefreshCw className="w-4 h-4 mr-2" />
+                          Đồng bộ storage
+                        </DropdownMenuItem>
+                        <DropdownMenuSeparator className="bg-admin-border" />
+                        <DropdownMenuItem 
+                          className="text-orange-400 hover:bg-orange-900/20 cursor-pointer"
+                        >
+                          <Eraser className="w-4 h-4 mr-2" />
+                          Dọn dẹp storage
+                        </DropdownMenuItem>
+                        <DropdownMenuSeparator className="bg-admin-border" />
+                        <DropdownMenuItem 
+                          className="text-red-400 hover:bg-red-900/20 cursor-pointer"
+                        >
+                          <Trash2 className="w-4 h-4 mr-2" />
+                          Xóa storage
+                        </DropdownMenuItem>
+                      </DropdownMenuContent>
+                    </DropdownMenu>
                   </div>
                 </TableCell>
               </TableRow>

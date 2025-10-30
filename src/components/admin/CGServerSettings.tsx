@@ -1,17 +1,12 @@
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '../ui/table';
-import { Button } from '../ui/button';
-import { Badge } from '../ui/badge';
-import { Plus, Pencil, Trash2 } from 'lucide-react';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '../ui/dialog';
-import { Input } from '../ui/input';
-import { Label } from '../ui/label';
-import { useState } from 'react';
+import { Plus, Edit, Trash2, Server, Pencil } from 'lucide-react';
 
 interface CGServer {
   id: string;
   name: string;
+  location: string;
   ipAddress: string;
   port: string;
+  description?: string;
   status: 'connected' | 'disconnected' | 'error';
   lastConnection: string;
 }
@@ -20,24 +15,30 @@ const mockServers: CGServer[] = [
   {
     id: '1',
     name: 'CG Server 1',
+    location: 'Phòng Server chính - Tầng 3',
     ipAddress: '192.168.1.100',
     port: '8080',
+    description: 'Server CG chính cho sản xuất',
     status: 'connected',
     lastConnection: '29/10/2025 10:30:45'
   },
   {
     id: '2',
     name: 'CG Server 2',
+    location: 'Phòng Kỹ thuật - Tầng 2',
     ipAddress: '192.168.1.101',
     port: '8080',
+    description: 'Server CG dự phòng',
     status: 'connected',
     lastConnection: '29/10/2025 09:15:22'
   },
   {
     id: '3',
     name: 'CG Backup Server',
+    location: 'Data Center - Tòa B',
     ipAddress: '192.168.1.102',
     port: '8080',
+    description: 'Server backup và lưu trữ',
     status: 'disconnected',
     lastConnection: '28/10/2025 23:45:10'
   },
@@ -46,6 +47,20 @@ const mockServers: CGServer[] = [
 export function CGServerSettings() {
   const [servers, setServers] = useState<CGServer[]>(mockServers);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
+  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
+  const [selectedServer, setSelectedServer] = useState<CGServer | null>(null);
+  const [editingServer, setEditingServer] = useState<CGServer | null>(null);
+  const [newServer, setNewServer] = useState<CGServer>({
+    id: '',
+    name: '',
+    location: '',
+    ipAddress: '',
+    port: '',
+    description: '',
+    status: 'connected',
+    lastConnection: new Date().toISOString(),
+  });
 
   const getStatusBadge = (status: CGServer['status']) => {
     const statusConfig = {
@@ -60,6 +75,50 @@ export function CGServerSettings() {
         {config.label}
       </Badge>
     );
+  };
+
+  const handleAddServer = () => {
+    if (!newServer.name || !newServer.ipAddress || !newServer.port) {
+      toast.error('Vui lòng điền đầy đủ thông tin');
+      return;
+    }
+    const newId = (servers.length + 1).toString();
+    const serverToAdd: CGServer = {
+      ...newServer,
+      id: newId,
+      lastConnection: new Date().toISOString(),
+    };
+    setServers([...servers, serverToAdd]);
+    setNewServer({
+      id: '',
+      name: '',
+      location: '',
+      ipAddress: '',
+      port: '',
+      description: '',
+      status: 'connected',
+      lastConnection: new Date().toISOString(),
+    });
+    setIsDialogOpen(false);
+    toast.success('Server đã được thêm thành công');
+  };
+
+  const handleDeleteServer = () => {
+    if (!selectedServer) return;
+    const updatedServers = servers.filter(server => server.id !== selectedServer.id);
+    setServers(updatedServers);
+    setIsDeleteDialogOpen(false);
+    toast.success('Server đã được xóa thành công');
+  };
+
+  const handleEditServer = () => {
+    if (!editingServer) return;
+    const updatedServers = servers.map(server => 
+      server.id === editingServer.id ? editingServer : server
+    );
+    setServers(updatedServers);
+    setIsEditDialogOpen(false);
+    toast.success('Server đã được cập nhật thành công');
   };
 
   return (
@@ -89,6 +148,8 @@ export function CGServerSettings() {
                 <Input 
                   placeholder="CG Server 1"
                   className="bg-admin-input border-admin text-admin-primary"
+                  value={newServer.name}
+                  onChange={(e) => setNewServer({ ...newServer, name: e.target.value })}
                 />
               </div>
               <div className="space-y-2">
@@ -96,6 +157,8 @@ export function CGServerSettings() {
                 <Input 
                   placeholder="192.168.1.100"
                   className="bg-admin-input border-admin text-admin-primary"
+                  value={newServer.ipAddress}
+                  onChange={(e) => setNewServer({ ...newServer, ipAddress: e.target.value })}
                 />
               </div>
               <div className="space-y-2">
@@ -103,13 +166,26 @@ export function CGServerSettings() {
                 <Input 
                   placeholder="8080"
                   className="bg-admin-input border-admin text-admin-primary"
+                  value={newServer.port}
+                  onChange={(e) => setNewServer({ ...newServer, port: e.target.value })}
                 />
               </div>
               <div className="space-y-2">
                 <Label className="text-admin-primary">Mô tả</Label>
-                <Input 
+                <Textarea 
                   placeholder="Mô tả về server"
                   className="bg-admin-input border-admin text-admin-primary"
+                  value={newServer.description}
+                  onChange={(e) => setNewServer({ ...newServer, description: e.target.value })}
+                />
+              </div>
+              <div className="space-y-2">
+                <Label className="text-admin-primary">Vị trí</Label>
+                <Input 
+                  placeholder="Vị trí của server"
+                  className="bg-admin-input border-admin text-admin-primary"
+                  value={newServer.location}
+                  onChange={(e) => setNewServer({ ...newServer, location: e.target.value })}
                 />
               </div>
               <div className="flex gap-3 justify-end mt-4">
@@ -121,10 +197,7 @@ export function CGServerSettings() {
                   Hủy
                 </Button>
                 <Button 
-                  onClick={() => {
-                    // Logic thêm server
-                    setIsDialogOpen(false);
-                  }}
+                  onClick={handleAddServer}
                   className="bg-cyan-600 hover:bg-cyan-700 text-white"
                 >
                   Thêm Server
@@ -168,6 +241,7 @@ export function CGServerSettings() {
             <TableRow className="bg-admin-secondary border-admin hover:bg-admin-secondary">
               <TableHead className="text-admin-secondary w-16">STT</TableHead>
               <TableHead className="text-admin-secondary">Tên Server</TableHead>
+              <TableHead className="text-admin-secondary">Vị trí đặt Server</TableHead>
               <TableHead className="text-admin-secondary">Địa chỉ IP</TableHead>
               <TableHead className="text-admin-secondary">Port</TableHead>
               <TableHead className="text-admin-secondary">Trạng thái</TableHead>
@@ -180,6 +254,7 @@ export function CGServerSettings() {
               <TableRow key={server.id} className="border-admin hover:bg-admin-hover">
                 <TableCell className="text-admin-secondary">{index + 1}</TableCell>
                 <TableCell className="text-admin-primary">{server.name}</TableCell>
+                <TableCell className="text-admin-primary">{server.location}</TableCell>
                 <TableCell className="text-admin-primary font-mono">{server.ipAddress}</TableCell>
                 <TableCell className="text-admin-primary font-mono">{server.port}</TableCell>
                 <TableCell>{getStatusBadge(server.status)}</TableCell>
@@ -190,6 +265,10 @@ export function CGServerSettings() {
                       variant="ghost" 
                       size="sm" 
                       className="text-cyan-400 hover:text-cyan-300 hover:bg-admin-hover"
+                      onClick={() => {
+                        setEditingServer(server);
+                        setIsEditDialogOpen(true);
+                      }}
                     >
                       <Pencil className="w-4 h-4" />
                     </Button>
@@ -197,6 +276,10 @@ export function CGServerSettings() {
                       variant="ghost" 
                       size="sm" 
                       className="text-red-400 hover:text-red-300 hover:bg-admin-hover"
+                      onClick={() => {
+                        setSelectedServer(server);
+                        setIsDeleteDialogOpen(true);
+                      }}
                     >
                       <Trash2 className="w-4 h-4" />
                     </Button>
@@ -207,6 +290,103 @@ export function CGServerSettings() {
           </TableBody>
         </Table>
       </div>
+
+      {/* Edit Dialog */}
+      <Dialog open={isEditDialogOpen} onOpenChange={setIsEditDialogOpen}>
+        <DialogContent className="bg-admin-secondary border-admin text-admin-primary">
+          <DialogHeader>
+            <DialogTitle className="text-admin-accent">Chỉnh sửa Server</DialogTitle>
+          </DialogHeader>
+          <div className="space-y-4 mt-4">
+            <div className="space-y-2">
+              <Label className="text-admin-primary">Tên Server *</Label>
+              <Input 
+                placeholder="CG Server 1"
+                className="bg-admin-input border-admin text-admin-primary"
+                value={editingServer?.name || ''}
+                onChange={(e) => setEditingServer({ ...editingServer!, name: e.target.value })}
+              />
+            </div>
+            <div className="space-y-2">
+              <Label className="text-admin-primary">Địa chỉ IP *</Label>
+              <Input 
+                placeholder="192.168.1.100"
+                className="bg-admin-input border-admin text-admin-primary"
+                value={editingServer?.ipAddress || ''}
+                onChange={(e) => setEditingServer({ ...editingServer!, ipAddress: e.target.value })}
+              />
+            </div>
+            <div className="space-y-2">
+              <Label className="text-admin-primary">Port *</Label>
+              <Input 
+                placeholder="8080"
+                className="bg-admin-input border-admin text-admin-primary"
+                value={editingServer?.port || ''}
+                onChange={(e) => setEditingServer({ ...editingServer!, port: e.target.value })}
+              />
+            </div>
+            <div className="space-y-2">
+              <Label className="text-admin-primary">Mô tả</Label>
+              <Textarea 
+                placeholder="Mô tả về server"
+                className="bg-admin-input border-admin text-admin-primary"
+                value={editingServer?.description || ''}
+                onChange={(e) => setEditingServer({ ...editingServer!, description: e.target.value })}
+              />
+            </div>
+            <div className="space-y-2">
+              <Label className="text-admin-primary">Vị trí</Label>
+              <Input 
+                placeholder="Vị trí của server"
+                className="bg-admin-input border-admin text-admin-primary"
+                value={editingServer?.location || ''}
+                onChange={(e) => setEditingServer({ ...editingServer!, location: e.target.value })}
+              />
+            </div>
+            <div className="flex gap-3 justify-end mt-4">
+              <Button 
+                variant="outline" 
+                onClick={() => setIsEditDialogOpen(false)}
+                className="border-admin text-admin-primary hover:bg-admin-hover"
+              >
+                Hủy
+              </Button>
+              <Button 
+                onClick={handleEditServer}
+                className="bg-cyan-600 hover:bg-cyan-700 text-white"
+              >
+                Cập nhật Server
+              </Button>
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
+
+      {/* Delete Dialog */}
+      <AlertDialog open={isDeleteDialogOpen} onOpenChange={setIsDeleteDialogOpen}>
+        <AlertDialogContent className="bg-admin-secondary border-admin text-admin-primary">
+          <AlertDialogHeader>
+            <AlertDialogTitle className="text-admin-accent">Xóa Server</AlertDialogTitle>
+            <AlertDialogDescription className="text-admin-muted">
+              Bạn có chắc chắn muốn xóa server này không? Hành động này không thể hoàn tác.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel 
+              className="border-admin text-admin-primary hover:bg-admin-hover"
+              onClick={() => setIsDeleteDialogOpen(false)}
+            >
+              Hủy
+            </AlertDialogCancel>
+            <AlertDialogAction 
+              className="bg-red-600 hover:bg-red-700 text-white"
+              onClick={handleDeleteServer}
+            >
+              Xóa Server
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 }
